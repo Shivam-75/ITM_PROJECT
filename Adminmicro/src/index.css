@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --primary: #135bec;
+}
+
+/* ===============================
+   Custom Theme (Tailwind v4 way)
+================================ */
+
+@theme {
+  --color-primary: #1111d4;
+  --color-background-light: #f6f6f8;
+  --font-display: "Inter", system-ui, sans-serif;
+}
+
+/* Global */
+body {
+  font-family: var(--font-display);
+  background-color: var(--color-background-light);
+  color: #0d0d1b;
+}
+
+/* Input reuse class */
+.input-style {
+  @apply w-full bg-[#f8f8fc] border border-[#cfcfe7]
+  text-sm rounded-lg p-3.5
+  focus:ring-2 focus:ring-primary
+  focus:border-primary outline-none;
+}
+/* Custom Scrollbar for Sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

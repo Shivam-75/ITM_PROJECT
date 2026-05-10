@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1776768197530,
+    "name": "BCA",
+    "department": "Engineering",
+    "deptCode": "BCA01",
+    "hod": "SHALINI MAAM",
+    "duration": "3 Years",
+    "description": "Bachelor of Computer Applications",
+    "createdAt": "2026-04-21T10:43:17.531Z"
+  },
+  {
+    "id": 1776768442568,
+    "name": "BBA",
+    "department": "Management",
+    "deptCode": "BBA01",
+    "hod": "ADMIN",
+    "duration": "3 Years",
+    "description": "Bachelor of Business Administration",
+    "createdAt": "2026-04-21T10:47:22.568Z"
+  }
+]

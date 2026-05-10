@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1776768093614",
+    "name": "sEMESTER 1",
+    "startDate": "2026-04-22",
+    "endDate": "2026-04-22",
+    "status": "Active",
+    "createdAt": "2026-04-21T10:41:33.614Z"
+  },
+  {
+    "id": "1776768115184",
+    "name": "SEMESTER 2",
+    "startDate": "2026-04-22",
+    "endDate": "2026-04-23",
+    "status": "Upcoming",
+    "createdAt": "2026-04-21T10:41:55.184Z"
+  },
+  {
+    "id": "1776768129020",
+    "name": "SEMESTER 3",
+    "startDate": "2026-04-22",
+    "endDate": "2026-04-23",
+    "status": "Active",
+    "createdAt": "2026-04-21T10:42:09.020Z"
+  },
+  {
+    "id": "1776768411327",
+    "name": "semester 4",
+    "startDate": "2026-04-23",
+    "endDate": "2026-04-27",
+    "status": "Active",
+    "createdAt": "2026-04-21T10:46:51.327Z"
+  }
+]

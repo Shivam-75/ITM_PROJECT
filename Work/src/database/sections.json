@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1776768712597,
+    "name": "SECTION A1",
+    "course": "bca ",
+    "semester": "sEMESTER 1",
+    "roomNo": "fsdfd",
+    "year": "YEAR 1",
+    "strength": "dfsdf",
+    "createdAt": "2026-04-21T10:51:52.597Z"
+  },
+  {
+    "id": 1776768725264,
+    "name": "SECTION A2",
+    "course": "bba",
+    "semester": "sEMESTER 1",
+    "roomNo": "fsd",
+    "year": "YEAR 1",
+    "strength": "sfd",
+    "createdAt": "2026-04-21T10:52:05.264Z"
+  }
+]

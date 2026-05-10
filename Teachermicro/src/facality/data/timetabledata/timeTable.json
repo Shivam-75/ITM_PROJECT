@@ -1,0 +1,89 @@
+{
+  "class": "BCA 3rd Semester",
+  "section": "A",
+  "schedule": {
+    "Monday": {
+      "09:00-10:00": {
+        "subject": "Data Structures",
+        "faculty": "Mr. Sharma"
+      },
+      "10:00-11:00": {
+        "subject": "Operating System",
+        "faculty": "Mr. Verma"
+      },
+      "11:00-12:00": {
+        "subject": "",
+        "faculty": ""
+      }
+    },
+    "Tuesday": {
+      "09:00-10:00": {
+        "subject": "DBMS",
+        "faculty": "Ms. Singh"
+      },
+      "10:00-11:00": {
+        "subject": "",
+        "faculty": ""
+      },
+      "11:00-12:00": {
+        "subject": "Computer Networks",
+        "faculty": "Mr. Patel"
+      }
+    },
+    "Wednesday": {
+      "09:00-10:00": {
+        "subject": "",
+        "faculty": ""
+      },
+      "10:00-11:00": {
+        "subject": "Data Structures",
+        "faculty": "Ms. Gupta"
+      },
+      "11:00-12:00": {
+        "subject": "",
+        "faculty": ""
+      }
+    },
+    "Thursday": {
+      "09:00-10:00": {
+        "subject": "Operating System",
+        "faculty": "Mr. Verma"
+      },
+      "10:00-11:00": {
+        "subject": "",
+        "faculty": ""
+      },
+      "11:00-12:00": {
+        "subject": "DBMS",
+        "faculty": "Mr. Khan"
+      }
+    },
+    "Friday": {
+      "09:00-10:00": {
+        "subject": "",
+        "faculty": ""
+      },
+      "10:00-11:00": {
+        "subject": "Computer Networks",
+        "faculty": "Mr. Patel"
+      },
+      "11:00-12:00": {
+        "subject": "",
+        "faculty": ""
+      }
+    },
+    "Saturday": {
+      "09:00-10:00": {
+        "subject": "Data Structures",
+        "faculty": "Mr. Sharma"
+      },
+      "10:00-11:00": {
+        "subject": "",
+        "faculty": ""
+      },
+      "11:00-12:00": {
+        "subject": ""
+      }
+    }
+  }
+}
