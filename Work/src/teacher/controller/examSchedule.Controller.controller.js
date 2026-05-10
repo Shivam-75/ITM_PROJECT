@@ -14,6 +14,7 @@ class ExamScheduleController {
             }
 
             const createExam = await Exam.create({
+                userId: req.user?.id,
                 Department, Semester, ct, Subject, ExamType, Date, time, RoomNo
             });
 

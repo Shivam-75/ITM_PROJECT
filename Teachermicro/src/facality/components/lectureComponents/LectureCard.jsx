@@ -5,7 +5,7 @@ export default function LectureCard({ lecture, onDelete }) {
   const date = changeDate(lecture);
 
   return (
-    <div className="bg-white rounded-[1.5rem] border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300 animate-in fade-in zoom-in-95">
+    <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300 animate-in fade-in zoom-in-95">
         <div className="flex justify-between items-start mb-2">
             <div className="space-y-1">
                 <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-widest italic flex items-center gap-2 w-fit">
@@ -18,7 +18,7 @@ export default function LectureCard({ lecture, onDelete }) {
             
             <button 
                 onClick={() => onDelete(lecture._id)} 
-                className="p-2.5 bg-rose-50 text-rose-500 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
+                className="p-2.5 bg-rose-50 text-rose-500 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
             >
                 <FiTrash2 size={14} />
             </button>
@@ -55,7 +55,7 @@ export default function LectureCard({ lecture, onDelete }) {
                 href={lecture.linkas} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-full py-4 bg-slate-900 border border-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3"
+                className="w-full py-4 bg-slate-900 border border-slate-800 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.2em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3"
             >
                 <FiExternalLink size={14} />
                 Access Digital Classroom
@@ -72,3 +72,5 @@ export default function LectureCard({ lecture, onDelete }) {
     </div>
   );
 }
+
+

@@ -2,18 +2,16 @@ import mongoose from "mongoose";
 
 const HomeworkSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     subject: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     semester: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     section: {
         type: String,
@@ -25,20 +23,17 @@ const HomeworkSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     questions: {
         type: [String],
-        required: true,
-        lowercase: true
+        required: true
     },
     submissionDate: {
         type: String,
         required: false
     }
 
-}, { timestamps: true })
+}, { timestamps: true });
 
-
-export const Homework = mongoose.model("Homework", HomeworkSchema);
+export const Homework = mongoose.models.Homework || mongoose.model("Homework", HomeworkSchema, "homeworks");

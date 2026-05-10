@@ -11,3 +11,4 @@ export const calculateGrade = (totalInternalMarks) => {
 
   return { grade: "F", status: "Fail" };
 };
+

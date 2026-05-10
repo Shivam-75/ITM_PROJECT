@@ -148,14 +148,10 @@ class AdminController {
                 return res.status(400).json({ message: "Access denied !!", status: 401 });
             }
 
-            const findUser = await Admin.findById(tokenVerification.id).select("-password -superAdmin");
+            const findUser = await Admin.findById(tokenVerification.id).select("-password");
 
-            if (!findUser) {
-                return res.status(400).json({ message: "Unauthorized access", status: 400 });
-            }
-
-            if (findUser.refreshtkn.toString() !== addrft.toString()) {
-                return res.status(401).json({ message: "Access Denied Token Expire !!", status: 401 });
+            if (!findUser || findUser.refreshtkn.toString() !== adminRefreshToken.toString()) {
+                return res.status(401).json({ message: "Access Denied Token Expired !!", status: 401 });
             }
 
             const { adminCreateAccessToken, adminCreateRefreshToken } = await AdminTokenCreator(findUser._id);

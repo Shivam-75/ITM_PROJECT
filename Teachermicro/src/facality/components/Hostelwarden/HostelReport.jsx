@@ -92,13 +92,13 @@ const HostelReport = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-24 px-8">
+    <div className="min-h-screen bg-white pt-24 px-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         📋 Hostel Warden Reports
       </h1>
 
       {/* 🔹 Summary */}
-      <div className="bg-purple-600 text-white p-6 rounded-2xl shadow-lg mb-8 w-full md:w-1/3">
+      <div className="bg-purple-600 text-white p-6 rounded-lg shadow-lg mb-8 w-full md:w-1/3">
         <p className="text-sm uppercase opacity-80">
           Total Reports
         </p>
@@ -108,7 +108,7 @@ const HostelReport = () => {
       </div>
 
       {/* 🔹 Add Report Form */}
-      <div className="bg-white p-6 rounded-2xl shadow mb-8">
+      <div className="bg-white p-6 rounded-lg shadow mb-8">
         <h2 className="text-xl font-semibold mb-4">
           Add New Report
         </h2>
@@ -172,7 +172,7 @@ const HostelReport = () => {
       </div>
 
       {/* 🔹 Reports Table */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-x-auto">
+      <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-800 text-white uppercase text-xs">
             <tr>
@@ -188,7 +188,7 @@ const HostelReport = () => {
             {filteredReports.map((report) => (
               <tr
                 key={report.id}
-                className="border-b hover:bg-gray-50"
+                className="border-b hover:bg-white"
               >
                 <td className="px-6 py-4 font-semibold">
                   {report.title}
@@ -237,3 +237,6 @@ const HostelReport = () => {
 };
 
 export default HostelReport;
+
+
+

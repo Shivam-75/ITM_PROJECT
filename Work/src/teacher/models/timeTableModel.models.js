@@ -14,26 +14,28 @@ const teachSubject = new mongoose.Schema({
         required: true,
     },
     lecture: {
-        type: Number,   // ✅ type spelling correct
+        type: Number,
         required: true,
         enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    },
+    time: {
+        type: String,
+        required: true
     }
 });
 
 const timeTableSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     course: {
         type: String,
         required: true,
-        lowercase: true,
     },
     section: {
         type: String,
         required: true,
-        lowercase: true,
     },
     semester: {
         type: String,
@@ -41,8 +43,7 @@ const timeTableSchema = new mongoose.Schema({
     },
     timeSheet: [teachSubject]
 }, { 
-    timestamps: true,
-    bufferCommands: false // Disable buffering so queries fail instantly if not connected
+    timestamps: true
 });
 
-export const TimeTable = mongoose.models.TimeTable || mongoose.model("TimeTable", timeTableSchema);
+export const TimeTable = mongoose.models.TimeTable || mongoose.model("TimeTable", timeTableSchema, "timetables");

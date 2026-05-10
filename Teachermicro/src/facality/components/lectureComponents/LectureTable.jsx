@@ -16,3 +16,5 @@ const LectureTable = ({ data, onDelete }) => {
 };
 
 export default React.memo(LectureTable);
+
+

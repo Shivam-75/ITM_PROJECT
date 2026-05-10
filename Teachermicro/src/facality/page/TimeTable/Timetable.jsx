@@ -147,11 +147,11 @@ const Timetable = () => {
       {/* Main Content Area - Full Width */}
       <div className="w-full space-y-8">
             {/* Global Info Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-lg border border-slate-100 shadow-sm">
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
                         value={course}
                         onChange={(e) => setCourse(e.target.value)}
                     >
@@ -162,7 +162,7 @@ const Timetable = () => {
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
                         value={section}
                         onChange={(e) => setSection(e.target.value)}
                     >
@@ -173,7 +173,7 @@ const Timetable = () => {
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
                         value={semester}
                         onChange={(e) => setSemester(e.target.value)}
                     >
@@ -184,12 +184,12 @@ const Timetable = () => {
             </div>
 
             {/* Day Selector Tabs */}
-            <div className="flex flex-wrap gap-2 p-2 bg-slate-50 rounded-[2rem] border border-slate-100">
+            <div className="flex flex-wrap gap-2 p-2 bg-white rounded-lg border border-slate-100">
                 {days.map(day => (
                     <button
                         key={day}
                         onClick={() => setActiveDay(day)}
-                        className={`flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest italic transition-all ${
+                        className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${
                             activeDay === day 
                                 ? "bg-slate-900 text-white shadow-xl shadow-slate-200" 
                                 : "text-slate-400 hover:text-slate-900 hover:bg-white"
@@ -203,12 +203,12 @@ const Timetable = () => {
             {/* Lecture Listing Area */}
             <div className="space-y-6">
                 {formData[activeDay].length === 0 ? (
-                    <div className="py-20 text-center border-4 border-dashed border-slate-50 rounded-[3rem] bg-white">
+                    <div className="py-20 text-center border-4 border-dashed border-slate-50 rounded-lg bg-white">
                         <FiCalendar size={40} className="mx-auto text-slate-100 mb-4" />
                         <h3 className="text-sm font-black text-slate-300 uppercase tracking-widest italic">No pulses added for {activeDay}</h3>
                         <button 
                             onClick={() => addLecture(activeDay)}
-                            className="mt-6 px-8 py-3 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:scale-105 transition-all italic"
+                            className="mt-6 px-8 py-3 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:scale-105 transition-all italic"
                         >
                             + Start Architecture
                         </button>
@@ -216,14 +216,14 @@ const Timetable = () => {
                 ) : (
                     <div className="space-y-4">
                         {formData[activeDay].map((item, idx) => (
-                            <div key={idx} className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-100 transition-all group animate-in slide-in-from-bottom-2">
+                            <div key={idx} className="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-100 transition-all group animate-in slide-in-from-bottom-2">
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                                     <div className="relative">
                                         <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" />
                                         <input
                                             type="text"
                                             placeholder="TEACHER NAME"
-                                            className="w-full pl-10 pr-3 py-3 bg-slate-50 rounded-xl text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
+                                            className="w-full pl-10 pr-3 py-3 bg-white rounded-lg text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
                                             value={item.teacher}
                                             onChange={(e) => handleChange(activeDay, idx, "teacher", e.target.value)}
                                         />
@@ -233,7 +233,7 @@ const Timetable = () => {
                                         <input
                                             type="text"
                                             placeholder="SUBJECT CODE/NAME"
-                                            className="w-full pl-10 pr-3 py-3 bg-slate-50 rounded-xl text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
+                                            className="w-full pl-10 pr-3 py-3 bg-white rounded-lg text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
                                             value={item.subject}
                                             onChange={(e) => handleChange(activeDay, idx, "subject", e.target.value)}
                                         />
@@ -243,14 +243,14 @@ const Timetable = () => {
                                         <input
                                             type="text"
                                             placeholder="TIME (E.G. 10:00-11:00)"
-                                            className="w-full pl-10 pr-3 py-3 bg-slate-50 rounded-xl text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
+                                            className="w-full pl-10 pr-3 py-3 bg-white rounded-lg text-[10px] font-bold uppercase border-none focus:ring-2 focus:ring-indigo-600 outline-none"
                                             value={item.time}
                                             onChange={(e) => handleChange(activeDay, idx, "time", e.target.value)}
                                         />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <select
-                                            className="flex-1 px-4 py-3 bg-slate-50 rounded-xl text-[10px] font-black uppercase tracking-widest border-none focus:ring-2 focus:ring-indigo-600 outline-none"
+                                            className="flex-1 px-4 py-3 bg-white rounded-lg text-[10px] font-black uppercase tracking-widest border-none focus:ring-2 focus:ring-indigo-600 outline-none"
                                             value={item.lecture}
                                             onChange={(e) => handleChange(activeDay, idx, "lecture", Number(e.target.value))}
                                         >
@@ -259,7 +259,7 @@ const Timetable = () => {
                                         </select>
                                         <button 
                                             onClick={() => removeLecture(activeDay, idx)}
-                                            className="p-3 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all active:scale-90"
+                                            className="p-3 bg-rose-50 text-rose-500 rounded-lg hover:bg-rose-500 hover:text-white transition-all active:scale-90"
                                         >
                                             <FiTrash2 size={16} />
                                         </button>
@@ -271,14 +271,14 @@ const Timetable = () => {
                         <div className="flex gap-4 pt-4">
                             <button 
                                 onClick={() => addLecture(activeDay)}
-                                className="flex-1 flex items-center justify-center gap-3 py-5 bg-white border-2 border-dashed border-slate-100 rounded-3xl text-slate-400 hover:text-slate-900 hover:border-slate-900 transition-all group"
+                                className="flex-1 flex items-center justify-center gap-3 py-5 bg-white border-2 border-dashed border-slate-100 rounded-lg text-slate-400 hover:text-slate-900 hover:border-slate-900 transition-all group"
                             >
                                 <FiPlus className="group-hover:rotate-90 transition-transform" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] italic">Add Lecture Node</span>
                             </button>
                             <button 
                                 onClick={() => handleSubmitDay(activeDay)}
-                                className="flex-1 flex items-center justify-center gap-3 py-5 bg-emerald-600 text-white rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] italic shadow-xl shadow-emerald-100 hover:bg-slate-900 transition-all active:scale-95 group"
+                                className="flex-1 flex items-center justify-center gap-3 py-5 bg-emerald-600 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.4em] italic shadow-xl shadow-emerald-100 hover:bg-slate-900 transition-all active:scale-95 group"
                             >
                                 <FiSave className="group-hover:scale-125 transition-transform" />
                                 Submit
@@ -293,3 +293,6 @@ const Timetable = () => {
 };
 
 export default Timetable;
+
+
+

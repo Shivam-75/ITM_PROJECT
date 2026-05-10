@@ -13,6 +13,8 @@ const NoticeForm = ({ onSave, initialData }) => {
     description: "",
     department: "",
     year: "",
+    semester: "",
+    section: "",
   });
 
   const [noticeLoading, setNoticeLoading] = useState(false);
@@ -20,16 +22,22 @@ const NoticeForm = ({ onSave, initialData }) => {
   // Registry States
   const [courses, setCourses] = useState([]);
   const [yearsList, setYearsList] = useState([]);
+  const [semesters, setSemesters] = useState([]);
+  const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const fetchRegistries = async () => {
       try {
-        const [cRes, yRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-years", { withCredentials: true })
+        const [cRes, yRes, semRes, secRes] = await Promise.all([
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true })
         ]);
-        if (cRes.data.courses) setCourses(cRes.data.courses);
-        if (yRes.data.years) setYearsList(yRes.data.years);
+        if (cRes.data.data) setCourses(cRes.data.data);
+        if (yRes.data.data) setYearsList(yRes.data.data);
+        if (semRes.data.data) setSemesters(semRes.data.data);
+        if (secRes.data.data) setSections(secRes.data.data);
       } catch (err) {
         console.error("Notice Registry Sync Failed:", err);
       }
@@ -64,7 +72,7 @@ const NoticeForm = ({ onSave, initialData }) => {
       const { data } = await WorkAPI.post("/Notice/uploader", payload, { withCredentials: true });
       toast.success(data?.message || "Notice Published Successfully", toststyle);
       
-      setFormData({ title: "", description: "", department: "", year: "" });
+      setFormData({ title: "", description: "", department: "", year: "", semester: "", section: "" });
       onSave?.(data?.serchNotice);
     } catch (err) {
       toast.error(err?.response?.data?.message || "Notice Upload Failed", toststyle);
@@ -74,9 +82,9 @@ const NoticeForm = ({ onSave, initialData }) => {
   };
 
   return (
-    <div className="bg-white rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
+    <div className="bg-white rounded-lg md:rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
       <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 relative z-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               <div className="space-y-1.5 sm:col-span-2">
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Announcement Title</label>
                   <input 
@@ -84,14 +92,14 @@ const NoticeForm = ({ onSave, initialData }) => {
                     value={formData.title} 
                     onChange={handleChange} 
                     placeholder="E.G. URGENT: SEMESTER EXAM UPDATES" 
-                    className="w-full px-5 py-3.5 bg-slate-50 border-none rounded-xl text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
+                    className="w-full px-5 py-3.5 bg-white border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
                     required 
                   />
               </div>
               
               <div className="space-y-1.5">
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Department</label>
-                  <select name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                  <select name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
                       <option value="">Select Path</option>
                       {courses.map(c => <option key={c.id} value={c.name}>{c.name.toUpperCase()}</option>)}
                   </select>
@@ -99,9 +107,25 @@ const NoticeForm = ({ onSave, initialData }) => {
 
               <div className="space-y-1.5">
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Target Year</label>
-                  <select name="year" value={formData.year} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                  <select name="year" value={formData.year} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
                       <option value="">Select Stage</option>
                       {yearsList.map(y => <option key={y.id} value={y.name}>{y.name.toUpperCase()}</option>)}
+                  </select>
+              </div>
+
+              <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Semester</label>
+                  <select name="semester" value={formData.semester} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                      <option value="">Select Phase</option>
+                      {semesters.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
+                  </select>
+              </div>
+
+              <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Section</label>
+                  <select name="section" value={formData.section} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                      <option value="">Select Local</option>
+                      {sections.map(sec => <option key={sec.id} value={sec.name}>{sec.name.toUpperCase()}</option>)}
                   </select>
               </div>
           </div>
@@ -114,7 +138,7 @@ const NoticeForm = ({ onSave, initialData }) => {
                 onChange={handleChange} 
                 placeholder="DETAILED PROTOCOL DESCRIPTION..." 
                 rows={4}
-                className="w-full px-6 py-5 bg-slate-50 border-none rounded-[1.5rem] text-[11px] font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm resize-none"
+                className="w-full px-6 py-5 bg-white border-none rounded-lg text-[11px] font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm resize-none"
                 required
               />
           </div>
@@ -123,7 +147,7 @@ const NoticeForm = ({ onSave, initialData }) => {
               <button 
                   type="submit" 
                   disabled={noticeLoading} 
-                  className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-fit"
+                  className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-fit"
               >
                   <FiSend size={14} />
                   {noticeLoading ? "Transmitting..." : "Publish Notice"}
@@ -135,3 +159,5 @@ const NoticeForm = ({ onSave, initialData }) => {
 };
 
 export default NoticeForm;
+
+

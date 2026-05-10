@@ -4,7 +4,7 @@ import Loader from "../components/common/Loader.jsx";
 
 const NoticeCard = memo(({ notice }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5 flex flex-col justify-between hover:shadow-md transition-shadow h-full min-h-[280px]">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-5 flex flex-col justify-between hover:shadow-md transition-shadow h-full min-h-[280px]">
       <div>
         <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-bold text-slate-800 tracking-tight leading-tight line-clamp-1">
@@ -24,7 +24,7 @@ const NoticeCard = memo(({ notice }) => {
             </div>
         </div>
 
-        <div className="p-3 bg-slate-50 rounded-lg text-[11px] text-slate-600 leading-relaxed italic border border-slate-100">
+        <div className="p-3 bg-white rounded-lg text-[11px] text-slate-600 leading-relaxed italic border border-slate-100">
            "{notice?.description}"
         </div>
       </div>
@@ -76,7 +76,7 @@ const Notice = () => {
       </div>
 
       {notices.length === 0 && !loading && (
-        <div className="py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-sm col-span-full">
+        <div className="py-20 text-center bg-white rounded-lg border border-slate-100 shadow-sm col-span-full">
            <p className="text-slate-300 font-bold uppercase tracking-widest text-[10px]">No active notices.</p>
         </div>
       )}
@@ -85,3 +85,6 @@ const Notice = () => {
 };
 
 export default Notice;
+
+
+

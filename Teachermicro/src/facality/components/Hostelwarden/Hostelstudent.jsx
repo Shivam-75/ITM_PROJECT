@@ -70,14 +70,14 @@ const HostelStudent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-24 px-8">
+    <div className="min-h-screen bg-white pt-24 px-8">
       
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         🎓 Hostel Students
       </h1>
 
       {/* 🔹 Summary Card */}
-      <div className="bg-blue-600 text-white p-6 rounded-2xl shadow-lg mb-8 w-full md:w-1/3">
+      <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg mb-8 w-full md:w-1/3">
         <p className="text-sm uppercase opacity-80">
           Total Students in Hostel
         </p>
@@ -98,7 +98,7 @@ const HostelStudent = () => {
       </div>
 
       {/* 🔹 Students Table */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-x-auto">
+      <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-800 text-white uppercase text-xs tracking-wider">
             <tr>
@@ -115,7 +115,7 @@ const HostelStudent = () => {
             {filteredStudents.map((student) => (
               <tr
                 key={student.id}
-                className="border-b hover:bg-gray-50 transition"
+                className="border-b hover:bg-white transition"
               >
                 <td className="px-6 py-4 font-semibold text-gray-800">
                   {student.name}
@@ -157,3 +157,6 @@ const HostelStudent = () => {
 };
 
 export default HostelStudent;
+
+
+

@@ -21,3 +21,4 @@ export const filterStudents = (students, search, selectedClass) => {
 
   return result;
 };
+

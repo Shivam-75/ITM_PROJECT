@@ -7,4 +7,5 @@ export const feeRoute = Router();
 feeRoute.use(AdminVerifation.TokenVerification);
 
 feeRoute.route("/structure").get(FeeController.getFeeStructures).post(FeeController.addFeeStructure);
-feeRoute.route("/payments").get(FeeController.getPayments).post(FeeController.recordPayment);
+feeRoute.route("/structure/specific").get(FeeController.getSpecificStructure);
+feeRoute.route("/structure/:id").delete(FeeController.deleteFeeStructure);

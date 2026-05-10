@@ -12,6 +12,7 @@ import Timetable from "./page/Timetable";
 import Attendence from "./page/Attendence";
 import Dashboard from "./page/Dashboard";
 import ExamSchedule from "./page/ExamSchedule";
+import Placements from "./page/Placements";
 
 
 const App = () => {
@@ -65,6 +66,10 @@ const App = () => {
           path: "exam-schedule",
           element: <ExamSchedule />,
         },
+        {
+          path: "placements",
+          element: <Placements />,
+        },
       ],
     },
   ]);
@@ -72,3 +77,6 @@ const App = () => {
   return <RouterProvider router={routes} />;
 };
 export default App;
+
+
+

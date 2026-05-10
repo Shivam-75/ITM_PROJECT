@@ -46,4 +46,4 @@ AdminSchema.methods.adminRefreshToken = async function () {
     }, process.env.ADMIN_REFRESH_TOKEN_SECREAT, { expiresIn: process.env.ADMIN_REFRESH_TOKEN_EXPIRY })
 }
 
-export const Admin = mongoose.model("Admin", AdminSchema);
+export const Admin = mongoose.models.Admin || mongoose.model("Admin", AdminSchema, "admins");

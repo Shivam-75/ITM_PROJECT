@@ -9,7 +9,7 @@ export default function NotificationItem({ data }) {
   return (
     <div
       className={`flex gap-4 p-4 border-b last:border-b-0 transition
-      ${data.unread ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-slate-50"}`}>
+      ${data.unread ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-white"}`}>
       {/* Icon */}
       <div
         className={`size-10 rounded-full flex items-center justify-center
@@ -36,3 +36,6 @@ export default function NotificationItem({ data }) {
     </div>
   );
 }
+
+
+

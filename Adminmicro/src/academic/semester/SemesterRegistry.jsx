@@ -27,8 +27,8 @@ const SemesterRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true });
-      if (res.data.semesters) setSemesters(res.data.semesters);
+      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true });
+      if (res.data.data) setSemesters(res.data.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -47,9 +47,9 @@ const SemesterRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-semesters/${editId}`, { withCredentials: true });
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/semesters/${editId}`, { withCredentials: true });
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/file-semesters", semForm, { withCredentials: true });
+      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/semesters", semForm, { withCredentials: true });
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
@@ -76,7 +76,7 @@ const SemesterRegistry = () => {
     if (!window.confirm("Purge this semester from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-semesters/${id}`, { withCredentials: true });
+      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/semesters/${id}`, { withCredentials: true });
       toast.success("Semester Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -151,14 +151,14 @@ const SemesterRegistry = () => {
                 <tr><td colSpan="5" className="px-6 py-20 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest italic">No semester windows committed</td></tr>
               ) : (
                 semesters.map((s) => (
-                  <tr key={s.id} className="hover:bg-gray-50/50 transition-colors">
+                  <tr key={s.id} className="hover:bg-white/50 transition-colors">
                     <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{s.name}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{s.startDate || "-"}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{s.endDate || "-"}</td>
                     <td className="px-6 py-4 text-center border-r border-gray-200">
                         <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             s.status === 'Active' ? 'bg-green-100 text-green-600' : 
-                            s.status === 'Upcoming' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
+                            s.status === 'Upcoming' ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-600'
                         }`}>
                             {s.status}
                         </span>
@@ -182,3 +182,7 @@ const SemesterRegistry = () => {
 };
 
 export default SemesterRegistry;
+
+
+
+

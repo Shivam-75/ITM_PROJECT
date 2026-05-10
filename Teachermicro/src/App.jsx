@@ -14,8 +14,8 @@ import LectureList from "./facality/page/lectures/LectureList";
 import Messaging from "./facality/page/messaging/Messaging";
 import Fontpage from "./facality/ui/Fontpage";
 import Timetable from "./facality/page/TimeTable/Timetable";
-import HostelDashboard from "./facality/components/Hostelwarden/HostelDashboard";
 import RoomAllocation from "./facality/components/Hostelwarden/RoomAllocation";
+import HostelRegistration from "./facality/page/works/HostelRegistration";
 import Complain from "./facality/components/Hostelwarden/Complain";
 import HostelStudent from "./facality/components/Hostelwarden/Hostelstudent";
 import HostelReport from "./facality/components/Hostelwarden/Hostelreport";
@@ -99,12 +99,8 @@ const App = () => {
           element: <Messaging />,
         },
         {
-          path: "hostel-dashboard",
-          element: <HostelDashboard />
-        },
-        {
           path: "room-allocation",
-          element: <RoomAllocation />
+          element: <HostelRegistration />
         },
         {
           path: "hostel-complaints",
@@ -138,3 +134,6 @@ const App = () => {
   return <RouterProvider router={routes} />;
 };
 export default App;
+
+
+

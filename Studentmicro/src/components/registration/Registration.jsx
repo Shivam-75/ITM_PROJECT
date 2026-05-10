@@ -71,7 +71,7 @@ function Registration() {
                <input
                  type="text" name="name" placeholder="John Doe"
                  value={formData.name} onChange={handleChange} required
-                 className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold"
+                 className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold"
                />
             </div>
 
@@ -81,7 +81,7 @@ function Registration() {
                    <input
                      type="tel" name="moNumber" placeholder="0000000000"
                      value={formData.moNumber} onChange={handleChange} required maxLength={10}
-                     className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold font-mono"
+                     className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold font-mono"
                    />
                 </div>
                 <div className="space-y-1.5">
@@ -89,7 +89,7 @@ function Registration() {
                    <input
                      type="password" name="password" placeholder="••••••••"
                      value={formData.password} onChange={handleChange} required
-                     className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold"
+                     className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-xs font-bold"
                    />
                 </div>
             </div>
@@ -99,7 +99,7 @@ function Registration() {
                    <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Course</label>
                     <select
                       name="course" value={formData.course} onChange={handleChange} required
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
                     >
                       <option value="" disabled hidden>Select Course</option>
                       {courses.map(c => <option key={c.id} value={c.name}>{c.name.toUpperCase()}</option>)}
@@ -109,7 +109,7 @@ function Registration() {
                     <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Academic Year</label>
                     <select
                       name="year" value={formData.year} onChange={handleChange} required
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
                     >
                       <option value="" disabled hidden>Select Year</option>
                       {years.map(y => <option key={y.id} value={y.name}>{y.name.toUpperCase()}</option>)}
@@ -122,7 +122,7 @@ function Registration() {
                    <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Semester</label>
                     <select
                       name="semester" value={formData.semester} onChange={handleChange} required
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
                     >
                       <option value="" disabled hidden>Select Semester</option>
                       {semesters.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
@@ -132,7 +132,7 @@ function Registration() {
                     <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Section</label>
                     <select
                       name="section" value={formData.section} onChange={handleChange} required
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
                     >
                       <option value="" disabled hidden>Select Section</option>
                       {sections.map(sec => <option key={sec.id} value={sec.name}>{sec.name.toUpperCase()}</option>)}
@@ -145,7 +145,7 @@ function Registration() {
                     <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Gender</label>
                     <select
                       name="gender" value={formData.gender} onChange={handleChange} required
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-300 text-[10px] font-black uppercase appearance-none cursor-pointer"
                     >
                       <option value="" disabled hidden>Select Gender</option>
                       {GENDERS.map(g => <option key={g} value={g}>{g.toUpperCase()}</option>)}
@@ -189,3 +189,6 @@ function Registration() {
 }
 
 export default Registration;
+
+
+

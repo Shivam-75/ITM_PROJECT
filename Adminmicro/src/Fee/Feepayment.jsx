@@ -86,9 +86,9 @@ const Feepayment = () => {
     return (
       <div className=" flex justify-center items-center relative p-6">
         {loading && <Loader />}
-        <div className="bg-white w-[98%] mx-auto md:w-full max-w-lg p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 animate-in zoom-in-95 duration-500">
+        <div className="bg-white w-[98%] mx-auto md:w-full max-w-lg p-10 rounded-lg shadow-2xl shadow-gray-200/50 border border-gray-100 animate-in zoom-in-95 duration-500">
           <div className="text-center mb-10">
-            <div className="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-blue-600 shadow-sm">
+            <div className="w-20 h-20 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-6 text-blue-600 shadow-sm">
               <FiCreditCard size={32} />
             </div>
             <h2 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter">
@@ -105,12 +105,12 @@ const Feepayment = () => {
                 value={searchId}
                 onChange={(e) => setSearchId(e.target.value)}
                 placeholder="Enter Registration ID"
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-300 italic"
+                className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-lg text-sm font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-300 italic"
               />
             </div>
 
             {error && (
-              <div className="bg-red-50 text-red-600 p-4 rounded-xl text-[10px] font-black uppercase tracking-wider italic flex items-center gap-3">
+              <div className="bg-red-50 text-red-600 p-4 rounded-lg text-[10px] font-black uppercase tracking-wider italic flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></div>
                 {error}
               </div>
@@ -118,7 +118,7 @@ const Feepayment = () => {
 
             <button
               onClick={handleSearch}
-              className="w-full bg-[#111111] text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] italic flex items-center justify-center gap-3 hover:bg-black transition-all shadow-xl shadow-gray-200 active:scale-[0.98]"
+              className="w-full bg-[#111111] text-white py-4 rounded-lg font-black uppercase tracking-[0.2em] text-[11px] italic flex items-center justify-center gap-3 hover:bg-black transition-all shadow-xl shadow-gray-200 active:scale-[0.98]"
             >
               Access Account
               <FiArrowRight size={16} />
@@ -194,7 +194,7 @@ const Feepayment = () => {
       {/* 🏛️ Professional Header Bar (Inspired by Directory Style) */}
       <div className="py-6 px-4 md:px-0">
         <div className="w-full mx-auto flex justify-start">
-          <div className="bg-white rounded-[12px] shadow-xl shadow-gray-200/40 border border-gray-100 p-3 md:p-4 w-[98%] mx-auto md:w-[90%] lg:w-[80%] flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
+          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-gray-100 p-3 md:p-4 w-[98%] mx-auto md:w-[90%] lg:w-[80%] flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
 
             {/* Left: Identity & Description (Hidden on extra small mobile) */}
             <div className="hidden sm:block space-y-1">
@@ -217,12 +217,12 @@ const Feepayment = () => {
                   onChange={(e) => setSearchId(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   placeholder="ID: ITM/..."
-                  className="w-full pl-9 md:pl-11 pr-4 py-2.5 md:py-3 bg-gray-50 border-none rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-gray-300 italic"
+                  className="w-full pl-9 md:pl-11 pr-4 py-2.5 md:py-3 bg-white border-none rounded-lg md:rounded-lg text-[10px] md:text-xs font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-gray-300 italic"
                 />
               </div>
               <button
                 onClick={handleSearch}
-                className="px-4 md:px-8 py-2.5 md:py-3 bg-[#0f172a] text-white rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[9px] md:text-[10px] italic shadow-lg shadow-gray-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 whitespace-nowrap"
+                className="px-4 md:px-8 py-2.5 md:py-3 bg-[#0f172a] text-white rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[9px] md:text-[10px] italic shadow-lg shadow-gray-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 whitespace-nowrap"
               >
                 <span className="hidden md:inline">Access Ledger</span>
                 <span className="md:hidden">Access</span>
@@ -231,7 +231,7 @@ const Feepayment = () => {
               {student && (
                 <button
                   onClick={() => { setStudent(null); setSearchId(""); }}
-                  className="p-3 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                  className="p-3 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                   title="Clear"
                 >
                   <FiX size={20} />
@@ -245,12 +245,12 @@ const Feepayment = () => {
       {student ? (
         <div className="h-[450px] overflow-y-auto pr-2 custom-scrollbar space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
           {/* Professional Header - Compact */}
-          <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/40 border border-gray-100 overflow-hidden relative">
+          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-gray-100 overflow-hidden relative">
             <div className="h-20 bg-gradient-to-r from-gray-900 via-[#111111] to-blue-900 absolute top-0 left-0 w-full opacity-[0.03]"></div>
             <div className="relative p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-xl font-black italic shadow-inner border border-blue-100">
+                  <div className="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 text-xl font-black italic shadow-inner border border-blue-100">
                     {student.name[0]}
                   </div>
                   <div>
@@ -270,10 +270,10 @@ const Feepayment = () => {
           {/* Stats Section - Compact */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {statCards.map((card, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden group">
+              <div key={idx} className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm relative overflow-hidden group">
                 <div className={`absolute top-0 right-0 w-16 h-16 -mt-4 -mr-4 bg-${card.color}-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700`}></div>
                 <div className="relative flex items-center gap-4">
-                  <div className={`w-10 h-10 bg-${card.color === 'emerald' ? 'emerald' : card.color === 'red' ? 'red' : 'blue'}-50 rounded-xl flex items-center justify-center text-${card.color === 'emerald' ? 'emerald' : card.color === 'red' ? 'red' : 'blue'}-600`}>
+                  <div className={`w-10 h-10 bg-${card.color === 'emerald' ? 'emerald' : card.color === 'red' ? 'red' : 'blue'}-50 rounded-lg flex items-center justify-center text-${card.color === 'emerald' ? 'emerald' : card.color === 'red' ? 'red' : 'blue'}-600`}>
                     <card.icon size={18} strokeWidth={2.5} />
                   </div>
                   <div>
@@ -287,7 +287,7 @@ const Feepayment = () => {
 
           {/* Payment Form Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-[#111111] p-10 rounded-[2.5rem] shadow-2xl text-white relative overflow-hidden w-[98%] mx-auto lg:w-full">
+            <div className="bg-[#111111] p-10 rounded-lg shadow-2xl text-white relative overflow-hidden w-[98%] mx-auto lg:w-full">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600 rounded-full blur-[120px] opacity-10"></div>
               <h2 className="text-sm font-black uppercase italic tracking-[0.2em] mb-10 flex items-center gap-3">
                 <FiCreditCard className="text-blue-500" />
@@ -302,7 +302,7 @@ const Feepayment = () => {
                       <button
                         key={mode}
                         onClick={() => setPaymentMode(mode)}
-                        className={`py-4 rounded-2xl border ${paymentMode === mode ? 'bg-blue-600 border-blue-500 shadow-lg shadow-blue-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'} text-[10px] font-black uppercase tracking-widest transition-all italic`}
+                        className={`py-4 rounded-lg border ${paymentMode === mode ? 'bg-blue-600 border-blue-500 shadow-lg shadow-blue-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'} text-[10px] font-black uppercase tracking-widest transition-all italic`}
                       >
                         {mode} Access
                       </button>
@@ -317,13 +317,13 @@ const Feepayment = () => {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter payment value..."
-                    className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-sm font-black focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-white/20 italic"
+                    className="w-full bg-white/5 border border-white/5 rounded-lg px-6 py-4 text-sm font-black focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-white/20 italic"
                   />
                 </div>
 
                 <button
                   onClick={handlePay}
-                  className="w-full py-5 bg-white text-black rounded-2xl font-black uppercase tracking-[0.3em] text-[11px] italic hover:bg-blue-600 hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3"
+                  className="w-full py-5 bg-white text-black rounded-lg font-black uppercase tracking-[0.3em] text-[11px] italic hover:bg-blue-600 hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3"
                 >
                   Execute Payment
                   <FiArrowRight />
@@ -332,7 +332,7 @@ const Feepayment = () => {
             </div>
 
             {/* Receipt Preview / Details */}
-            <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-between w-[98%] mx-auto lg:w-full">
+            <div className="bg-white p-10 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between w-[98%] mx-auto lg:w-full">
               <div>
                 <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-[0.2em] mb-8 flex items-center gap-3">
                   <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
@@ -357,9 +357,9 @@ const Feepayment = () => {
 
               {receipt && (
                 <div className="mt-10 animate-in slide-in-from-bottom duration-500">
-                  <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-between mb-6">
+                  <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-lg flex items-center justify-between mb-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-emerald-500 text-white rounded-lg flex items-center justify-center">
                         <FiCheckCircle size={20} />
                       </div>
                       <div>
@@ -369,7 +369,7 @@ const Feepayment = () => {
                     </div>
                     <button
                       onClick={handlePrint}
-                      className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg active:scale-95 italic"
+                      className="px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg active:scale-95 italic"
                     >
                       <FiPrinter className="inline mr-2" />
                       Print Receipt
@@ -448,3 +448,7 @@ const Feepayment = () => {
   );
 };
 export default Feepayment;
+
+
+
+

@@ -44,7 +44,7 @@ const InputField = ({ label, name, type = "text", placeholder, icon: Icon, requi
         placeholder={placeholder}
         required={required}
         autoComplete="off"
-        className="w-full bg-gray-50 border border-gray-100 p-3.5 pl-4 rounded-xl text-sm font-bold placeholder:text-gray-300 focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic"
+        className="w-full bg-white border border-gray-100 p-3.5 pl-4 rounded-lg text-sm font-bold placeholder:text-gray-300 focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic"
       />
     </div>
   </div>
@@ -62,7 +62,7 @@ const SelectField = ({ label, name, options = [], icon: Icon, required = false, 
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full bg-gray-50 border border-gray-100 p-3.5 pl-4 rounded-xl text-sm font-bold focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic appearance-none cursor-pointer"
+        className="w-full bg-white border border-gray-100 p-3.5 pl-4 rounded-lg text-sm font-bold focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic appearance-none cursor-pointer"
       >
         <option value="" disabled className="text-gray-300">Select {label}</option>
         {options.map((opt) => (
@@ -87,9 +87,9 @@ const Studentadd = () => {
   const [years, setYears] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [sectionsRegistry, setSectionsRegistry] = useState([]);
+  const [batches, setBatches] = useState([]);
 
   const [student, setStudent] = useState({
-    collegeName: "ITM College of Management",
     name: "",
     course: "",
     year: "",
@@ -106,22 +106,27 @@ const Studentadd = () => {
     semester: "",
     section: "",
     id: "",
+    batch: "",
+    image: "",
+    totalFee: 0,
   });
 
   // 🔹 Fetch Registry Data
   useEffect(() => {
     const fetchRegistries = async () => {
       try {
-        const [cRes, yRes, sRes, secRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-years", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-sections", { withCredentials: true })
+        const [cRes, yRes, sRes, secRes, bRes] = await Promise.all([
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/batches", { withCredentials: true })
         ]);
-        if (cRes.data.courses) setCourses(cRes.data.courses);
-        if (yRes.data.years) setYears(yRes.data.years);
-        if (sRes.data.semesters) setSemesters(sRes.data.semesters);
-        if (secRes.data.sections) setSectionsRegistry(secRes.data.sections);
+        if (cRes.data.data) setCourses(cRes.data.data);
+        if (yRes.data.data) setYears(yRes.data.data);
+        if (sRes.data.data) setSemesters(sRes.data.data);
+        if (secRes.data.data) setSectionsRegistry(secRes.data.data);
+        if (bRes.data.batches) setBatches(bRes.data.batches);
       } catch (err) {
         console.error("Failed to load registries:", err);
       }
@@ -129,32 +134,32 @@ const Studentadd = () => {
     fetchRegistries();
   }, []);
 
-  // 🔹 Pre-fill data if in Edit Mode
+  // 🔹 Live ID Preview
+  useEffect(() => {
+    const fetchNextId = async () => {
+      if (student.course && student.year) {
+        try {
+          const res = await axios.get(`${AUTH_BASE_URL}/registration/next-id`, {
+            params: { course: student.course, year: student.year },
+            withCredentials: true
+          });
+          if (res.data.nextId) {
+            setStudent(prev => ({ ...prev, id: res.data.nextId }));
+          }
+        } catch (err) {
+          console.error("ID Preview Error:", err);
+        }
+      }
+    };
+    fetchNextId();
+  }, [student.course, student.year]);
   useEffect(() => {
     if (location.state?.editMode && location.state?.studentData) {
       setStudent(location.state.studentData);
     }
   }, [location.state]);
 
-  // 🔹 Automatic ID Generation
-  useEffect(() => {
-    if (currentStep === 4 && student.course && !student.id) {
-      const yearSuffix = "26"; 
-      const courseStr = student.course.toUpperCase();
-      let courseCode = "STU";
 
-      if (courseStr.includes("BCA")) courseCode = "BCA";
-      else if (courseStr.includes("CIVIL")) courseCode = "CIVIL";
-      else if (courseStr.includes("B.TECH")) courseCode = "BTECH";
-      else if (courseStr.includes("MBA")) courseCode = "MBA";
-      else if (courseStr.includes("MCA")) courseCode = "MCA";
-      else if (courseStr.includes("BBA")) courseCode = "BBA";
-      else courseCode = courseStr.split(" ")[0];
-
-      const generatedId = `ITM/${yearSuffix}/${courseCode}/01`;
-      setStudent(prev => ({ ...prev, id: generatedId }));
-    }
-  }, [currentStep, student.course]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -181,57 +186,49 @@ const Studentadd = () => {
     setLoading(true);
 
     try {
-      // 1. Prepare Data
-      // Extract number from "Semester X" or "sEMESTER X"
       const semStr = student.semester || "";
       const semesterNumber = Number(semStr.replace(/\D/g, "")) || 1;
-
-      const reportPayload = {
-        ...student,
-        moNumber: Number(student.mobile),
-        parentMobile: Number(student.parentMobile),
-        semester: semesterNumber,
-        studentId: student.id
-      };
 
       const authPayload = {
         name: student.name,
         course: student.course,
         year: student.year,
         moNumber: Number(student.mobile),
-        semester: semesterNumber,
+        stream: student.stream,
+        passingYear: student.passingYear,
+        caste: student.caste,
+        gender: student.gender,
+        board: student.board,
+        parentName: student.parentName,
+        parentMobile: Number(student.parentMobile),
+        motherName: student.motherName,
+        address: student.address,
+        semester: String(semesterNumber),
         section: student.section,
-        password: student.mobile.toString(),
-        studentId: student.id
+        id: student.id,
+        batch: student.batch,
+        image: student.image,
+        totalFee: Number(student.totalFee)
       };
 
-      // 2. FIRST Request: Save Full Profile to Report System (As requested)
-      const reportResponse = await axios.post(`${REPORT_BASE_URL}/student-profile`, reportPayload, {
-         withCredentials: true
+      // Register Login & Profile in Auth Service (Source of Truth)
+      const res = await axios.post(`${AUTH_BASE_URL}/registration`, authPayload, {
+        withCredentials: true
       });
 
-      if (reportResponse.status === 201) {
-        // 3. SECOND Request: Register Login in Auth Service
-        try {
-          await axios.post(`${AUTH_BASE_URL}/registration`, authPayload, {
-             withCredentials: true
-          });
-          toast.success("Student Profile Created & Login Registered!");
-        } catch (authErr) {
-          console.error("Auth Sync Error:", authErr);
-          toast.warning("Profile Saved in Report but Auth Login failed.");
-        }
+      if (res.status === 201 || res.status === 200) {
+        toast.success("Student Enrolled Successfully!");
         
         // 🔹 Reset and Redirect
         setStudent({
-          collegeName: "ITM", name: "", course: "", year: "", mobile: "", stream: "", passingYear: "", caste: "", gender: "", board: "", parentName: "", parentMobile: "", motherName: "", address: "", semester: "1", section: "", id: "",
+          name: "", course: "", year: "", mobile: "", stream: "", passingYear: "", caste: "", gender: "", board: "", parentName: "", parentMobile: "", motherName: "", address: "", semester: "1", section: "", id: "",
         });
         setCurrentStep(1);
         setTimeout(() => navigate("/students"), 1500);
       }
     } catch (error) {
       console.error("Enrollment Error:", error);
-      toast.error(error.response?.data?.message || "Critical: Report Profile Creation Failed!");
+      toast.error(error.response?.data?.message || "Student Registration Failed!");
     } finally {
       setLoading(false);
     }
@@ -242,7 +239,7 @@ const Studentadd = () => {
       {[1, 2, 3, 4].map((step) => (
         <React.Fragment key={step}>
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center font-black italic transition-all duration-500 shadow-lg ${
+            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-lg flex items-center justify-center font-black italic transition-all duration-500 shadow-lg ${
               currentStep === step ? 'bg-red-600 text-white scale-110 shadow-red-600/20' : currentStep > step ? 'bg-emerald-500 text-white' : 'bg-white text-gray-300 border border-gray-100'
             }`}>
               {currentStep > step ? <FiCheckCircle size={18} /> : <span className="text-xs md:text-sm">{step}</span>}
@@ -251,14 +248,14 @@ const Studentadd = () => {
               {step === 1 ? 'Identity' : step === 2 ? 'Profile' : step === 3 ? 'Guardian' : 'Assign'}
             </span>
           </div>
-          {step < 4 && <div className={`w-6 md:w-20 h-0.5 rounded-full transition-all duration-700 ${currentStep > step ? 'bg-emerald-500' : 'bg-gray-100'}`}></div>}
+          {step < 4 && <div className={`w-6 md:w-20 h-0.5 rounded-full transition-all duration-700 ${currentStep > step ? 'bg-emerald-500' : 'bg-white'}`}></div>}
         </React.Fragment>
       ))}
     </div>
   );
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 md:px-0">
+    <div className="w-full space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 md:px-0">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="text-left">
           <h1 className="text-3xl md:text-4xl font-black text-gray-900 uppercase italic tracking-tighter">
@@ -269,14 +266,14 @@ const Studentadd = () => {
             Priority: Report Microservice First
           </p>
         </div>
-        <button onClick={() => navigate("/students")} className="btn-secondary flex items-center justify-center gap-3 px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-2xl font-black uppercase tracking-widest text-[10px] italic hover:bg-gray-50 transition-all active:scale-95 w-full md:w-auto">
+        <button onClick={() => navigate("/students")} className="btn-secondary flex items-center justify-center gap-3 px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-white transition-all active:scale-95 w-full md:w-auto">
           <FiList size={16} /> Registry
         </button>
       </div>
 
       <StepIndicator />
 
-      <div className="bg-white rounded-[2.5rem] p-4 md:p-10 shadow-sm border border-gray-100 min-h-[440px] flex flex-col justify-between overflow-hidden relative">
+      <div className="bg-white rounded-lg p-4 md:p-10 shadow-sm border border-gray-100 min-h-[440px] flex flex-col justify-between overflow-hidden relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-red-600/10"></div>
         
         <form onSubmit={handleSubmit} autoComplete="off" className="space-y-8 h-full flex flex-col">
@@ -284,13 +281,11 @@ const Studentadd = () => {
             {currentStep === 1 && (
               <div className="animate-in slide-in-from-right-8 fade-in duration-500 space-y-8">
                 <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#111111] text-white rounded-xl flex items-center justify-center font-black italic shadow-lg">01</div>
+                  <div className="w-8 h-8 bg-[#111111] text-white rounded-lg flex items-center justify-center font-black italic shadow-lg">01</div>
                   Student Identity & Course
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="md:col-span-2">
-                    <SelectField label="Select College" name="collegeName" value={student.collegeName} onChange={handleChange} options={["ITM College of Management", "Institute of Technology and Management (ITM)"]} icon={FiHome} required />
-                  </div>
+
                   <div className="md:col-span-2">
                     <InputField label="Full Legal Name" name="name" value={student.name} onChange={handleChange} placeholder="Enter student's full name" icon={FiUser} required />
                   </div>
@@ -337,7 +332,7 @@ const Studentadd = () => {
             {currentStep === 2 && (
               <div className="animate-in slide-in-from-right-8 fade-in duration-500 space-y-8">
                 <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-                   <div className="w-8 h-8 bg-red-600 text-white rounded-xl flex items-center justify-center font-black italic shadow-lg shadow-red-600/20">02</div>
+                   <div className="w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center font-black italic shadow-lg shadow-red-600/20">02</div>
                    Academic & Persona Records
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -347,6 +342,7 @@ const Studentadd = () => {
                   <SelectField label="Category (Caste)" name="caste" value={student.caste} onChange={handleChange} options={["General", "OBC", "SC", "ST"]} icon={FiBriefcase} />
                    <SelectField label="Gender" name="gender" value={student.gender} onChange={handleChange} options={["Male", "Female", "Other"]} icon={FiUser} />
                   <SelectField label="Education Board" name="board" value={student.board} onChange={handleChange} options={["CBSE", "ICSE", "UP BOARD", "OTHER"]} icon={FiShield} />
+                  <SelectField label="Batch" name="batch" value={student.batch} onChange={handleChange} options={batches.map(b => b.name)} icon={FiBriefcase} required />
                 </div>
               </div>
             )}
@@ -354,7 +350,7 @@ const Studentadd = () => {
             {currentStep === 3 && (
               <div className="animate-in slide-in-from-right-8 fade-in duration-500 space-y-8">
                 <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-                   <div className="w-8 h-8 bg-[#111111] text-white rounded-xl flex items-center justify-center font-black italic shadow-lg">03</div>
+                   <div className="w-8 h-8 bg-[#111111] text-white rounded-lg flex items-center justify-center font-black italic shadow-lg">03</div>
                    Guardian & Residence Support
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -373,11 +369,14 @@ const Studentadd = () => {
             {currentStep === 4 && (
               <div className="animate-in slide-in-from-right-8 fade-in duration-500 space-y-8">
                 <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-                   <div className="w-8 h-8 bg-red-600 text-white rounded-xl flex items-center justify-center font-black italic shadow-lg shadow-red-600/20">04</div>
+                   <div className="w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center font-black italic shadow-lg shadow-red-600/20">04</div>
                    Final Academic Assignment
                 </h2>
-                <div className="max-w-md mx-auto py-12 px-6 bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200">
-                  <InputField label="Student ID / Roll Number" name="id" value={student.id} onChange={handleChange} placeholder="ITM/24/XXX/001" icon={FiHash} required />
+                <div className="max-w-md mx-auto py-12 px-6 bg-white/50 rounded-lg border border-dashed border-gray-200">
+                  <div className="space-y-4">
+                    <InputField label="Student ID / Roll Number" name="id" value={student.id} onChange={handleChange} placeholder="Generating ID..." icon={FiHash} />
+                    <InputField label="Initial Fee Amount" name="totalFee" type="number" value={student.totalFee} onChange={handleChange} placeholder="0" icon={FiHome} />
+                  </div>
                   <p className="mt-4 text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed italic">
                     This profile will be synchronized FIRST with the Report Microservice.
                   </p>
@@ -387,15 +386,15 @@ const Studentadd = () => {
           </div>
 
           <div className="pt-6 md:pt-10 flex items-center justify-between border-t border-gray-50 mt-auto gap-4">
-            <button type="button" onClick={prevStep} disabled={currentStep === 1} className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all ${currentStep === 1 ? 'bg-gray-50 text-gray-300 pointer-events-none' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 active:scale-95'} flex-1 md:flex-none`}>
+            <button type="button" onClick={prevStep} disabled={currentStep === 1} className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all ${currentStep === 1 ? 'bg-white text-gray-300 pointer-events-none' : 'bg-white border border-gray-200 text-gray-600 hover:bg-white active:scale-95'} flex-1 md:flex-none`}>
               <FiArrowLeft size={16} /> <span className="hidden xs:inline">Prev</span>
             </button>
             {currentStep < totalSteps ? (
-              <button type="button" onClick={nextStep} className="flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 md:py-4 bg-[#111111] text-white hover:bg-black rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all shadow-xl active:scale-95 flex-1 md:flex-none">
+              <button type="button" onClick={nextStep} className="flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 md:py-4 bg-[#111111] text-white hover:bg-black rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all shadow-xl active:scale-95 flex-1 md:flex-none">
                 Next <FiArrowRight size={16} />
               </button>
             ) : (
-              <button type="submit" disabled={loading} className={`flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 md:py-4 ${loading ? 'bg-gray-400' : 'bg-red-600 hover:bg-red-700'} text-white rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs italic transition-all shadow-xl shadow-red-600/30 active:scale-95 flex-1 md:flex-none`}>
+              <button type="submit" disabled={loading} className={`flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 md:py-4 ${loading ? 'bg-gray-400' : 'bg-red-600 hover:bg-red-700'} text-white rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[10px] md:text-xs italic transition-all shadow-xl shadow-red-600/30 active:scale-95 flex-1 md:flex-none`}>
                 {loading ? 'Wait...' : 'Finalize & Sync'} {!loading && <FiCheckCircle size={18} />}
               </button>
             )}
@@ -407,3 +406,7 @@ const Studentadd = () => {
 };
 
 export default Studentadd;
+
+
+
+

@@ -109,47 +109,56 @@ export default function Navbar() {
   }, [fetchUserProfile]);
 
   return (
-    <header className="sticky top-0 w-full font-serif bg-gray-200 shadow-md z-50 border-b border-gray-400">
+    <header className="sticky top-0 w-full bg-white/80 backdrop-blur-xl z-50 border-b border-gray-100 shadow-sm">
+      <div className="flex items-center justify-between px-8 h-20 max-w-[1600px] mx-auto">
+        
+        {/* Branding Node */}
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-lg bg-[#111111] text-white flex items-center justify-center text-xs font-black italic tracking-tighter shadow-lg shadow-gray-200">
+             ITM
+          </div>
+          <div className="hidden sm:flex flex-col">
+            <span className="font-black text-xs uppercase italic tracking-tighter text-gray-900">Faculty <span className="text-red-600">Portal</span></span>
+            <span className="text-[8px] font-black uppercase tracking-widest text-gray-400 mt-0.5 flex items-center gap-1.5">
+               <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
+               Core Node Active
+            </span>
+          </div>
+        </div>
 
-      <div className="flex items-center justify-between px-8 h-16">
-
-        {/* College Title */}
-        <h1 className="text-red-700 hidden  sm:flex font-bold text-xl tracking-wide">
-          Faculty
-        </h1>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
+        {/* Desktop Interface Nodes */}
+        <nav className="hidden lg:flex items-center gap-10">
           {navItems?.map((item, index) => {
             if (item?.children) {
               return (
-                <div key={index} className="relative">
+                <div key={index} className="relative group/nav">
                   <button
-                    onClick={() =>
-                      setOpenDropdown(openDropdown === index ? null : index)
-                    }
-                    className="text-blue-800 font-semibold text-[13px] hover:text-blue-600 transition"
+                    onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
+                    className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] italic transition-all ${openDropdown === index ? 'text-red-600' : 'text-gray-400 hover:text-gray-900'}`}
                   >
-                    {item?.label} ▼
+                    {item?.label}
+                    <div className={`w-1.5 h-1.5 rounded-full border border-current transition-transform duration-300 ${openDropdown === index ? 'rotate-180 bg-red-600' : ''}`}></div>
                   </button>
 
                   {openDropdown === index && (
-                    <div className="absolute top-10 left-0 bg-white shadow-xl rounded-md w-52">
-                      {item?.children?.map((child) => (
-                        <NavLink
-                          key={child.to}
-                          to={child.to}
-                          className={({ isActive }) =>
-                            `block px-4 py-2 text-sm ${isActive
-                              ? "bg-blue-700 text-white rounded-xl"
-                              : "text-gray-700 hover:text-white hover:bg-blue-700 rounded-xl"
-                            }`
-                          }
-                          onClick={() => setOpenDropdown(null)}
-                        >
-                          {child?.label}
-                        </NavLink>
-                      ))}
+                    <div className="absolute top-[calc(100%+1.5rem)] left-1/2 -translate-x-1/2 bg-white shadow-2xl shadow-gray-200 rounded-lg w-56 border border-gray-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="p-2 space-y-1">
+                        {item?.children?.map((child) => (
+                          <NavLink
+                            key={child.to}
+                            to={child.to}
+                            className={({ isActive }) =>
+                              `block px-4 py-3 text-[9px] font-black uppercase tracking-widest italic rounded-lg transition-all ${isActive
+                                ? "text-red-600 bg-red-50/50"
+                                : "text-gray-400 hover:text-gray-900 hover:bg-white"
+                              }`
+                            }
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            {child?.label}
+                          </NavLink>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -161,102 +170,99 @@ export default function Navbar() {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `font-semibold text-[13px] ${isActive
-                    ? "text-blue-600"
-                    : "text-blue-800 hover:text-blue-600"
+                  `text-[10px] font-black uppercase tracking-[0.2em] italic transition-all relative ${isActive
+                    ? "text-red-600"
+                    : "text-gray-400 hover:text-gray-900"
                   }`
                 }
               >
-                {item.label}
+                {({ isActive }) => (
+                  <>
+                    {item.label}
+                    {isActive && (
+                      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-8 h-1 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.4)]"></div>
+                    )}
+                  </>
+                )}
               </NavLink>
             );
           })}
         </nav>
 
-        {/* Right Section */}
-        <div className="flex items-center gap-6">
-
-
-
-          {/* Notification */}
-          <NavLink to="/notifications" className="relative">
-            <span className="material-symbols-outlined text-yellow-600 text-3xl">
-              notifications
-            </span>
-            <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs px-1.5 rounded-full">
+        {/* System Utilities */}
+        <div className="flex items-center gap-8">
+          {/* Notifications Node */}
+          <NavLink to="/notifications" className="relative group">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-gray-400 group-hover:bg-red-50 group-hover:text-red-600 transition-all border border-transparent group-hover:border-red-100">
+               <span className="material-symbols-outlined text-2xl">notifications</span>
+            </div>
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-lg border-2 border-white shadow-sm">
               3
             </span>
           </NavLink>
 
-          {loading ? <div className="mx-5"> <Loader /></div> : <div className=" md:block text-right">
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col items-center justify-center">
-                <p className="text-sm font-bold capitalize text-blue-900">
-                  {TeacherProfiler?.course}
-                </p>
-                <p className="text-sm font-bold capitalize text-blue-900">
-                  {TeacherProfiler?.role}
-                </p>
+          {/* Profiler Node */}
+          {loading ? (
+             <div className="w-10 h-10 animate-pulse bg-white rounded-lg"></div>
+          ) : (
+            <div className="flex items-center gap-4 pl-8 border-l border-gray-100">
+              <div className="hidden md:flex flex-col text-right">
+                <span className="text-[10px] font-black uppercase text-gray-900 italic tracking-tighter leading-none">{TeacherProfiler?.name}</span>
+                <span className="text-[8px] font-black uppercase text-red-600 tracking-widest mt-1 italic">{TeacherProfiler?.role}</span>
               </div>
-              <p className="bg-rose-700 rounded-full h-10 w-10 flex justify-center items-center text-white font-bold text-lg capitalize">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-900 to-black text-white flex items-center justify-center text-sm font-black italic shadow-lg shadow-gray-300">
                 {TeacherProfiler?.name?.[0]}
-              </p>
+              </div>
             </div>
+          )}
 
-          </div>
-          }
-
+          {/* Session Termination */}
           <button
             onClick={() => {
               userLogoutData();
-              LogoutUser()
+              LogoutUser();
             }}
-            className="text-red-600 hover:text-red-800 transition"
+            className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-transparent hover:border-red-700 shadow-sm active:scale-90"
+            title="Terminate Session"
           >
-            <span className="material-symbols-outlined text-2xl">
-              logout
-            </span>
+            <span className="material-symbols-outlined text-xl">logout</span>
           </button>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Terminal Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden"
+            className="lg:hidden w-10 h-10 rounded-lg bg-[#111111] text-white flex items-center justify-center shadow-lg active:scale-95 transition-all"
           >
-            <span className="material-symbols-outlined text-blue-800">
+            <span className="material-symbols-outlined text-xl">
               {isOpen ? "close" : "menu"}
             </span>
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Overlay Node */}
       {isOpen && (
-        <div className="lg:hidden bg-white shadow-md px-6 pb-4 space-y-2">
+        <div className="lg:hidden bg-white border-t border-gray-50 p-6 space-y-3 animate-in slide-in-from-top-4 duration-300">
           {navItems?.map((item, index) => {
             if (item?.children) {
               return (
-                <div key={index}>
+                <div key={index} className="space-y-1">
                   <button
-                    onClick={() =>
-                      setOpenDropdown(openDropdown === index ? null : index)
-                    }
-                    className="w-full text-left py-2 font-semibold text-blue-800"
+                    onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
+                    className="w-full flex items-center justify-between p-4 rounded-lg bg-white text-[10px] font-black uppercase tracking-widest italic text-gray-900"
                   >
                     {item.label}
+                    <span className="material-symbols-outlined text-sm">{openDropdown === index ? 'expand_less' : 'expand_more'}</span>
                   </button>
 
                   {openDropdown === index && (
-                    <div className="pl-4 space-y-1">
+                    <div className="grid grid-cols-1 gap-1 pl-4">
                       {item?.children.map((child) => (
                         <NavLink
                           key={child.to}
                           to={child.to}
-                          className="block py-1 text-sm text-gray-700"
-                          onClick={() => {
-                            setIsOpen(false);
-                            setOpenDropdown(null);
-                          }}
+                          className="block p-3 text-[9px] font-black uppercase tracking-widest italic text-gray-500 hover:text-red-600"
+                          onClick={() => { setIsOpen(false); setOpenDropdown(null); }}
                         >
                           {child.label}
                         </NavLink>
@@ -271,7 +277,7 @@ export default function Navbar() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className="block py-2 font-semibold text-blue-800"
+                className="block p-4 rounded-lg bg-white text-[10px] font-black uppercase tracking-widest italic text-gray-900"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
@@ -283,3 +289,6 @@ export default function Navbar() {
     </header>
   );
 }
+
+
+

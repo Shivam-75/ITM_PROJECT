@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const NoticeSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     description: {
@@ -19,13 +19,11 @@ const NoticeSchema = new mongoose.Schema({
     },
     semester: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     section: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     title: {
         type: String,
@@ -33,4 +31,4 @@ const NoticeSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export const Notice = mongoose.model("Notice", NoticeSchema); 
+export const Notice = mongoose.models.Notice || mongoose.model("Notice", NoticeSchema, "notices");

@@ -1,5 +1,19 @@
 import axios from "axios";
 
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach((prom) => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
 const createAxiosInstance = (baseURL) => {
     const axiosInstance = axios.create({
         baseURL,
@@ -12,18 +26,35 @@ const createAxiosInstance = (baseURL) => {
             const originalRequest = error.config;
 
             if (
-                error.response?.status === 403 &&
-                !originalRequest._retry &&
-                !originalRequest.url.includes("/refreshToken")
+                (error.response?.status === 401 || error.response?.status === 403) &&
+                !originalRequest._retry
             ) {
+                if (isRefreshing) {
+                    return new Promise((resolve, reject) => {
+                        failedQueue.push({ resolve, reject });
+                    })
+                        .then(() => {
+                            return axiosInstance(originalRequest);
+                        })
+                        .catch((err) => {
+                            return Promise.reject(err);
+                        });
+                }
+
                 originalRequest._retry = true;
+                isRefreshing = true;
 
                 try {
-                    await axios.post(import.meta.env.VITE_BASE_Auth_REFRESHTOKN, {}, { withCredentials: true });
-
-                    console.log("Refreshing......")
+                    console.log("Attempting to refresh token...");
+                    const authBase = import.meta.env.VITE_BASE_Auth;
+                    await axios.post(`${authBase}/refreshToken`, {}, { withCredentials: true });
+                    
+                    processQueue(null);
+                    isRefreshing = false;
                     return axiosInstance(originalRequest);
                 } catch (refreshError) {
+                    processQueue(refreshError, null);
+                    isRefreshing = false;
                     console.error("Refresh token expired, logging out...");
                     window.location.href = "/";
                     return Promise.reject(refreshError);
@@ -34,7 +65,6 @@ const createAxiosInstance = (baseURL) => {
         }
     );
 
-    // 🔥 IMPORTANT — RETURN KARO
     return axiosInstance;
 };
 
@@ -51,3 +81,14 @@ export const ReportAPI = createAxiosInstance(
 export const AcademicAPI = createAxiosInstance(
     import.meta.env.VITE_BASE_ACADEMIC || "http://localhost:5002/api/v3/Admin/Academic"
 );
+
+// 🔹 Teacher-Specific Services
+export const HostelService = {
+    getAllotments: () => WorkAPI.get("/Hostel/get-all-allotment"),
+    registerHostel: (data) => WorkAPI.post("/Hostel/add-allotment", data),
+};
+
+export const ProfileService = {
+    getTeacherProfile: () => ReportAPI.get("/teacher-profile"),
+};
+

@@ -4,14 +4,14 @@ class linksController {
     static async uploader(req, res) {
         const user = await req.user;
         try {
-            const { department, semester, section, linkas, topic } = req.body
+            const { course, semester, section, linkas, topic } = req.body
 
-            if (!department || !semester || !section || !linkas || !topic) {
+            if (!course || !semester || !section || !linkas || !topic) {
                 return res.status(400).json({ message: "Fill all Column !!", status: 400 });
             }
             const uploadLinks = await Link.create({
                 userId: user.id,
-                department,
+                course,
                 semester,
                 section,
                 linkas,
@@ -57,7 +57,7 @@ class linksController {
                 return res.status(400).json({ message: "Link Not Deleted ", status: 400 });
             }
 
-            return res.status(200).json({ message: "Successfully Link Deleted !!", staus: 200 });
+            return res.status(200).json({ message: "Successfully Link Deleted !!", status: 200 });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }
@@ -75,11 +75,11 @@ class linksController {
             if (!SearchUpdate) {
                 return res.status(400).json({ message: "Link Not Updated !!", status: 400 });
             }
-            return res.status(201).json({ message: "Successfully Updated Links !!", satus: 201 });
+            return res.status(201).json({ message: "Successfully Updated Links !!", status: 201 });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }
     }
 }
 
-export default linksController
+export default linksController;

@@ -1,61 +1,93 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
-import ModelPaperForm from "../../components//modelpaper/ModelPaperForm";
+import ModelPaperForm from "../../components/modelpaper/ModelPaperForm";
 import ModelPaperTable from "../../components/modelpaper/ModelPaperTable";
 import useDebounce from "../../../hooks/useDebounce";
+import { WorkAPI } from "../../api/apis";
+import { toast } from "react-toastify";
+import Loader from "../../common/Loader";
+import { FiPlus, FiFileText } from "react-icons/fi";
 
 const ModelPaper = () => {
   const [modelPapers, setModelPapers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
 
-  // 🔹 Load once
-  useEffect(() => {
-    const data = localStorage.getItem("modelPapers");
-    if (data) setModelPapers(JSON.parse(data));
+  const fetchModelPapers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await WorkAPI.get("/ModelPaper/uploader", { withCredentials: true });
+      setModelPapers(data?.data || []);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load model papers");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // 🔹 Persist
   useEffect(() => {
-    localStorage.setItem("modelPapers", JSON.stringify(modelPapers));
-  }, [modelPapers]);
+    fetchModelPapers();
+  }, [fetchModelPapers]);
 
-  // 🔹 Save / Update
-  const handleSave = useCallback(
-    (data) => {
-      setModelPapers((prev) => {
-        if (editItem) {
-          return prev.map((p) =>
-            p.id === editItem.id ? { ...data, id: editItem.id } : p
-          );
-        }
+  const handleSave = async (formData) => {
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.append("department", formData.department);
+      data.append("year", formData.year);
+      data.append("semester", formData.semester);
+      data.append("section", formData.section);
+      data.append("subject", formData.subject);
+      if (formData.paperImage) {
+        data.append("paperImage", formData.paperImage);
+      }
 
-        return [
-          ...prev,
-          {
-            ...data,
-            id: Date.now(),
-            fileUrl: URL.createObjectURL(data.file),
-          },
-        ];
-      });
+      if (editItem) {
+        await WorkAPI.put(`/ModelPaper/update/${editItem._id}`, data, {
+          withCredentials: true,
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        toast.success("Model Paper Updated Successfully");
+      } else {
+        await WorkAPI.post("/ModelPaper/uploader", data, { 
+          withCredentials: true,
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        toast.success("Model Paper Published Successfully");
+      }
 
       setShowForm(false);
       setEditItem(null);
-    },
-    [editItem]
-  );
+      fetchModelPapers();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to publish model paper");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleEdit = useCallback((item) => {
+  const handleEdit = (item) => {
     setEditItem(item);
     setShowForm(true);
-  }, []);
+  };
 
-  const handleDelete = useCallback((id) => {
-    setModelPapers((prev) => prev.filter((p) => p.id !== id));
-  }, []);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Permanent deletion cannot be undone. Proceed?")) return;
+    try {
+      setLoading(true);
+      await WorkAPI.delete(`/ModelPaper/Delete/${id}`, { withCredentials: true });
+      setModelPapers((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Record Purged Successfully");
+    } catch (err) {
+      toast.error("Deletion Failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredModelPapers = useMemo(() => {
     if (!debouncedSearch) return modelPapers;
@@ -65,53 +97,69 @@ const ModelPaper = () => {
   }, [modelPapers, debouncedSearch]);
 
   return (
-    <div className="flex  bg-[var(--background-light)]">
+    <div className="flex bg-[#f8fafc] min-h-screen">
+      <main className="pt-24 h-screen overflow-y-auto px-4 sm:px-6 md:px-8 w-full mx-auto pb-20">
+        {loading && (
+          <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
+            <Loader />
+          </div>
+        )}
 
-      <main
-        className="ml-0 
-      pt-30
-      h-screen
-      overflow-y-auto
-      px-4 sm:px-6 md:px-8 w-full mx-auto pb-10">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-2xl font-semibold">Model Paper</h1>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+          <div className="flex items-center gap-4">
+            <div className="w-2 h-8 bg-indigo-600 rounded-full"></div>
+            <h1 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">
+              Model Paper Management
+            </h1>
+          </div>
 
-          {!showForm && (
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-[var(--primary)] text-white px-4 py-2 rounded">
-              + Add Model Paper
-            </button>
-          )}
+          <div className="flex items-center gap-4">
+             <div className="relative group">
+                <input
+                  type="text"
+                  placeholder="Search protocols..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="px-6 py-2.5 bg-white border border-slate-100 rounded-lg text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-sm w-64"
+                />
+             </div>
+             
+             {!showForm && (
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="px-8 py-2.5 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-widest italic shadow-lg hover:bg-indigo-600 transition-all flex items-center gap-2"
+                >
+                  <FiPlus size={14} /> Publish
+                </button>
+             )}
+          </div>
         </div>
 
-        <div className="mb-4 max-w-sm">
-          <input
-            type="text"
-            placeholder="Search by subject..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg text-sm"
-          />
-        </div>
-
-        {showForm && (
+        {showForm ? (
           <ModelPaperForm
             initialData={editItem}
             onSave={handleSave}
+            loading={loading}
             onCancel={() => {
               setShowForm(false);
               setEditItem(null);
             }}
           />
-        )}
-
-        {!showForm && (
-          <ModelPaperTable
-            data={filteredModelPapers}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+        ) : (
+          <div className="space-y-6">
+            {filteredModelPapers.length === 0 ? (
+                <div className="py-32 text-center bg-white rounded-lg border-4 border-dashed border-slate-50">
+                  <FiFileText size={48} className="mx-auto text-slate-100 mb-6" />
+                  <h3 className="text-sm font-black text-slate-300 uppercase tracking-[0.3em] italic">No Model Papers Indexed.</h3>
+                </div>
+            ) : (
+                <ModelPaperTable
+                  data={filteredModelPapers}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+            )}
+          </div>
         )}
       </main>
     </div>

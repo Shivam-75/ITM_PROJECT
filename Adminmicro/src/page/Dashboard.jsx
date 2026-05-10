@@ -28,6 +28,8 @@ const Dashboard = () => {
         totalTeachers: 0,
         activeSchedules: 12,
         collection: "₹4.5L",
+        outstanding: "₹1.2L",
+        realization: "70%",
         attendance: "94%",
     });
     const [loading, setLoading] = useState(true);
@@ -35,13 +37,13 @@ const Dashboard = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // 1. Fetch Student Count from Report Service
-            const studentRes = await axios.get(`${REPORT_BASE_URL}/student-list`, { withCredentials: true });
+            // 1. Fetch Student Count from Auth Service
+            const studentRes = await axios.get(`${AUTH_BASE_URL}/StudentList`, { withCredentials: true });
             const sCount = studentRes.data.studentList?.length || 0;
 
             // 2. Fetch Teacher Count from Auth Service
             const teacherRes = await axios.get(`${AUTH_BASE_URL}/TeacherList`, { withCredentials: true });
-            const tCount = teacherRes.data.Teacherdata?.length || 0;
+            const tCount = teacherRes.data.TeacherList?.length || 0;
 
             setStats(prev => ({
                 ...prev,
@@ -78,19 +80,19 @@ const Dashboard = () => {
             up: true 
         },
         { 
-            label: "Daily Attendance", 
-            value: stats.attendance, 
-            icon: FiCheckCircle, 
-            color: "emerald", 
-            trend: "+2%", 
-            up: true 
-        },
-        { 
             label: "Term Collection", 
             value: stats.collection, 
             icon: FiDollarSign, 
             color: "amber", 
-            trend: "-1.5%", 
+            trend: "+8.2%", 
+            up: true 
+        },
+        { 
+            label: "Outstanding", 
+            value: stats.outstanding, 
+            icon: FiClock, 
+            color: "rose", 
+            trend: "Critical", 
             up: false 
         },
     ];
@@ -118,11 +120,11 @@ const Dashboard = () => {
                 <div className="flex items-center gap-2">
                     <button 
                         onClick={fetchData}
-                        className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-red-600 hover:border-red-600 transition-all shadow-sm active:scale-95"
+                        className="p-3 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-red-600 hover:border-red-600 transition-all shadow-sm active:scale-95"
                     >
                         <FiRefreshCcw size={18} className={loading ? "animate-spin" : ""} />
                     </button>
-                    <button className="flex items-center gap-3 px-6 py-3 bg-[#111111] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] italic hover:bg-black transition-all shadow-xl shadow-gray-200 active:scale-95">
+                    <button className="flex items-center gap-3 px-6 py-3 bg-[#111111] text-white rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-black transition-all shadow-xl shadow-gray-200 active:scale-95">
                         <FiShield size={16} />
                         Admin Registry
                     </button>
@@ -134,12 +136,12 @@ const Dashboard = () => {
                 {kpiCards.map((card, idx) => (
                     <div 
                         key={idx} 
-                        className="group relative bg-white p-7 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden w-[98%] mx-auto sm:w-full"
+                        className="group relative bg-white p-7 rounded-lg border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden w-[98%] mx-auto sm:w-full"
                     >
                         <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] transition-transform duration-700 group-hover:scale-150 bg-${card.color}-600`}></div>
                         
                         <div className="flex items-start justify-between relative z-10">
-                            <div className={`p-4 rounded-2xl bg-${card.color}-50 text-${card.color}-600`}>
+                            <div className={`p-4 rounded-lg bg-${card.color}-50 text-${card.color}-600`}>
                                 <card.icon size={22} strokeWidth={2.5} />
                             </div>
                             <div className={`flex items-center gap-1 text-[10px] font-black italic px-2.5 py-1 rounded-full ${card.up ? 'text-emerald-500 bg-emerald-50' : 'text-red-500 bg-red-50'}`}>
@@ -161,7 +163,7 @@ const Dashboard = () => {
             {/* Main Content Areas */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Academic Distribution */}
-                <div className="lg:col-span-2 bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100 shadow-sm relative overflow-hidden group w-[98%] mx-auto lg:w-full">
+                <div className="lg:col-span-2 bg-white rounded-lg p-8 md:p-10 border border-gray-100 shadow-sm relative overflow-hidden group w-[98%] mx-auto lg:w-full">
                     <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
                     <div className="flex items-center justify-between mb-8">
                         <div>
@@ -190,7 +192,7 @@ const Dashboard = () => {
                                         <span className={dept.color === 'red' ? 'text-red-600' : 'text-gray-500'}>{dept.name}</span>
                                         <span className="text-gray-900">{Math.round((dept.count / 1000) * 100)}%</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-gray-50 rounded-full overflow-hidden">
+                                    <div className="h-1.5 w-full bg-white rounded-full overflow-hidden">
                                         <div 
                                             className={`h-full bg-${dept.color === 'red' ? 'red-600' : dept.color} transition-all duration-1000 delay-${i * 100}`}
                                             style={{ width: `${(dept.count / 1000) * 100}%` }}
@@ -200,9 +202,9 @@ const Dashboard = () => {
                             ))}
                          </div>
 
-                         <div className="bg-gray-50/50 rounded-[2rem] p-8 flex flex-col justify-center border border-dashed border-gray-200">
+                         <div className="bg-white/50 rounded-lg p-8 flex flex-col justify-center border border-dashed border-gray-200">
                              <div className="flex items-center gap-4 mb-6">
-                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-600 shadow-sm">
+                                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-red-600 shadow-sm">
                                     <FiBookOpen size={24} />
                                 </div>
                                 <div>
@@ -213,7 +215,7 @@ const Dashboard = () => {
                              <p className="text-[10px] text-gray-500 font-medium leading-relaxed uppercase italic">
                                 Enrollment has increased by <span className="text-red-600 font-black">12.4%</span> since last semester. The Computer Science department remains the most high-demand vertical.
                              </p>
-                             <button className="mt-8 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase text-gray-900 shadow-sm hover:border-red-600 transition-all italic">
+                             <button className="mt-8 py-3 bg-white border border-gray-100 rounded-lg text-[10px] font-black uppercase text-gray-900 shadow-sm hover:border-red-600 transition-all italic">
                                 Download Annual Prospectus
                              </button>
                          </div>
@@ -223,7 +225,7 @@ const Dashboard = () => {
                 {/* Vertical Sidebar Cards */}
                 <div className="space-y-8">
                     {/* Schedule Snapshot */}
-                    <div className="bg-[#111111] text-white rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden w-[98%] mx-auto lg:w-full">
+                    <div className="bg-[#111111] text-white rounded-lg p-8 shadow-2xl relative overflow-hidden w-[98%] mx-auto lg:w-full">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-red-600 rounded-full blur-[80px] opacity-20"></div>
                         <h2 className="text-sm font-black uppercase italic tracking-widest mb-6 flex items-center gap-3">
                             <FiClock className="text-red-600" />
@@ -244,13 +246,13 @@ const Dashboard = () => {
                                 </div>
                             ))}
                         </div>
-                        <button className="w-full mt-8 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest italic transition-all">
+                        <button className="w-full mt-8 py-3 bg-white/10 hover:bg-white/20 rounded-lg text-[9px] font-black uppercase tracking-widest italic transition-all">
                             Manage Calendar
                         </button>
                     </div>
 
                     {/* Quick Launch */}
-                    <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm w-[98%] mx-auto lg:w-full">
+                    <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm w-[98%] mx-auto lg:w-full">
                         <h2 className="text-[10px] font-black uppercase italic text-gray-400 tracking-[0.2em] mb-6">Quick Launch</h2>
                         <div className="grid grid-cols-2 gap-4">
                             {[
@@ -259,7 +261,7 @@ const Dashboard = () => {
                                 { icon: FiCalendar, label: "Exams" },
                                 { icon: FiShield, label: "Logs" },
                             ].map((btn, i) => (
-                                <button key={i} className="flex flex-col items-center gap-3 p-5 bg-gray-50/50 rounded-2xl hover:bg-black group transition-all duration-300">
+                                <button key={i} className="flex flex-col items-center gap-3 p-5 bg-white/50 rounded-lg hover:bg-black group transition-all duration-300">
                                     <btn.icon className="text-gray-400 group-hover:text-red-600 transition-colors" size={20} />
                                     <span className="text-[9px] font-black uppercase italic group-hover:text-white transition-colors tracking-widest">{btn.label}</span>
                                 </button>
@@ -273,3 +275,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+

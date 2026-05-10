@@ -87,40 +87,50 @@ const Sidebar = () => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-screen bg-white text-black z-40 transition-all duration-300 ease-in-out flex flex-col border-r border-gray-200
+        className={`fixed top-0 left-0 h-screen bg-white text-gray-900 z-40 transition-all duration-300 ease-in-out flex flex-col border-r border-gray-100
         ${isSidebarOpen ? "w-64 translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0 lg:w-64"}`}
       >
-        <div className="h-16 flex items-center justify-between px-6 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-black text-white flex items-center justify-center text-lg font-bold">ITM</div>
-            <span className="font-bold text-lg tracking-tight text-gray-900">Student Hub</span>
+        {/* Branding Section */}
+        <div className="h-24 flex items-center px-8 border-b border-gray-50 bg-white/30">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-lg bg-[#111111] text-white flex items-center justify-center text-xs font-black italic tracking-tighter shadow-lg shadow-gray-200">
+                ITM
+            </div>
+            <div className="flex flex-col">
+                <span className="font-black text-xs uppercase italic tracking-tighter text-gray-900">Student <span className="text-red-600">Hub</span></span>
+                <span className="text-[8px] font-black uppercase tracking-widest text-gray-400 mt-0.5">Academic Portal v4.0</span>
+            </div>
           </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-gray-400 hover:text-black">
-            <FiX size={20} />
-          </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-8 px-4 space-y-9 scrollbar-hide">
+        <nav className="flex-1 overflow-y-auto py-10 px-6 space-y-10 scrollbar-hide">
           {menuItems.map((category) => (
-            <div key={category.title} className="space-y-3">
-              <h3 className="px-4 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">
+            <div key={category.title} className="space-y-4">
+              <h3 className="px-4 text-[9px] uppercase tracking-[0.3em] text-gray-300 font-black italic">
                 {category.title}
               </h3>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 {category.items.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.route}
                     onClick={handleLinkClick}
                     className={({ isActive }) => `
-                      flex items-center gap-3 px-4 py-2.5 rounded transition-all duration-200 group relative
+                      flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 group relative
                       ${isActive
-                        ? "bg-gray-50 text-black font-extrabold border-l-4 border-black pl-3"
-                        : "hover:bg-gray-50 text-gray-500 hover:text-black"}
+                        ? "bg-red-50 text-red-600 shadow-sm"
+                        : "hover:bg-white text-gray-400 hover:text-gray-900"}
                     `}
                   >
-                    <span className="text-lg">{item.icon}</span>
-                    <span className="text-sm">{item.name}</span>
+                    <span className={`text-lg transition-all duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
+                        {item.icon}
+                    </span>
+                    <span className={`text-[11px] font-black uppercase tracking-widest italic transition-all duration-300 ${isActive ? 'translate-x-1' : 'group-hover:translate-x-1'}`}>
+                        {item.name}
+                    </span>
+                    {isActive && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-red-600 rounded-r-full shadow-[0_0_10px_rgba(220,38,38,0.4)]"></div>
+                    )}
                   </NavLink>
                 ))}
               </div>
@@ -128,18 +138,18 @@ const Sidebar = () => {
           ))}
         </nav>
 
-        <div className="p-4 bg-gray-50 border-t border-gray-100">
+        <div className="p-6 bg-white/50 border-t border-gray-50">
           <button
             onClick={LogoutUser}
-            className="w-full flex items-center justify-center gap-3 px-5 py-3 rounded bg-white text-black hover:bg-black hover:text-white transition-all duration-300 font-bold border border-gray-200 shadow-sm"
+            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-lg bg-[#111111] text-white hover:bg-red-600 transition-all duration-500 font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-gray-200 group italic active:scale-95"
           >
-            <FiLogOut className="text-lg" />
-            <span className="text-[10px] uppercase tracking-[0.2em]">Logout Session</span>
+            <FiLogOut className="text-lg group-hover:-translate-x-1 transition-transform" />
+            <span>Terminate Session</span>
           </button>
         </div>
 
         {loading && (
-          <div className="absolute bottom-20 right-4 animate-spin opacity-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin opacity-20">
             <SmallLoader />
           </div>
         )}
@@ -149,3 +159,6 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
+

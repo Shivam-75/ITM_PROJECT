@@ -21,9 +21,9 @@ function AttendanceFilter({
     const fetchRegistries = async () => {
       try {
         const [cRes, sRes, secRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-sections", { withCredentials: true })
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true })
         ]);
         if (cRes.data.courses) setCourses(cRes.data.courses);
         if (sRes.data.semesters) setSemesters(sRes.data.semesters);
@@ -36,7 +36,7 @@ function AttendanceFilter({
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 bg-white p-4 rounded-xl border">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 bg-white p-4 rounded-lg border">
       <input
         type="date"
         value={selectedDate}
@@ -89,3 +89,6 @@ function AttendanceFilter({
 }
 
 export default React.memo(AttendanceFilter);
+
+
+

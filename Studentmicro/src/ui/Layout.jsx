@@ -2,7 +2,6 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Login from "../components/registration/Login";
 import Registration from "../components/registration/Registration";
-import Sidebar from "../components/headers/Sidebar";
 import TopNavbar from "../components/headers/TopNavbar";
 import { useAuth } from "../store/AuthStore";
 
@@ -14,16 +13,16 @@ const Layout = () => {
             {loginRegistration ? (
                 <Registration />
             ) : userLogin ? (
-                <div className="flex min-h-screen relative overflow-hidden">
-                    
-                    <Sidebar />
-
-                    <div className="flex-1 flex flex-col min-h-screen transition-all duration-300 lg:ml-64">
-                        
+                <div className="flex flex-col min-h-screen relative overflow-hidden">
+                    {/* Top Navbar */}
+                    <div className="sticky top-0 z-50 bg-white">
                         <TopNavbar />
+                    </div>
 
-                        <main className="flex-1 pt-20 pb-10 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
-                            <div className="max-w-7xl mx-auto">
+                    <div className="flex-1 flex flex-col min-h-screen transition-all duration-300">
+                        {/* Main Content Area */}
+                        <main className="flex-1 pt-6 pb-10 px-4 sm:px-6 lg:px-8 bg-white">
+                            <div className="w-full">
                                 <Outlet />
                             </div>
                         </main>
@@ -42,3 +41,6 @@ const Layout = () => {
 };
 
 export default Layout;
+
+
+

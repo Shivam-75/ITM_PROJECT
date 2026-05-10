@@ -13,7 +13,7 @@ function AttendanceSummary({ attendance, totalStudents }) {
   );
 
   return (
-    <div className="bg-white p-4 rounded-xl border space-y-3">
+    <div className="bg-white p-4 rounded-lg border space-y-3">
       {/* Header */}
       <h3 className="font-semibold text-gray-700">
         Attendance Summary (Class)
@@ -54,3 +54,6 @@ function AttendanceSummary({ attendance, totalStudents }) {
 }
 
 export default AttendanceSummary;
+
+
+

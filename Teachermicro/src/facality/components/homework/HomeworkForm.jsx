@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { WorkAPI } from "../../api/apis";
 import Loader from "../../common/Loader";
@@ -31,19 +31,22 @@ const HomeworkManagement = () => {
   const [yearsList, setYearsList] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [sections, setSections] = useState([]);
+  const [subjectsList, setSubjectsList] = useState([]);
 
   const fetchRegistries = useCallback(async () => {
     try {
-      const [cRes, yRes, semRes, secRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-years", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-sections", { withCredentials: true })
+      const [cRes, yRes, semRes, secRes, subRes] = await Promise.all([
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", { withCredentials: true })
       ]);
-      if (cRes.data.courses) setCourses(cRes.data.courses);
-      if (yRes.data.years) setYearsList(yRes.data.years);
-      if (semRes.data.semesters) setSemesters(semRes.data.semesters);
-      if (secRes.data.sections) setSections(secRes.data.sections);
+      if (cRes.data.data) setCourses(cRes.data.data);
+      if (yRes.data.data) setYearsList(yRes.data.data);
+      if (semRes.data.data) setSemesters(semRes.data.data);
+      if (secRes.data.data) setSections(secRes.data.data);
+      if (subRes.data.subjects) setSubjectsList(subRes.data.subjects);
     } catch (err) {
       console.error("Homework Registry Sync Failed", err);
     }
@@ -56,6 +59,14 @@ const HomeworkManagement = () => {
       [name]: value,
     }));
   };
+
+  const filteredSubjects = useMemo(() => {
+    if (!formData.department || !formData.semester) return [];
+    return subjectsList.filter(s => 
+      s.department?.toLowerCase() === formData.department?.toLowerCase() &&
+      s.semester?.toLowerCase() === formData.semester?.toLowerCase()
+    );
+  }, [formData.department, formData.semester, subjectsList]);
 
   const handleQuestionChange = (index, value) => {
     setFormData((prev) => {
@@ -152,16 +163,16 @@ const HomeworkManagement = () => {
               </h1>
           </div>
 
-          <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100 shadow-sm">
+          <div className="flex bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm">
                 <button 
                   onClick={() => setActiveView("create")}
-                  className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'create' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
+                  className={`px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'create' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
                 >
                   Create
                 </button>
                 <button 
                   onClick={() => setActiveView("show")}
-                  className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'show' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
+                  className={`px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'show' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
                 >
                   Manage
                 </button>
@@ -170,33 +181,33 @@ const HomeworkManagement = () => {
 
       {/* CREATE VIEW */}
       {activeView === "create" && (
-        <div className="bg-white rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
+        <div className="bg-white rounded-lg md:rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
            <form onSubmit={handleSubmit} className="space-y-6 md:space-y-10 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Department</label>
-                        <select name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
+                        <select name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
                             <option value="">Select Path</option>
                             {courses.map(c => <option key={c.id} value={c.name}>{c.name.toUpperCase()}</option>)}
                         </select>
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Year</label>
-                        <select name="year" value={formData.year} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
+                        <select name="year" value={formData.year} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
                             <option value="">Select Stage</option>
                             {yearsList.map(y => <option key={y.id} value={y.name}>{y.name.toUpperCase()}</option>)}
                         </select>
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Semester</label>
-                        <select name="semester" value={formData.semester} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
+                        <select name="semester" value={formData.semester} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
                             <option value="">Select Phase</option>
                             {semesters.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
                         </select>
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Section</label>
-                        <select name="section" value={formData.section} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
+                        <select name="section" value={formData.section} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
                             <option value="">Select Local</option>
                             {sections.map(sec => <option key={sec.id} value={sec.name}>{sec.name.toUpperCase()}</option>)}
                         </select>
@@ -206,11 +217,14 @@ const HomeworkManagement = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Assignment Subject</label>
-                        <input name="subject" value={formData.subject} onChange={handleChange} placeholder="SUBJECT TITLE" className="w-full px-5 py-3.5 bg-slate-50 border-none rounded-xl text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-inner" />
+                        <select name="subject" value={formData.subject} onChange={handleChange} className="w-full px-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer">
+                            <option value="">Select Subject</option>
+                            {filteredSubjects.map(sub => <option key={sub._id} value={sub.name}>{sub.name.toUpperCase()}</option>)}
+                        </select>
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Submission Deadline</label>
-                        <input type="date" name="submissionDate" value={formData.submissionDate} onChange={handleChange} className="w-full px-5 py-3.5 bg-slate-50 border-none rounded-xl text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer" />
+                        <input type="date" name="submissionDate" value={formData.submissionDate} onChange={handleChange} className="w-full px-5 py-3.5 bg-white border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all cursor-pointer" />
                     </div>
                 </div>
 
@@ -230,7 +244,7 @@ const HomeworkManagement = () => {
                                         onChange={(e) => handleQuestionChange(index, e.target.value)}
                                         placeholder="Enter problem statement..."
                                         rows={1}
-                                        className="w-full pl-12 pr-6 py-3 bg-slate-50 border-none rounded-xl text-[11px] font-bold outline-none focus:ring-2 focus:ring-rose-500 transition-all shadow-sm resize-none"
+                                        className="w-full pl-12 pr-6 py-3 bg-white border-none rounded-lg text-[11px] font-bold outline-none focus:ring-2 focus:ring-rose-500 transition-all shadow-sm resize-none"
                                     />
                                 </div>
                                 {formData.questions.length > 1 && (
@@ -247,7 +261,7 @@ const HomeworkManagement = () => {
                     <button 
                         type="submit" 
                         disabled={loading} 
-                        className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-fit"
+                        className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-fit"
                     >
                         <FiSend size={14} />
                         {loading ? "Syncing..." : "Submit"}
@@ -261,13 +275,13 @@ const HomeworkManagement = () => {
       {activeView === "show" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {homeworks.length === 0 ? (
-                 <div className="col-span-full py-32 text-center bg-white rounded-[4rem] border-4 border-dashed border-slate-50">
+                 <div className="col-span-full py-32 text-center bg-white rounded-lg border-4 border-dashed border-slate-50">
                     <FiFileText size={48} className="mx-auto text-slate-100 mb-6" />
                     <h3 className="text-sm font-black text-slate-300 uppercase tracking-[0.3em] italic">No Homework protocols indexed.</h3>
                  </div>
             ) : (
                 homeworks.map((hw, index) => (
-                   <div key={hw._id || index} className="bg-white rounded-[1.5rem] border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300">
+                   <div key={hw._id || index} className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300">
                         <div className="flex justify-between items-start mb-1">
                             <div className="space-y-0.5">
                                 <h2 className="text-2xl font-[900] text-[#1e293b] uppercase tracking-tight leading-none">
@@ -277,7 +291,7 @@ const HomeworkManagement = () => {
                             </div>
                             <button 
                                 onClick={() => handleDelete(hw._id)} 
-                                className="p-2.5 bg-rose-50 text-rose-500 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
+                                className="p-2.5 bg-rose-50 text-rose-500 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
                             >
                                 <FiTrash2 size={14} />
                             </button>
@@ -335,3 +349,5 @@ const HomeworkManagement = () => {
 };
 
 export default HomeworkManagement;
+
+

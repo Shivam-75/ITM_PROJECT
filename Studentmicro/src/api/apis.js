@@ -1,5 +1,19 @@
 import axios from "axios";
 
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach((prom) => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
 const createAxiosInstance = (baseURL) => {
     const axiosInstance = axios.create({
         baseURL,
@@ -11,26 +25,38 @@ const createAxiosInstance = (baseURL) => {
         async (error) => {
             const originalRequest = error.config;
 
-            // Handle 401 (Unauthorized) or 403 (Forbidden) errors
             if (
                 (error.response?.status === 401 || error.response?.status === 403) &&
-                !originalRequest._retry &&
-                !originalRequest.url.includes("/refreshToken") &&
-                !originalRequest.url.includes("/login")
+                !originalRequest._retry
             ) {
+                if (isRefreshing) {
+                    return new Promise((resolve, reject) => {
+                        failedQueue.push({ resolve, reject });
+                    })
+                        .then(() => {
+                            return axiosInstance(originalRequest);
+                        })
+                        .catch((err) => {
+                            return Promise.reject(err);
+                        });
+                }
+
                 originalRequest._retry = true;
+                isRefreshing = true;
 
                 try {
-                    // Attempt to refresh the token
                     console.log("Attempting to refresh token...");
-                    await axiosInstance.post("/refreshToken");
-
-                    // If successful, retry the original request
+                    const authBase = import.meta.env.VITE_BASE_Auth;
+                    await axios.post(`${authBase}/refreshToken`, {}, { withCredentials: true });
+                    
+                    processQueue(null);
+                    isRefreshing = false;
                     return axiosInstance(originalRequest);
                 } catch (refreshError) {
-                    // If refresh fails (e.g. Refresh Token expired), logout the user
-                    console.error("Session expired. Logging out...");
-                    localStorage.removeItem("stLogged"); // Use the same key as AuthStore
+                    processQueue(refreshError, null);
+                    isRefreshing = false;
+                    console.error("Refresh token expired, logging out...");
+                    localStorage.removeItem("stLogged");
                     window.location.href = "/";
                     return Promise.reject(refreshError);
                 }
@@ -40,7 +66,6 @@ const createAxiosInstance = (baseURL) => {
         }
     );
 
-    // 🔥 IMPORTANT — RETURN KARO
     return axiosInstance;
 };
 
@@ -57,3 +82,14 @@ export const ReportAPI = createAxiosInstance(
 export const AcademicAPI = createAxiosInstance(
     import.meta.env.VITE_BASE_ACADEMIC || "http://localhost:5002/api/v3/Admin/Academic"
 );
+
+// 🔹 Student-Specific Services
+export const StudentProfileService = {
+    getProfile: () => ReportAPI.get("/student-profile"),
+};
+
+export const StudentAcademicService = {
+    getNotice: () => WorkAPI.get("/Notice/get-notice"),
+    getFees: () => WorkAPI.get("/Fee/get-fee-structure"),
+};
+

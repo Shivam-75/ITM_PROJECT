@@ -11,11 +11,11 @@ export default function UpcomingSchedule() {
   );
 
   return (
-    <section className="bg-white border rounded-xl overflow-hidden">
+    <section className="bg-white border rounded-lg overflow-hidden">
       <header className="p-4 border-b font-bold">Upcoming Schedule</header>
 
       {schedule.map((item, idx) => (
-        <div key={idx} className="p-4 hover:bg-slate-50 transition">
+        <div key={idx} className="p-4 hover:bg-white transition">
           <p className="font-semibold">{item.title}</p>
           <p className="text-xs text-slate-500">
             {item.time} • {item.type}
@@ -25,3 +25,6 @@ export default function UpcomingSchedule() {
     </section>
   );
 }
+
+
+

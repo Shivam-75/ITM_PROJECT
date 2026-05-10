@@ -47,18 +47,18 @@ const Resultschedule = () => {
   const handlePrint = () => window.print();
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 print:p-0">
+    <div className="min-h-screen bg-white p-4 print:p-0">
       {loading && (
         <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
             <Loader />
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto print:max-w-full">
+      <div className="w-full print:max-w-full">
 
         {/* SEARCH */}
         {!student && (
-          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-10 space-y-6 print:hidden">
+          <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-10 space-y-6 print:hidden">
             <div className="text-center space-y-2">
                 <h2 className="text-2xl font-[900] text-slate-900 uppercase italic tracking-tighter">CT Examination Portal</h2>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Authorized Transcript Retrieval System</p>
@@ -68,7 +68,7 @@ const Resultschedule = () => {
                 <input
                   type="text"
                   placeholder="ENTER STUDENT ROLL NUMBER"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-[11px] font-black uppercase outline-none focus:ring-4 focus:ring-indigo-50 focus:bg-white transition-all shadow-inner"
+                  className="w-full bg-white border-none rounded-lg px-6 py-4 text-[11px] font-black uppercase outline-none focus:ring-4 focus:ring-indigo-50 focus:bg-white transition-all shadow-inner"
                   value={rollNo}
                   onChange={(e) => setRollNo(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -76,7 +76,7 @@ const Resultschedule = () => {
 
                 <button
                   onClick={handleSearch}
-                  className="w-full bg-slate-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] shadow-xl hover:bg-indigo-600 transition-all active:scale-95"
+                  className="w-full bg-slate-900 text-white py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.3em] shadow-xl hover:bg-indigo-600 transition-all active:scale-95"
                 >
                   Retrieve Transcript
                 </button>
@@ -93,7 +93,7 @@ const Resultschedule = () => {
             >
               {/* HEADER */}
               <div className="flex items-center gap-8 border-b-2 border-slate-900 pb-10 relative z-10 print:border-slate-300">
-                <div className="w-20 h-20 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-black text-2xl p-2 print:bg-black">ITM</div>
+                <div className="w-20 h-20 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black text-2xl p-2 print:bg-black">ITM</div>
 
                 <div className="text-center flex-1 space-y-1">
                   <h1 className="text-2xl md:text-3xl font-[900] uppercase text-slate-900 tracking-tighter italic">
@@ -108,7 +108,7 @@ const Resultschedule = () => {
                 </div>
 
                 {/* QR SKELETON */}
-                <div className="w-16 h-16 border border-slate-200 p-1 bg-slate-50 hidden md:block print:block">
+                <div className="w-16 h-16 border border-slate-200 p-1 bg-white hidden md:block print:block">
                     <div className="w-full h-full bg-slate-900 opacity-10"></div>
                 </div>
               </div>
@@ -135,7 +135,7 @@ const Resultschedule = () => {
 
               {/* TABLE */}
               <table className="w-full mt-10 text-[11px] font-bold border-collapse relative z-10">
-                <thead className="bg-slate-50">
+                <thead className="bg-white">
                   <tr className="border-b-2 border-slate-900 print:border-slate-300">
                     <th className="px-6 py-4 text-left uppercase tracking-widest text-slate-400">Subject Code</th>
                     <th className="px-6 py-4 text-left uppercase tracking-widest text-slate-400 text-[10px]">Assessment Module</th>
@@ -146,7 +146,7 @@ const Resultschedule = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-100 italic">
                   {student.subjects.map((s, i) => (
-                    <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
+                    <tr key={i} className="group hover:bg-white/50 transition-colors">
                       <td className="px-6 py-4 font-black text-slate-500">CT-{String(i+1).padStart(3, '0')}</td>
                       <td className="px-6 py-4 font-black text-slate-900 uppercase">{s.subName || s.name}</td>
                       <td className="px-6 py-4 text-center font-black text-slate-400 italic">30.00</td>
@@ -170,7 +170,7 @@ const Resultschedule = () => {
                 
                 <div className="text-right">
                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Final Evaluation</p>
-                    <span className={`px-10 py-3 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] italic ${resultStatus === "PASS" ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"}`}>
+                    <span className={`px-10 py-3 rounded-lg text-[11px] font-black uppercase tracking-[0.2em] italic ${resultStatus === "PASS" ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"}`}>
                       {resultStatus}
                     </span>
                 </div>
@@ -205,13 +205,13 @@ const Resultschedule = () => {
             <div className="mt-8 flex justify-center gap-4 print:hidden">
               <button 
                 onClick={() => setStudent(null)}
-                className="px-10 py-4 bg-white border border-slate-200 text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all"
+                className="px-10 py-4 bg-white border border-slate-200 text-slate-900 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all"
               >
                   Reset Search
               </button>
               <button
                 onClick={handlePrint}
-                className="bg-slate-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-indigo-600 transition-all"
+                className="bg-slate-900 text-white px-10 py-4 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-indigo-600 transition-all"
               >
                 Download Master Transcript
               </button>
@@ -255,3 +255,7 @@ const Resultschedule = () => {
 };
 
 export default Resultschedule;
+
+
+
+

@@ -2,8 +2,7 @@ import { Assignment } from "../../teacher/models/AssignmentModel.js";
 import { Homework } from "../../teacher/models/homeworkModel.js";
 import { Link } from "../../teacher/models/linksModel.js";
 import { Notice } from "../../teacher/models/noticeModels.js";
-import { Syllabus } from "../../admin/models/syllabusModel.js";
-import { ModelPaper } from "../../admin/models/ModelPaperModel.js";
+import { TimeTable } from "../../teacher/models/timeTableModel.models.js";
 
 class StudentwrokController {
     static async ShowDepartmentHw(req, res) {
@@ -58,27 +57,18 @@ class StudentwrokController {
         } catch (err) { return res.status(500).json({ message: err.message }); }
     }
 
-    static async showSyllabus(req, res) {
+    static async showTimetable(req, res) {
         try {
             const user = req.students;
-            if (!user) return res.status(401).json({ message: "Access Denied !!", status: 401 })
-            const syllabusData = await Syllabus.find({ 
+            if (!user) return res.status(401).json({ message: "Access Denied !!", status: 401 });
+            
+            const timetable = await TimeTable.findOne({
                 course: user.course.toLowerCase(),
-                year: String(user.year)
+                semester: user.semester.toString().toLowerCase(),
+                section: user.section.toLowerCase()
             });
-            return res.status(200).json({ message: "Syllabus fetched successfully", status: 200, data: syllabusData });
-        } catch (err) { return res.status(500).json({ message: err.message }); }
-    }
-
-    static async showModelPaper(req, res) {
-        try {
-            const user = req.students;
-            if (!user) return res.status(401).json({ message: "Access Denied !!", status: 401 })
-            const papers = await ModelPaper.find({
-                course: user.course.toLowerCase(),
-                semester: String(user.semester)
-            }).sort({ createdAt: -1 });
-            return res.status(200).json({ success: true, message: "Model Papers Synced", data: papers });
+            
+            return res.status(200).json({ success: true, message: "Timetable Synced", data: timetable });
         } catch (err) { return res.status(500).json({ success: false, message: err.message }); }
     }
 }

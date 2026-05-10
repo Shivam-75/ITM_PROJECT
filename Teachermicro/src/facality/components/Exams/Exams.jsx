@@ -29,8 +29,8 @@ const Exams = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, sRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true })
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
       ]);
       if (cRes.data.courses) setCourses(cRes.data.courses);
       if (sRes.data.semesters) setSemestersList(sRes.data.semesters);
@@ -131,14 +131,14 @@ const Exams = () => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 p-3 sm:p-6 pb-20">
+    <div className="min-h-screen bg-white pt-24 p-3 sm:p-6 pb-20">
       {loading && (
         <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
             <Loader />
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden">
+      <div className="w-full bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden">
 
         {/* HEADER */}
         <div className="border-b border-slate-50 px-8 py-8 flex justify-between items-center bg-white">
@@ -149,7 +149,7 @@ const Exams = () => {
 
           <button
             onClick={() => setShowForm(!showForm)}
-            className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest italic transition-all shadow-lg active:scale-95 ${showForm ? 'bg-rose-500 text-white shadow-rose-100' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-indigo-600'}`}
+            className={`px-8 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all shadow-lg active:scale-95 ${showForm ? 'bg-rose-500 text-white shadow-rose-100' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-indigo-600'}`}
           >
             {showForm ? "DISCARD" : "REGISTER EXAM"}
           </button>
@@ -164,7 +164,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Department</label>
                 <select
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.department}
                   onChange={(e) =>
                     setNewExam({ ...newExam, department: e.target.value })
@@ -178,7 +178,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Semester</label>
                 <select
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.semester}
                   onChange={(e) =>
                     setNewExam({ ...newExam, semester: e.target.value })
@@ -194,7 +194,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="E.G. DATA STRUCTURES"
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.subject}
                   onChange={(e) =>
                     setNewExam({ ...newExam, subject: e.target.value })
@@ -205,7 +205,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Exam Format</label>
                 <select
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.examType}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examType: e.target.value })
@@ -221,7 +221,7 @@ const Exams = () => {
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Target Date</label>
                 <input
                   type="date"
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.examDate}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examDate: e.target.value })
@@ -234,7 +234,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="10:00 AM - 01:00 PM"
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.examTime}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examTime: e.target.value })
@@ -247,7 +247,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="E.G. ROOM 204"
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.room}
                   onChange={(e) =>
                     setNewExam({ ...newExam, room: e.target.value })
@@ -258,7 +258,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Evaluation Cycle (CT)</label>
                 <select
-                  className="w-full bg-white border-none rounded-xl px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.ct}
                   onChange={(e) =>
                     setNewExam({ ...newExam, ct: e.target.value })
@@ -274,7 +274,7 @@ const Exams = () => {
             <div className="sm:col-span-1 flex items-end">
               <button
                 type="submit"
-                className="w-full bg-slate-900 border border-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic shadow-xl shadow-slate-200 hover:bg-emerald-600 hover:border-emerald-700 transition-all active:scale-95"
+                className="w-full bg-slate-900 border border-slate-800 text-white px-8 py-3.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic shadow-xl shadow-slate-200 hover:bg-emerald-600 hover:border-emerald-700 transition-all active:scale-95"
               >
                 COMMIT TO SCHEDULE
               </button>
@@ -283,10 +283,10 @@ const Exams = () => {
         )}
 
         {/* FILTER */}
-        <div className="px-8 py-6 border-b border-slate-50 bg-slate-50/10">
+        <div className="px-8 py-6 border-b border-slate-50 bg-white/10">
           <div className="flex flex-col sm:flex-row gap-4">
             <select
-              className="bg-white border border-slate-200 rounded-2xl px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 cursor-pointer shadow-sm"
+              className="bg-white border border-slate-200 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 cursor-pointer shadow-sm"
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
@@ -298,7 +298,7 @@ const Exams = () => {
             </select>
 
             <select
-              className="bg-white border border-slate-200 rounded-2xl px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
+              className="bg-white border border-slate-200 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
               value={semester}
               disabled={!department}
               onChange={(e) => setSemester(e.target.value)}
@@ -312,7 +312,7 @@ const Exams = () => {
         {/* TABLE */}
         <div className="relative w-full overflow-x-auto scroller-style">
           <table className="min-w-[1000px] w-full text-sm border-collapse">
-            <thead className="bg-slate-50 sticky top-0">
+            <thead className="bg-white sticky top-0">
               <tr className="border-b border-slate-100">
                 <th className="px-8 py-5 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest italic">Subject Protocol</th>
                 <th className="px-6 py-5 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest italic">Format</th>
@@ -327,13 +327,13 @@ const Exams = () => {
             <tbody className="divide-y divide-slate-50">
               {filteredExams.length ? (
                 filteredExams.map((exam) => (
-                  <tr key={exam._id || exam.id} className="hover:bg-slate-50/50 transition-colors group">
+                  <tr key={exam._id || exam.id} className="hover:bg-white/50 transition-colors group">
                     <td className="px-8 py-6">
                         <p className="text-[12px] font-black text-slate-900 uppercase tracking-tight italic">{exam.Subject}</p>
                         <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">{exam.Department} • {exam.Semester}</p>
                     </td>
                     <td className="px-6 py-6 text-center">
-                        <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-[9px] font-black uppercase tracking-widest">
+                        <span className="px-3 py-1 bg-white text-slate-600 rounded-lg text-[9px] font-black uppercase tracking-widest">
                             {exam.ExamType}
                         </span>
                     </td>
@@ -356,7 +356,7 @@ const Exams = () => {
                     <td className="px-8 py-6 text-right">
                       <button
                         onClick={() => handleDelete(exam._id || exam.id)}
-                        className="bg-slate-900 text-white px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-600 shadow-xl shadow-slate-200"
+                        className="bg-slate-900 text-white px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-600 shadow-xl shadow-slate-200"
                       >
                         PURGE
                       </button>
@@ -369,7 +369,7 @@ const Exams = () => {
                     colSpan="7"
                     className="py-32 text-center text-slate-300 flex flex-col items-center justify-center gap-4 bg-white"
                   >
-                    <div className="w-16 h-1 bg-slate-50 rounded-full mb-4"></div>
+                    <div className="w-16 h-1 bg-white rounded-full mb-4"></div>
                     <p className="text-[10px] font-black uppercase tracking-[0.4em] italic leading-loose">No examination protocols indexed <br/> for this selection</p>
                   </td>
                 </tr>
@@ -384,3 +384,6 @@ const Exams = () => {
 };
 
 export default Exams;
+
+
+

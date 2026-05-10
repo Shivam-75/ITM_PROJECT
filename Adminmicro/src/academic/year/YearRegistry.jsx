@@ -17,6 +17,8 @@ const YearRegistry = () => {
   const [years, setYears] = useState([]);
   const [yearForm, setYearForm] = useState({
     name: "",
+    startingYear: "",
+    endingYear: "",
     status: "Active",
   });
 
@@ -25,8 +27,8 @@ const YearRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/file-years", { withCredentials: true });
-      if (res.data.years) setYears(res.data.years);
+      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true });
+      if (res.data.data) setYears(res.data.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -38,20 +40,33 @@ const YearRegistry = () => {
     fetchData();
   }, []);
 
+  // Auto-generate Academic Year (name)
+  useEffect(() => {
+    if (yearForm.startingYear && yearForm.endingYear) {
+      const start = yearForm.startingYear.trim();
+      const end = yearForm.endingYear.trim();
+      const suffix = end.length >= 2 ? end.slice(-2) : end;
+      setYearForm(prev => ({ ...prev, name: `${start}-${suffix}` }));
+    } else if (!editId && (!yearForm.startingYear || !yearForm.endingYear)) {
+      // Clear name if one is empty when creating
+      setYearForm(prev => ({ ...prev, name: "" }));
+    }
+  }, [yearForm.startingYear, yearForm.endingYear, editId]);
+
   const handleExecute = async (e) => {
     e.preventDefault();
-    if (!yearForm.name) return toast.error("Year Name is Mandatory", toststyle);
+    if (!yearForm.name || !yearForm.startingYear || !yearForm.endingYear) return toast.error("All Year Fields are Mandatory", toststyle);
     
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-years/${editId}`, { withCredentials: true });
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/years/${editId}`, { withCredentials: true });
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/file-years", yearForm, { withCredentials: true });
+      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/years", yearForm, { withCredentials: true });
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
-      setYearForm({ name: "", status: "Active" });
+      setYearForm({ name: "", startingYear: "", endingYear: "", status: "Active" });
       setEditId(null);
     } catch (err) {
       toast.error(err.response?.data?.message || "Operation Error", toststyle);
@@ -63,16 +78,18 @@ const YearRegistry = () => {
   const triggerEdit = (y) => {
     setYearForm({
       name: y.name,
+      startingYear: y.startingYear,
+      endingYear: y.endingYear,
       status: y.status
     });
-    setEditId(y.id);
+    setEditId(y._id);
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Purge this academic year window?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-years/${id}`, { withCredentials: true });
+      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/years/${id}`, { withCredentials: true });
       toast.success("Year Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -99,10 +116,20 @@ const YearRegistry = () => {
           </div>
 
           <form onSubmit={handleExecute} className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-1">
                 <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Academic Year</label>
-                <input type="text" placeholder="e.g. 2024-25" value={yearForm.name} onChange={(e) => setYearForm({ ...yearForm, name: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-indigo-500" />
+                <input type="text" placeholder="Auto-generated (e.g. 2024-25)" value={yearForm.name} readOnly className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none bg-gray-50 text-gray-500 cursor-not-allowed transition-all" />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Starting Year</label>
+                <input type="text" placeholder="e.g. 2024" value={yearForm.startingYear} onChange={(e) => setYearForm({ ...yearForm, startingYear: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-indigo-500" />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Ending Year</label>
+                <input type="text" placeholder="e.g. 2028" value={yearForm.endingYear} onChange={(e) => setYearForm({ ...yearForm, endingYear: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-indigo-500" />
               </div>
 
               <div className="space-y-1">
@@ -125,9 +152,11 @@ const YearRegistry = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#f4f4f4] border-b border-gray-300 text-[11px] font-black uppercase text-gray-700">
-                <th className="px-6 py-3 border-r border-gray-300 w-[50%] text-center">Academic Year Window</th>
-                <th className="px-6 py-3 border-r border-gray-300 w-[25%] text-center">Status</th>
-                <th className="px-6 py-3 text-center w-[25%]">Action</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[25%] text-center">Academic Year</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[20%] text-center">Start</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[20%] text-center">End</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[15%] text-center">Status</th>
+                <th className="px-6 py-3 text-center w-[20%]">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -135,12 +164,14 @@ const YearRegistry = () => {
                 <tr><td colSpan="3" className="px-6 py-20 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest italic">No academic year windows committed</td></tr>
               ) : (
                 years.map((y) => (
-                  <tr key={y.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{y.name}</td>
+                  <tr key={y._id} className="hover:bg-white/50 transition-colors">
+                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200 text-center">{y.name}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-gray-200 text-center">{y.startingYear}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-gray-200 text-center">{y.endingYear}</td>
                     <td className="px-6 py-4 text-center border-r border-gray-200">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             y.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
-                            y.status === 'Upcoming' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-gray-100 text-gray-600 border border-gray-200'
+                            y.status === 'Upcoming' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-white text-gray-600 border border-gray-200'
                         }`}>
                             {y.status}
                         </span>
@@ -148,7 +179,7 @@ const YearRegistry = () => {
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button onClick={() => triggerEdit(y)} className="bg-[#3c8dbc] text-white px-4 py-1.5 rounded text-[9px] font-bold uppercase transition-all shadow-sm hover:bg-[#367fa9]">Edit</button>
-                        <button onClick={() => handleDelete(y.id)} className="bg-[#dd4b39] text-white px-4 py-1.5 rounded text-[9px] font-bold uppercase transition-all shadow-sm hover:bg-[#d73925]">Delete</button>
+                        <button onClick={() => handleDelete(y._id)} className="bg-[#dd4b39] text-white px-4 py-1.5 rounded text-[9px] font-bold uppercase transition-all shadow-sm hover:bg-[#d73925]">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -164,3 +195,7 @@ const YearRegistry = () => {
 };
 
 export default YearRegistry;
+
+
+
+

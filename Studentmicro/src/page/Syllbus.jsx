@@ -5,12 +5,12 @@ import { FiDownload, FiFileText, FiBookOpen, FiExternalLink, FiSearch } from "re
 
 const SyllabusCard = memo(({ item }) => {
   return (
-    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-lg p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
       {/* Abstract Background element */}
       <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-indigo-50 rounded-full opacity-50 group-hover:scale-125 transition-transform duration-700"></div>
       
       <div className="relative z-10">
-        <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 mb-6 group-hover:rotate-6 transition-transform">
+        <div className="w-14 h-14 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200 mb-6 group-hover:rotate-6 transition-transform">
            <FiFileText size={28} />
         </div>
 
@@ -35,7 +35,7 @@ const SyllabusCard = memo(({ item }) => {
             href={item.fileUrl} 
             target="_blank" 
             rel="noreferrer" 
-            className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200 active:scale-95"
+            className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-lg hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200 active:scale-95"
           >
             <FiDownload size={16} />
             Acquire PDF
@@ -101,7 +101,7 @@ const Syllabus = () => {
                  <span className="px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-indigo-100 italic">
                     {studentInfo?.course || "Course"} Curriculum
                  </span>
-                 <span className="px-4 py-1.5 bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full italic">
+                 <span className="px-4 py-1.5 bg-white text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full italic">
                     Year {studentInfo?.year || "1"} 
                  </span>
             </div>
@@ -115,14 +115,14 @@ const Syllabus = () => {
                 placeholder="Find Subject..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-xs font-black uppercase tracking-widest outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all"
+                className="w-full pl-12 pr-6 py-4 bg-white border border-slate-100 rounded-lg shadow-sm text-xs font-black uppercase tracking-widest outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all"
              />
         </div>
       </div>
 
       {filteredList.length === 0 && !loading ? (
-        <div className="py-24 text-center bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col items-center mx-4 md:mx-0">
-          <div className="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center mb-6">
+        <div className="py-24 text-center bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col items-center mx-4 md:mx-0">
+          <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-6">
              <FiBookOpen size={32} className="text-slate-200" />
           </div>
           <p className="text-xs font-black text-slate-300 uppercase tracking-[0.4em]">No Curriculum Resources Found</p>
@@ -149,3 +149,6 @@ const Syllabus = () => {
 };
 
 export default Syllabus;
+
+
+

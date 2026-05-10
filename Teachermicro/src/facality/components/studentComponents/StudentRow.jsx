@@ -7,7 +7,7 @@ const StudentRow = ({ student }) => {
   return (
     <tr
       onClick={() => navigate(`/studentsProfile/${student.id}`)}
-      className="cursor-pointer hover:bg-gray-50 border-t"
+      className="cursor-pointer hover:bg-white border-t"
     >
       <td className="p-3">{student.roll}</td>
       <td className="p-3 font-medium">{student.name}</td>
@@ -28,3 +28,6 @@ const StudentRow = ({ student }) => {
   );
 };
 export default memo(StudentRow);
+
+
+

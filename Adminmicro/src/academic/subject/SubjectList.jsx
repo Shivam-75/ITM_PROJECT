@@ -1,184 +1,206 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FiBookOpen } from "react-icons/fi";
+import useAuth from "../../store/AdminStore";
 
 const SubjectList = () => {
+  const { toststyle } = useAuth();
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchSubjects = async () => {
+  // States for dynamic dropdowns
+  const [courses, setCourses] = useState([]);
+  const [semesters, setSemesters] = useState([]);
+
+  const [form, setForm] = useState({
+    name: "",
+    code: "",
+    department: "",
+    semester: "",
+    status: "Active"
+  });
+
+  const [editId, setEditId] = useState(null);
+
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", {
-        withCredentials: true
-      });
-      if (response.data.subjects) {
-        setSubjects(response.data.subjects);
-      }
+      const [subRes, courseRes, semRes] = await Promise.all([
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+      ]);
+      if (subRes.data.subjects) setSubjects(subRes.data.subjects);
+      if (courseRes.data.data) setCourses(courseRes.data.data);
+      if (semRes.data.data) setSemesters(semRes.data.data);
     } catch (error) {
-      toast.error("Failed to fetch subjects");
+      toast.error("Failed to fetch data", toststyle);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSubjects();
+    fetchData();
   }, []);
 
-  const [form, setForm] = useState({
-    subjectName: "",
-    department: "",
-    semester: "",
-  });
-
-  const [editIndex, setEditIndex] = useState(null);
-
-  // handle input
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ➕ Add / ✏️ Update Subject
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.name || !form.code || !form.department || !form.semester) {
+      return toast.error("All mandatory fields must be filled", toststyle);
+    }
  
     try {
-      if (editIndex !== null) {
-        // Update logic (assuming put endpoint exists)
-        toast.info("Update logic triggered (dummy)");
-      } else {
-        await axios.post("http://localhost:5002/api/v3/Admin/Academic/subjects", {
-          name: form.subjectName,
-          department: form.department,
-          semester: form.semester
-        }, { withCredentials: true });
-        toast.success("Subject Added");
-        fetchSubjects();
+      setLoading(true);
+      if (editId !== null) {
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/subjects/${editId}`, { withCredentials: true });
       }
- 
-      setForm({
-        subjectName: "",
-        department: "",
-        semester: "",
-      });
-      setEditIndex(null);
+      
+      await axios.post("http://localhost:5002/api/v3/Admin/Academic/subjects", form, { withCredentials: true });
+      toast.success(editId ? "Subject Updated" : "Subject Added", toststyle);
+      
+      fetchData();
+      setForm({ name: "", code: "", department: "", semester: "", status: "Active" });
+      setEditId(null);
     } catch (error) {
-       toast.error("Failed to save subject");
+       toast.error(error.response?.data?.message || "Failed to save subject", toststyle);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // ✏️ Edit
-  const handleEdit = (index) => {
-    setForm(subjects[index]);
-    setEditIndex(index);
+  const handleEdit = (sub) => {
+    setForm({
+      name: sub.name,
+      code: sub.code,
+      department: sub.department,
+      semester: sub.semester,
+      status: sub.status
+    });
+    setEditId(sub.id || sub._id);
   };
 
-  // 🗑️ Delete
-  const handleDelete = (index) => {
-    if (window.confirm("Delete this subject?")) {
-      setSubjects(subjects.filter((_, i) => i !== index));
+  const handleDelete = async (id) => {
+    if (window.confirm("Delete this subject from the registry?")) {
+      try {
+        setLoading(true);
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/subjects/${id}`, { withCredentials: true });
+        toast.success("Subject Deleted", toststyle);
+        fetchData();
+      } catch (err) {
+        toast.error("Failed to delete subject", toststyle);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <div className="p-6 space-y-6">
-      {/* ➕ ADD / EDIT FORM */}
-      <div className="bg-white shadow rounded p-4 w-[98%] mx-auto md:w-full">
-        <h2 className="text-xl font-bold mb-4">
-          {editIndex !== null ? "Edit Subject" : "Add Subject"}
-        </h2>
+    <div className="flex flex-col h-full animate-in fade-in duration-700 p-2 md:p-6 lg:p-10">
+      <div className="w-full max-w-[1400px] mx-auto space-y-8">
+        
+        {/* ADD / EDIT FORM */}
+        <div className="bg-white border border-gray-200 rounded-lg shadow-sm w-full overflow-hidden">
+          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+             <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                <FiBookOpen size={20} />
+             </div>
+            <h1 className="text-xl font-bold text-gray-900 font-sans uppercase italic tracking-tight">
+              {editId !== null ? "Edit Subject" : "Subject Management"}
+            </h1>
+          </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input
-            type="text"
-            name="subjectName"
-            placeholder="Subject Name"
-            value={form.subjectName}
-            onChange={handleChange}
-            className="border p-2 rounded"
-            required
-          />
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Subject Name</label>
+                <input type="text" name="name" placeholder="e.g. Mathematics" value={form.name} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none focus:border-indigo-500 uppercase" required />
+              </div>
 
-          <input
-            type="text"
-            name="department"
-            placeholder="Department"
-            value={form.department}
-            onChange={handleChange}
-            className="border p-2 rounded"
-            required
-          />
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Subject Code</label>
+                <input type="text" name="code" placeholder="e.g. MATH101" value={form.code} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none focus:border-indigo-500 uppercase" required />
+              </div>
 
-          <select
-            name="semester"
-            value={form.semester}
-            onChange={handleChange}
-            className="border p-2 rounded"
-            required>
-            <option value="">Select Semester</option>
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
-            <option>4th</option>
-            <option>5th</option>
-            <option>6th</option>
-          </select>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Department</label>
+                <select name="department" value={form.department} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold bg-white cursor-pointer focus:border-indigo-500 uppercase" required>
+                  <option value="">Select Dept</option>
+                  {courses.map(c => <option key={c._id || c.id} value={c.name}>{c.name}</option>)}
+                </select>
+              </div>
 
-          <button
-            type="submit"
-            className="md:col-span-3 bg-green-600 text-white py-2 rounded hover:bg-green-700">
-            {editIndex !== null ? "Update Subject" : "Add Subject"}
-          </button>
-        </form>
-      </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Semester</label>
+                <select name="semester" value={form.semester} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold bg-white cursor-pointer focus:border-indigo-500 uppercase" required>
+                  <option value="">Select Semester</option>
+                  {semesters.map(s => <option key={s._id || s.id} value={s.name}>{s.name}</option>)}
+                </select>
+              </div>
 
-      {/* 📋 SUBJECT TABLE */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-300 text-sm">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-3 py-2">Subject Name</th>
-              <th className="border px-3 py-2">Department</th>
-              <th className="border px-3 py-2">Semester</th>
-              <th className="border px-3 py-2">Action</th>
-            </tr>
-          </thead>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Status</label>
+                <select name="status" value={form.status} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold bg-white cursor-pointer focus:border-indigo-500" required>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
 
-          <tbody>
-            {subjects.map((subject, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="border px-3 py-2 font-medium">
-                  {subject.name || subject.subjectName}
-                </td>
+            <button type="submit" disabled={loading} className="w-full py-4 bg-[#00a65a] hover:bg-[#008d4c] text-white rounded-md font-bold uppercase tracking-widest text-[13px] transition-all shadow-lg active:scale-[0.99] disabled:opacity-50">
+              {editId !== null ? "Update Registry Entry" : "Commit Subject to Registry"}
+            </button>
+          </form>
+        </div>
 
-                <td className="border px-3 py-2">{subject.department}</td>
-
-                <td className="border px-3 py-2 text-center">
-                  {subject.semester}
-                </td>
-
-                <td className="border px-3 py-2 text-center">
-                  <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() => handleEdit(index)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded text-xs">
-                      Edit
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(index)}
-                      className="bg-red-500 text-white px-3 py-1 rounded text-xs">
-                      Delete
-                    </button>
-                  </div>
-                </td>
+        {/* SUBJECT TABLE */}
+        <div className="bg-white border border-gray-300 rounded-sm shadow-md overflow-hidden w-full">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#f4f4f4] border-b border-gray-300 text-[11px] font-black uppercase text-gray-700">
+                <th className="px-4 py-3 border-r border-gray-300 w-[25%] text-center">Subject Name</th>
+                <th className="px-4 py-3 border-r border-gray-300 w-[15%] text-center">Code</th>
+                <th className="px-4 py-3 border-r border-gray-300 w-[20%] text-center">Department</th>
+                <th className="px-4 py-3 border-r border-gray-300 w-[15%] text-center">Semester</th>
+                <th className="px-4 py-3 border-r border-gray-300 w-[10%] text-center">Status</th>
+                <th className="px-4 py-3 text-center w-[15%]">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {subjects.length === 0 ? (
+                 <tr><td colSpan="6" className="px-6 py-20 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest italic">No subjects committed</td></tr>
+              ) : (
+                 subjects.map((sub) => (
+                  <tr key={sub.id || sub._id} className="hover:bg-white/50 transition-colors">
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-gray-200">{sub.name}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-indigo-600 text-center italic border-r border-gray-200 uppercase">{sub.code}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{sub.department}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{sub.semester}</td>
+                    <td className="px-4 py-4 text-center border-r border-gray-200">
+                        <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
+                            sub.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
+                            'bg-red-100 text-red-600 border border-red-200'
+                        }`}>
+                            {sub.status || "Active"}
+                        </span>
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <button onClick={() => handleEdit(sub)} className="bg-[#3c8dbc] text-white px-3 py-1 rounded text-[9px] font-bold uppercase tracking-wider transition-all hover:bg-[#367fa9]">Edit</button>
+                        <button onClick={() => handleDelete(sub.id || sub._id)} className="bg-[#dd4b39] text-white px-3 py-1 rounded text-[9px] font-bold uppercase tracking-wider transition-all hover:bg-[#d73925]">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

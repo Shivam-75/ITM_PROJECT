@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const linksSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
-    department: {
+    course: {
         type: String,
         required: true
     },
@@ -27,5 +27,4 @@ const linksSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-
-export const Link = mongoose.model("link", linksSchema);
+export const Link = mongoose.models.Link || mongoose.model("Link", linksSchema, "links");

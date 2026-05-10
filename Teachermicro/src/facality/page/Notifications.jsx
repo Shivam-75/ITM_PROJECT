@@ -51,7 +51,7 @@ export default function Notifications() {
   }, [filter, notifications]);
 
   return (
-    <div className="max-w-5xl mx-auto flex flex-col gap-6 px-[6%] py-[6%]">
+    <div className="w-full flex flex-col gap-6 px-[6%] py-[6%]">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div>
@@ -61,7 +61,7 @@ export default function Notifications() {
           </p>
         </div>
 
-        <button className="px-4 py-2 rounded-lg border bg-white text-sm font-medium hover:bg-slate-50">
+        <button className="px-4 py-2 rounded-lg border bg-white text-sm font-medium hover:bg-white">
           Mark all as read
         </button>
       </div>
@@ -70,7 +70,7 @@ export default function Notifications() {
       <NotificationFilters filter={filter} setFilter={setFilter} />
 
       {/* Notification List */}
-      <div className="bg-white border rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white border rounded-lg overflow-hidden shadow-sm">
         {filteredNotifications.length === 0 ? (
           <div className="p-10 text-center text-slate-500">
             No notifications found.
@@ -84,3 +84,6 @@ export default function Notifications() {
     </div>
   );
 }
+
+
+

@@ -6,6 +6,8 @@ export const useAcademicRegistry = () => {
     const [years, setYears] = useState([]);
     const [semesters, setSemesters] = useState([]);
     const [sections, setSections] = useState([]);
+    const [batches, setBatches] = useState([]);
+    const [periods, setPeriods] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -13,17 +15,21 @@ export const useAcademicRegistry = () => {
         const fetchRegistry = async () => {
             try {
                 setLoading(true);
-                const [cRes, yRes, semRes, secRes] = await Promise.all([
-                    AcademicAPI.get("/file-courses"),
-                    AcademicAPI.get("/file-years"),
-                    AcademicAPI.get("/file-semesters"),
-                    AcademicAPI.get("/file-sections")
+                const [cRes, yRes, semRes, secRes, bRes, pRes] = await Promise.all([
+                    AcademicAPI.get("/courses"),
+                    AcademicAPI.get("/years"),
+                    AcademicAPI.get("/semesters"),
+                    AcademicAPI.get("/sections"),
+                    AcademicAPI.get("/batches"),
+                    AcademicAPI.get("/periods")
                 ]);
 
-                setCourses(cRes.data.courses || []);
-                setYears(yRes.data.years || []);
-                setSemesters(semRes.data.semesters || []);
-                setSections(secRes.data.sections || []);
+                setCourses(cRes.data.data || []);
+                setYears(yRes.data.data || []);
+                setSemesters(semRes.data.data || []);
+                setSections(secRes.data.data || []);
+                setBatches(bRes.data.batches || []); // Batch returns .batches
+                setPeriods(pRes.data.data || []);
             } catch (err) {
                 console.error("Failed to fetch academic registry:", err);
                 setError(err);
@@ -35,5 +41,5 @@ export const useAcademicRegistry = () => {
         fetchRegistry();
     }, []);
 
-    return { courses, years, semesters, sections, loading, error };
+    return { courses, years, semesters, sections, batches, periods, loading, error };
 };

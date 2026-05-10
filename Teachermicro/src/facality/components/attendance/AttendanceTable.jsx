@@ -14,8 +14,8 @@ function AttendanceTable({
   };
 
   return (
-    <table className="min-w-full bg-white border rounded-xl">
-      <thead className="bg-gray-100">
+    <table className="min-w-full bg-white border rounded-lg">
+      <thead className="bg-white">
         <tr>
            <th className="p-3 text-left">Roll Number</th>
           <th className="p-3 text-left">Student</th>
@@ -54,3 +54,6 @@ function AttendanceTable({
 }
 
 export default React.memo(AttendanceTable);
+
+
+

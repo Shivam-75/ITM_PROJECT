@@ -1,49 +1,42 @@
 import mongoose from "mongoose";
 
-const subjectSchema = new mongoose.Schema({
-    subName: {
+const entrySchema = new mongoose.Schema({
+    subject: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     marks: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 100
+        type: String,
+        required: true
     }
 });
-const studentSchema = new mongoose.Schema(
-    {
-        userId: {
-            type: String,
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        rollNo: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        course: {
-            type: String,
-            required: true
-        },
-        section: {
-            type: String,
-            required: true,
-            lowercase: true
-        },
-        semester: {
-            type: String,
-            required: true
-        },
-        subjects: [subjectSchema]
-    }
-);
 
-export const Marks = mongoose.models.Marks || mongoose.model("Marks", studentSchema);
+const marksSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true
+    },
+    course: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    },
+    semester: {
+        type: String,
+        required: true
+    },
+    section: {
+        type: String,
+        required: true
+    },
+    teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    entries: [entrySchema]
+}, { timestamps: true });
+
+export const Marks = mongoose.models.Marks || mongoose.model("Marks", marksSchema, "marks");

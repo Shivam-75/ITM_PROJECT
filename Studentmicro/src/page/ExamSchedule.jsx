@@ -5,7 +5,7 @@ import { FiCalendar, FiClock, FiMapPin, FiLayers, FiFileText } from "react-icons
 
 const ExamCard = memo(({ exam }) => {
   return (
-    <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-8 hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden">
+    <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-8 hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden">
       <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
         <FiFileText size={120} />
       </div>
@@ -23,7 +23,7 @@ const ExamCard = memo(({ exam }) => {
           </p>
         </div>
 
-        <div className="bg-slate-900 text-white w-12 h-12 rounded-2xl flex flex-col items-center justify-center shadow-lg shadow-slate-200 group-hover:bg-indigo-600 transition-colors">
+        <div className="bg-slate-900 text-white w-12 h-12 rounded-lg flex flex-col items-center justify-center shadow-lg shadow-slate-200 group-hover:bg-indigo-600 transition-colors">
             <span className="text-[10px] font-black leading-none">CT</span>
             <span className="text-lg font-black leading-none">{exam.ct}</span>
         </div>
@@ -31,7 +31,7 @@ const ExamCard = memo(({ exam }) => {
 
       <div className="grid grid-cols-2 gap-4 pt-6 border-t border-slate-100">
          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
                 <FiCalendar size={18} />
             </div>
             <div>
@@ -41,7 +41,7 @@ const ExamCard = memo(({ exam }) => {
          </div>
 
          <div className="flex items-center gap-3 border-l border-slate-100 pl-4">
-            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
                 <FiClock size={18} />
             </div>
             <div>
@@ -51,7 +51,7 @@ const ExamCard = memo(({ exam }) => {
          </div>
 
          <div className="flex items-center gap-3 col-span-2 mt-2 pt-4 border-t border-slate-50">
-            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
                 <FiMapPin size={18} />
             </div>
             <div>
@@ -124,8 +124,8 @@ const ExamSchedule = () => {
         </div>
       ) : (
         !loading && (
-            <div className="py-32 text-center bg-white rounded-[4rem] border border-slate-50 shadow-sm flex flex-col items-center">
-                <div className="w-16 h-1 bg-slate-50 rounded-full mb-6"></div>
+            <div className="py-32 text-center bg-white rounded-lg border border-slate-50 shadow-sm flex flex-col items-center">
+                <div className="w-16 h-1 bg-white rounded-full mb-6"></div>
                 <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.4em] italic mb-2">No schedules released for your session</h3>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Update Frequency: Real-time</p>
             </div>
@@ -136,3 +136,6 @@ const ExamSchedule = () => {
 };
 
 export default ExamSchedule;
+
+
+

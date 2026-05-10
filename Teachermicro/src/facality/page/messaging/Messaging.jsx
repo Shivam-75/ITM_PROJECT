@@ -6,9 +6,9 @@ import { MessageProvider } from "../../context/MessageContext";
 const Messaging = ({ role = "faculty" }) => {
   return (
     <MessageProvider>
-      <div className="ml-0  pt-28 px-4 sm:px-6 md:px-8 pb-10 min-h-screen bg-gray-50">
+      <div className="ml-0  pt-28 px-4 sm:px-6 md:px-8 pb-10 min-h-screen bg-white">
         {/* Main Card */}
-        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-sm border flex flex-col h-[80vh]">
+        <div className="w-full bg-white rounded-lg shadow-sm border flex flex-col h-[80vh]">
           {/* Header */}
           <div className="px-6 py-4 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
@@ -33,7 +33,7 @@ const Messaging = ({ role = "faculty" }) => {
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-hidden bg-gray-50">
+          <div className="flex-1 overflow-hidden bg-white">
             <div className="h-full p-4 sm:p-6">
               {role === "faculty" ? (
                 <MessageBot />
@@ -54,3 +54,6 @@ const Messaging = ({ role = "faculty" }) => {
 };
 
 export default Messaging;
+
+
+

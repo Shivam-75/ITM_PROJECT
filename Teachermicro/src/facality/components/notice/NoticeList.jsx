@@ -15,3 +15,6 @@ const NoticeList = ({ data, onDelete }) => {
 };
 
 export default NoticeList;
+
+
+

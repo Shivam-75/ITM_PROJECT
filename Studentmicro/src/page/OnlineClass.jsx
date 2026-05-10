@@ -5,7 +5,7 @@ import Loader from "../components/common/Loader";
 
 const LectureCard = memo(({ lecture }) => {
   return (
-    <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col group overflow-hidden hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500">
+    <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col group overflow-hidden hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500">
       
       {/* Visual Header / Thumbnail Mockup */}
       <div className="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
@@ -39,7 +39,7 @@ const LectureCard = memo(({ lecture }) => {
              {lecture.topic}
            </h3>
            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-lg bg-slate-50 flex items-center justify-center border border-slate-100 text-slate-400">
+              <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center border border-slate-100 text-slate-400">
                  <FiUser size={12} />
               </div>
               <p className="text-[11px] font-bold text-slate-500 uppercase tracking-tight italic">Verified Academic Host</p>
@@ -69,7 +69,7 @@ const LectureCard = memo(({ lecture }) => {
             href={lecture.linkas}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 hover:bg-indigo-600 shadow-xl shadow-slate-100 active:scale-95 italic"
+            className="w-full py-4 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 hover:bg-indigo-600 shadow-xl shadow-slate-100 active:scale-95 italic"
           >
             Access Session <FiArrowRight size={14} />
           </a>
@@ -130,7 +130,7 @@ const OnlineClass = () => {
         <div className="flex items-center gap-4">
            <div className="flex -space-x-3">
                 {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-slate-100 flex items-center justify-center overflow-hidden">
+                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-white flex items-center justify-center overflow-hidden">
                         <FiUser className="text-slate-300" />
                     </div>
                 ))}
@@ -150,8 +150,8 @@ const OnlineClass = () => {
         </div>
       ) : (
         !loading && (
-            <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[4rem] border border-slate-100 shadow-xl shadow-slate-50/50">
-                <div className="w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center mb-8">
+            <div className="flex flex-col items-center justify-center py-32 bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-50/50">
+                <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center mb-8">
                     <FiVideo size={48} className="text-slate-100" />
                 </div>
                 <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.5em] italic">No Published Sessions Found</h3>
@@ -164,3 +164,6 @@ const OnlineClass = () => {
 };
 
 export default OnlineClass;
+
+
+

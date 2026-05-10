@@ -4,3 +4,6 @@ export const StatCard = ({ label, value, color = "text-gray-800" }) => (
     <p className={`text-2xl font-bold ${color}`}>{value}</p>
   </div>
 );
+
+
+

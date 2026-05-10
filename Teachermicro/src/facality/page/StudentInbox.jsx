@@ -12,8 +12,8 @@ const StudentInbox = () => {
 
   return (
     <MessageProvider>
-      <div className="min-h-screen bg-gray-100 p-4">
-        <div className="max-w-4xl mx-auto bg-white rounded shadow h-[80vh] flex flex-col">
+      <div className="min-h-screen bg-white p-4">
+        <div className="w-full bg-white rounded shadow h-[80vh] flex flex-col">
           {/* Header */}
           <div className="p-4 border-b">
             <h2 className="text-lg font-semibold">Faculty Messages</h2>
@@ -29,3 +29,6 @@ const StudentInbox = () => {
 };
 
 export default StudentInbox;
+
+
+

@@ -46,19 +46,12 @@ const Sidebar = ({ onClose }) => {
     {
       title: "Management",
       items: [
-        { name: "Student Records", route: "/studentsList", icon: <FiUsers /> },
+
         { name: "Daily Attendance", route: "/attendance", icon: <FiFileText /> },
         { name: "Grade Entries", route: "/results", icon: <FiAward /> },
       ],
     },
-    {
-        title: "Facilities",
-        items: [
-          { name: "Hostel Overview", route: "/hostel-dashboard", icon: <FiHome /> },
-          { name: "Room Allotment", route: "/room-allocation", icon: <FiGrid /> },
-          { name: "Virtual Class", route: "/online", icon: <FiVideo /> },
-        ],
-    },
+
   ];
 
   const handleLinkClick = () => {
@@ -68,7 +61,7 @@ const Sidebar = ({ onClose }) => {
   return (
     <div className="h-full flex flex-col bg-white text-black border-r border-gray-200 shadow-sm animate-in slide-in-from-left-4 duration-500">
       {/* Sidebar Header */}
-      <div className="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-gray-50/50">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-white/50">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-lg font-bold shadow-lg shadow-slate-200">f</div>
           <span className="font-black text-lg tracking-tighter text-slate-900 uppercase italic">Faculty Portal</span>
@@ -98,10 +91,10 @@ const Sidebar = ({ onClose }) => {
                   to={item.route}
                   onClick={handleLinkClick}
                   className={({ isActive }) => `
-                    flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-300 group relative
+                    flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-300 group relative
                     ${isActive 
                       ? "bg-slate-900 text-white font-black shadow-xl shadow-slate-200 translate-x-1" 
-                      : "hover:bg-gray-50 text-slate-500 hover:text-slate-900 font-bold"}
+                      : "hover:bg-white text-slate-500 hover:text-slate-900 font-bold"}
                   `}
                 >
                   {({ isActive }) => (
@@ -123,11 +116,11 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       {/* Logout Action Footer */}
-      <div className="p-4 bg-gray-50 border-t border-gray-100">
+      <div className="p-4 bg-white border-t border-gray-100">
             <button
               onClick={handleLogout}
               disabled={loggingOut}
-              className="w-full flex items-center justify-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-rose-600 hover:bg-rose-600 hover:text-white transition-all duration-500 font-black border border-gray-200 shadow-sm active:scale-95 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-3 px-5 py-3.5 rounded-lg bg-white text-rose-600 hover:bg-rose-600 hover:text-white transition-all duration-500 font-black border border-gray-200 shadow-sm active:scale-95 disabled:opacity-50"
             >
               <FiLogOut className="text-lg" />
               <span className="text-[10px] uppercase tracking-[0.4em] italic">{loggingOut ? "Exiting..." : "Logout Session"}</span>
@@ -138,3 +131,6 @@ const Sidebar = ({ onClose }) => {
 };
 
 export default Sidebar;
+
+
+

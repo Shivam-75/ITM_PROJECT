@@ -6,7 +6,7 @@ const courses = [
 
 export default function CourseProgress() {
   return (
-    <section className="bg-white p-6 border rounded-xl">
+    <section className="bg-white p-6 border rounded-lg">
       <h3 className="font-bold mb-4">Active Courses Progress</h3>
 
       {courses.map((c) => (
@@ -27,3 +27,6 @@ export default function CourseProgress() {
     </section>
   );
 }
+
+
+

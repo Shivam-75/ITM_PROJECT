@@ -9,7 +9,7 @@ const ResultCard = memo(({ result }) => {
   const isPass = result.subjects?.every(s => Number(s.marks) >= 4);
 
   return (
-    <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-8 group transition-all duration-300">
+    <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-8 group transition-all duration-300">
       <div className="flex justify-between items-start mb-6">
         <div>
           <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic mb-1 flex items-center gap-2">
@@ -45,7 +45,7 @@ const ResultCard = memo(({ result }) => {
             <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Aggregate Pulse</p>
             <p className="text-3xl font-black text-indigo-900 italic tracking-tighter">{total?.toFixed(1)}</p>
          </div>
-         <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300">
+         <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-300">
             <FiPieChart size={20} />
          </div>
       </div>
@@ -114,12 +114,12 @@ const Result = () => {
                     value={studentId}
                     onChange={(e) => setStudentId(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && fetchResults(studentId)}
-                    className="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-[1.5rem] shadow-sm text-[11px] font-black uppercase text-slate-700 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all"
+                    className="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-lg shadow-sm text-[11px] font-black uppercase text-slate-700 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all"
                 />
             </div>
             <button
                 onClick={() => fetchResults(studentId)}
-                className="p-4 bg-slate-900 text-white rounded-2xl shadow-xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95"
+                className="p-4 bg-slate-900 text-white rounded-lg shadow-xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95"
             >
                 <FiSearch size={20} />
             </button>
@@ -133,8 +133,8 @@ const Result = () => {
           ))}
         </div>
       ) : (
-        <div className="py-32 text-center bg-white rounded-[4rem] border border-slate-50 shadow-sm flex flex-col items-center">
-            <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 text-slate-200">
+        <div className="py-32 text-center bg-white rounded-lg border border-slate-50 shadow-sm flex flex-col items-center">
+            <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-6 text-slate-200">
                 <FiFileText size={32} />
             </div>
             <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.4em] italic mb-2">No records indexed for this ID</h3>
@@ -146,3 +146,6 @@ const Result = () => {
 };
 
 export default Result;
+
+
+

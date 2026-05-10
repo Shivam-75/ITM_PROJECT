@@ -3,54 +3,35 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
 const TeacherSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        lowercase: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    },
-    course: {
-        type: String,
-        required: true,
-        lowercase: true
-
-    },
-    moNumber: {
-        type: Number,
-        required: true,
-
-    },
-    role: {
-        type: String,
-        enum: ['admin', 'faculty'],
-        lowercase: true,
-        default: "faculty"
-    },
-    gender: {
-        type: String,
-        enum: ['male', 'female', 'other'],
-        lowercase: true
-    },
-    isFaculty: {
-        type: Boolean,
-        default: true
-    },
-
-    isBlock: {
-        type: Boolean,
-        default: false
-    },
-    refreshtkn: {
-        type: String,
-        default: "1"
-    }
+    name: { type: String, required: true, lowercase: true },
+    password: { type: String, required: true },
+    email: { type: String, lowercase: true },
+    department: [{ type: String, uppercase: true }],
+    moNumber: { type: Number, required: true },
+    age: { type: Number },
+    gender: { type: String },
+    address: { type: String },
+    qualification: { type: String },
+    higherQualification: { type: String },
+    fatherName: { type: String },
+    aadhaar: { type: String },
+    dob: { type: String },
+    doj: { type: String },
+    maritalStatus: { type: String },
+    image: { type: String, default: "" },
+    employeeId: { type: String, lowercase: true },
+    specialization: { type: String },
+    experience: { type: String },
+    salary: { type: Number, default: null },
+    bankAccount: { type: String, default: "" },
+    role: { type: String, default: "Faculty" },
+    isFaculty: { type: Boolean, default: true },
+    isBlock: { type: Boolean, default: false },
+    refreshtkn: { type: String, default: "1" },
+    permissions: [{ type: Object }],
+    roleName: { type: String },
+    sections: [{ type: String }],
+    semesters: [{ type: String }]
 }, { timestamps: true })
 
 TeacherSchema.pre("save", async function () {
@@ -67,7 +48,7 @@ TeacherSchema.methods.comparePassword = async function (password) {
 TeacherSchema.methods.AccessTokenGenerater = async function () {
     return jwt.sign({
         id: this._id,
-        course: this.course,
+        department: this.department,
         role: this.role,
         name: this.name,
         isFaculty: this.isFaculty
@@ -79,4 +60,4 @@ TeacherSchema.methods.RefreshTokenGenerater = async function () {
         id: this._id
     }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN })
 }
-export const Teacher = new mongoose.model("Teacher", TeacherSchema);
+export const Teacher = mongoose.models.Teacher || mongoose.model("Teacher", TeacherSchema, "teachers");

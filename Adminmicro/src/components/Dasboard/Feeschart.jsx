@@ -7,3 +7,7 @@ const Feeschart = ({ data = [] }) => {
 };
 
 export default memo(Feeschart);
+
+
+
+

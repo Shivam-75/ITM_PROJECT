@@ -54,8 +54,8 @@ export default function ResultList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto py-[70px] bg-white p-6 rounded-lg shadow-sm">
+    <div className="min-h-screen bg-white p-6">
+      <div className="w-full py-[70px] bg-white p-6 rounded-lg shadow-sm">
 
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-4 mb-6">
@@ -79,7 +79,7 @@ export default function ResultList() {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm text-center">
-            <thead className="bg-gray-100">
+            <thead className="bg-white">
               <tr>
                 <th className="border px-3 py-2 text-left">
                   Roll No
@@ -102,7 +102,7 @@ export default function ResultList() {
 
             <tbody>
               {data.map((student, index) => (
-                <tr key={index} className="hover:bg-gray-50">
+                <tr key={index} className="hover:bg-white">
                   <td className="border px-3 py-2 font-semibold text-left">
                     {student.roll}
                   </td>
@@ -153,3 +153,6 @@ export default function ResultList() {
     </div>
   );
 }
+
+
+

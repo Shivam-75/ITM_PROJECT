@@ -42,9 +42,9 @@ const Attendancereport = () => {
       setLoading(true);
       const [attRes, courseRes, secRes, semRes] = await Promise.all([
         axios.get(`${ADMIN_REPORT_URL}/Attendance/All`, { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-sections", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true })
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
       ]);
       
       if (attRes.data.data) setAttendanceList(attRes.data.data);
@@ -121,7 +121,7 @@ const Attendancereport = () => {
         
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-3 px-6 py-3 bg-[#111111] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] italic hover:bg-black transition-all shadow-lg active:scale-95 border border-white/5"
+          className="flex items-center gap-3 px-6 py-3 bg-[#111111] text-white rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-black transition-all shadow-lg active:scale-95 border border-white/5"
         >
           <FiPrinter size={16} />
           Print Audit Report
@@ -129,10 +129,10 @@ const Attendancereport = () => {
       </div>
 
       {/* Main Registry Container */}
-      <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         
         {/* Advanced Filter Toolbar */}
-        <div className="p-8 border-b border-gray-50 space-y-6 bg-gray-50/20">
+        <div className="p-8 border-b border-gray-50 space-y-6 bg-white/20">
            <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
               {/* Search Box */}
               <div className="relative w-full xl:w-96">
@@ -145,7 +145,7 @@ const Attendancereport = () => {
                       setSearchTerm(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
                   />
               </div>
 
@@ -157,7 +157,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.course}
                       onChange={(e) => setFilters(prev => ({ ...prev, course: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-xl text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Courses</option>
                       {courses.map(c => (
@@ -172,7 +172,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.section}
                       onChange={(e) => setFilters(prev => ({ ...prev, section: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-xl text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Sections</option>
                       {sections.map(s => (
@@ -187,7 +187,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.semester}
                       onChange={(e) => setFilters(prev => ({ ...prev, semester: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-xl text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Semesters</option>
                       {semesters.map(s => (
@@ -216,7 +216,7 @@ const Attendancereport = () => {
           ) : (
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/50">
+                <tr className="bg-white/50">
                   <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Timestamp</th>
                   <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Academic Unit</th>
                   <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Subject / Topic</th>
@@ -229,10 +229,10 @@ const Attendancereport = () => {
                   currentRecords.map((item, index) => {
                     const stats = getStats(item.records);
                     return (
-                      <tr key={index} className="group hover:bg-gray-50/80 transition-all">
+                      <tr key={index} className="group hover:bg-white/80 transition-all">
                         <td className="px-8 py-6">
                            <div className="flex items-center gap-4">
-                              <div className="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-red-600 group-hover:text-white transition-all shadow-sm">
+                              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-gray-400 group-hover:bg-red-600 group-hover:text-white transition-all shadow-sm">
                                 <FiCalendar size={18} />
                               </div>
                               <div>
@@ -245,13 +245,13 @@ const Attendancereport = () => {
                         </td>
                         <td className="px-8 py-6">
                            <div className="flex flex-wrap gap-2">
-                              <span className="px-2.5 py-1.5 rounded-xl bg-gray-100 text-[#111111] text-[9px] font-black uppercase italic border border-gray-200">
+                              <span className="px-2.5 py-1.5 rounded-lg bg-white text-[#111111] text-[9px] font-black uppercase italic border border-gray-200">
                                 DEPT: {item.course}
                               </span>
-                              <span className="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-[9px] font-black uppercase italic border border-red-100">
+                              <span className="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 text-[9px] font-black uppercase italic border border-red-100">
                                 SEC: {item.section || 'A'}
                               </span>
-                              <span className="px-2.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase italic border border-emerald-100">
+                              <span className="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase italic border border-emerald-100">
                                 SEM: {item.semester}
                               </span>
                            </div>
@@ -261,7 +261,7 @@ const Attendancereport = () => {
                         </td>
                         <td className="px-8 py-6">
                           <div className="flex flex-col gap-2 w-40">
-                             <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                             <div className="h-2 w-full bg-white rounded-full overflow-hidden">
                                 <div 
                                   className={`h-full transition-all duration-1000 ${stats.percentage > 75 ? 'bg-emerald-500' : 'bg-red-500'}`}
                                   style={{ width: `${stats.percentage}%` }}
@@ -273,7 +273,7 @@ const Attendancereport = () => {
                           </div>
                         </td>
                         <td className="px-8 py-6 text-right">
-                           <span className="text-[9px] font-black uppercase tracking-widest italic text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100 shadow-sm">
+                           <span className="text-[9px] font-black uppercase tracking-widest italic text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 shadow-sm">
                              Registry Logged
                            </span>
                         </td>
@@ -296,16 +296,16 @@ const Attendancereport = () => {
         </div>
 
         {/* Footer Pagination */}
-        <div className="p-8 border-t border-gray-50 bg-gray-50/30 flex items-center justify-between">
+        <div className="p-8 border-t border-gray-50 bg-white/30 flex items-center justify-between">
            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 italic">
               Registry Page {currentPage} of {Math.max(1, totalPages)}
            </p>
            <div className="flex items-center gap-2">
-              <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-2xl shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronLeft size={16} /></button>
+              <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronLeft size={16} /></button>
               {[...Array(totalPages)].map((_, i) => (
-                <button key={i} onClick={() => paginate(i+1)} className={`w-10 h-10 rounded-2xl text-[10px] font-black italic shadow-md transition-all ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-gray-200 text-gray-400 hover:bg-gray-50'}`}>{i+1}</button>
+                <button key={i} onClick={() => paginate(i+1)} className={`w-10 h-10 rounded-lg text-[10px] font-black italic shadow-md transition-all ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-gray-200 text-gray-400 hover:bg-white'}`}>{i+1}</button>
               ))}
-              <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-2xl shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronRight size={16} /></button>
+              <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronRight size={16} /></button>
            </div>
         </div>
       </div>
@@ -314,3 +314,7 @@ const Attendancereport = () => {
 };
 
 export default Attendancereport;
+
+
+
+

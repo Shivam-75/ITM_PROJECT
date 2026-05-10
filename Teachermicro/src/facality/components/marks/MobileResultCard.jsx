@@ -40,3 +40,6 @@ const MobileResultCard = memo(({ result, index }) => (
   </div>
 ));
 export default MobileResultCard;
+
+
+

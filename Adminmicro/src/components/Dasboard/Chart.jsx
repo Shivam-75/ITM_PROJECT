@@ -94,3 +94,7 @@ const Chart = ({ data = [], height = 120, type = "bar" }) => {
 };
 
 export default memo(Chart);
+
+
+
+

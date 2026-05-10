@@ -1,6 +1,6 @@
 export default function StudentQueries() {
   return (
-    <section className="bg-white border rounded-xl">
+    <section className="bg-white border rounded-lg">
       <header className="p-4 border-b font-bold flex justify-between">
         Student Queries
         <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">
@@ -17,3 +17,6 @@ export default function StudentQueries() {
     </section>
   );
 }
+
+
+

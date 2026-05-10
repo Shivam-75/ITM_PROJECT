@@ -116,7 +116,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="bg-gray-200 border-b w-full">
-        <div className="max-w-7xl mx-auto px-4 min-h-[70px] flex items-center justify-between gap-5">
+        <div className="w-full px-4 min-h-[70px] flex items-center justify-between gap-5">
 
           {/* Brand */}
           <h1 className="shrink-0 text-red-800 font-extrabold font-serif text-lg">
@@ -255,3 +255,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+

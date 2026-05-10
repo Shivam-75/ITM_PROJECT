@@ -38,13 +38,17 @@ class AdminVerifation {
             req.adminData = data;
             next();
         } catch (err) {
+            fs.appendFileSync('upload_debug.log', `[${new Date().toISOString()}] AUTH_ERROR: ${err.message}\\n`);
             if (err.response) {
                 return res.status(err.response.status).json({
                     message: err.response.data.message || "Auth failed",
                 });
             }
 
-            return res.status(500).json({ message: err });
+            if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError" || err.message === "jwt expired") {
+                return res.status(401).json({ message: "Access Denied Token Expire !!", status: 401 });
+            }
+            return res.status(500).json({ message: err.message || "Internal Server Error" });
         }
     }
 

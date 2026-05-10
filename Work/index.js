@@ -9,15 +9,13 @@ import { teacherRoutes } from "./src/teacher/routes/teacherRoute.route.js";
 import { TeacherworkRoutes } from "./src/teacher/routes/Teacherwork.routes.js";
 import { adminRoute } from "./src/admin/routes/adminRoute.route.js";
 import { AdminworkRoute } from "./src/admin/routes/Adminwork.routes.js";
-import { studentProfileRoute } from "./src/admin/routes/studentProfile.route.js";
-import { uploadRoute } from "./src/admin/routes/upload.route.js";
 import { studentRoute } from "./src/student/routes/studentRoute.route.js";
 import { StudentWorkRoute } from "./src/student/routes/StudentWork.route.js";
-import { staffRoute } from "./src/admin/routes/staff.route.js";
 import { academicRoute } from "./src/admin/routes/academic.route.js";
-import { feeRoute } from "./src/admin/routes/fee.route.js";
 import { hostelRoute } from "./src/admin/routes/hostel.route.js";
-import { academicDocRoute } from "./src/admin/routes/academicDoc.route.js";
+import { notificationRoute } from "./src/admin/routes/notification.route.js";
+import { placementRoute } from "./src/admin/routes/placement.route.js";
+import { feeRoute } from "./src/admin/routes/fee.route.js";
 
 config();
 
@@ -40,7 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(express.static("public"));
+app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("Welcome To Work & Upload Consolidated MicroServicess #Shivam !!");
@@ -59,13 +57,11 @@ app.use("/api/v2/Admin/Work", AdminworkRoute);
 app.use("/api/v3/Teacher", teacherRoutes);
 app.use("/api/v3/Student", studentRoute);
 app.use("/api/v3/Admin", adminRoute);
-app.use("/api/v3/Profile", studentProfileRoute);
-app.use("/api/v3/Admin/Upload", uploadRoute);
-app.use("/api/v3/Admin/Staff", staffRoute);
 app.use("/api/v3/Admin/Academic", academicRoute);
-app.use("/api/v3/Admin/Fee", feeRoute);
 app.use("/api/v3/Admin/Hostel", hostelRoute);
-app.use("/api/v3/Admin/Document", academicDocRoute);
+app.use("/api/v3/Admin/Notification", notificationRoute);
+app.use("/api/v3/Admin/Placement", placementRoute);
+app.use("/api/v3/Admin/Fee", feeRoute);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

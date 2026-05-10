@@ -25,3 +25,5 @@ const MarksSummary = memo(({ totalMarks, maxMarks, percentage, gradeInfo }) => (
   </div>
 ));
 export default MarksSummary;
+
+

@@ -35,3 +35,4 @@ export const markMessageSeen = (message, studentId) => {
     seenBy: [...message.seenBy, studentId],
   };
 };
+

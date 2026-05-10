@@ -11,7 +11,7 @@ const SubjectRow = memo(({ subject, mark, onChange, error }) => {
   const total = (mark.internal || 0);
 
   return (
-    <tr className="border-b hover:bg-gray-50 transition-colors">
+    <tr className="border-b hover:bg-white transition-colors">
       <td className="px-4 py-3 text-gray-800">{subject.name}</td>
       <td className="px-4 py-3 text-center">
         <input
@@ -33,3 +33,5 @@ const SubjectRow = memo(({ subject, mark, onChange, error }) => {
   );
 });
 export default SubjectRow;
+
+

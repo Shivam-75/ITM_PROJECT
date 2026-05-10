@@ -15,7 +15,7 @@ const StudentTable = ({ students })=> {
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto bg-white rounded shadow">
         <table className="w-full text-sm">
-          <thead className="bg-gray-100">
+          <thead className="bg-white">
             <tr>
               <th className="p-3 text-left">Roll</th>
               <th className="p-3 text-left">Name</th>
@@ -52,3 +52,5 @@ const StudentTable = ({ students })=> {
 };
 
 export default memo(StudentTable);
+
+

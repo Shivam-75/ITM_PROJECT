@@ -41,3 +41,4 @@ const useMarksCalculation = (marks = []) => {
 };
 
 export default useMarksCalculation;
+

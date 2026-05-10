@@ -22,6 +22,8 @@ const Settings = () => {
     deptCode: "",
     hod: "",
     duration: "",
+    description: "",
+    status: "Active"
   });
 
   const [editId, setEditId] = useState(null);
@@ -31,12 +33,12 @@ const Settings = () => {
     try {
       setLoading(true);
       const [courseRes, yearRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/file-years", { withCredentials: true })
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true })
       ]);
       
-      if (courseRes.data.courses) setFileCourses(courseRes.data.courses);
-      if (yearRes.data.years) setYearsList(yearRes.data.years);
+      if (courseRes.data.data) setFileCourses(courseRes.data.data);
+      if (yearRes.data.data) setYearsList(yearRes.data.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -58,13 +60,13 @@ const Settings = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-courses/${editId}`, { withCredentials: true });
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${editId}`, { withCredentials: true });
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/file-courses", courseForm, { withCredentials: true });
+      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/courses", courseForm, { withCredentials: true });
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
-      setCourseForm({ name: "", department: "", deptCode: "", hod: "", duration: "" });
+      setCourseForm({ name: "", department: "", deptCode: "", hod: "", duration: "", description: "", status: "Active" });
       setEditId(null);
     } catch (err) {
       toast.error(err.response?.data?.message || "Operation Error", toststyle);
@@ -80,9 +82,11 @@ const Settings = () => {
       department: course.department,
       deptCode: course.deptCode || "",
       hod: course.hod || "",
-      duration: course.duration
+      duration: course.duration,
+      description: course.description || "",
+      status: course.status || "Active"
     });
-    setEditId(course.id);
+    setEditId(course._id || course.id);
   };
 
   // Delete Course
@@ -90,9 +94,9 @@ const Settings = () => {
     if (!window.confirm("Purge this course from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-courses/${id}`, { withCredentials: true });
+      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${id}`, { withCredentials: true });
       toast.success("Course Purged", toststyle);
-      setFileCourses(prev => prev.filter(c => c.id !== id));
+      setFileCourses(prev => prev.filter(c => (c._id || c.id) !== id));
     } catch (err) {
       toast.error("Purge Failed", toststyle);
     } finally {
@@ -140,8 +144,19 @@ const Settings = () => {
                 <select value={courseForm.duration} onChange={(e) => setCourseForm({ ...courseForm, duration: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold bg-white cursor-pointer transition-all focus:border-blue-500">
                   <option value="">Select Year</option>
                   {yearsList.map(y => (
-                      <option key={y.id} value={y.name}>{y.name}</option>
+                      <option key={y._id || y.id} value={y.name}>{y.name}</option>
                   ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Description</label>
+                <input type="text" placeholder="Course details..." value={courseForm.description} onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Status</label>
+                <select value={courseForm.status} onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold bg-white cursor-pointer transition-all focus:border-blue-500">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
             </div>
@@ -160,9 +175,10 @@ const Settings = () => {
                 <th className="px-6 py-3 border-r border-gray-300 w-[25%] text-center">Course Name</th>
                 <th className="px-6 py-3 border-r border-gray-300 w-[15%] text-center">Dept</th>
                 <th className="px-6 py-3 border-r border-gray-300 w-[10%] text-center">Code</th>
-                <th className="px-6 py-3 border-r border-gray-300 w-[20%] text-center">HOD Name</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[15%] text-center">HOD Name</th>
                 <th className="px-6 py-3 border-r border-gray-300 w-[10%] text-center">Years</th>
-                <th className="px-6 py-3 text-center w-[20%]">Action</th>
+                <th className="px-6 py-3 border-r border-gray-300 w-[10%] text-center">Status</th>
+                <th className="px-6 py-3 text-center w-[15%]">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -170,16 +186,24 @@ const Settings = () => {
                 <tr><td colSpan="6" className="px-6 py-20 text-center text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em] italic">No registry records committed</td></tr>
               ) : (
                 fileCourses.map((c) => (
-                  <tr key={c.id} className="hover:bg-gray-50/50 transition-colors">
+                  <tr key={c._id || c.id} className="hover:bg-white/50 transition-colors">
                     <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{c.name}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{c.department}</td>
                     <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-gray-200 uppercase">{c.deptCode || "-"}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-700 text-center italic border-r border-gray-200">{c.hod || "-"}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{c.duration}</td>
+                    <td className="px-6 py-4 text-center border-r border-gray-200">
+                        <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
+                            c.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
+                            c.status === 'Inactive' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-white text-gray-600 border border-gray-200'
+                        }`}>
+                            {c.status || "Active"}
+                        </span>
+                    </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button onClick={() => triggerEdit(c)} className="bg-[#3c8dbc] text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm hover:bg-[#367fa9]">Edit</button>
-                        <button onClick={() => handleDeleteCourse(c.id)} className="bg-[#dd4b39] text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm hover:bg-[#d73925]">Delete</button>
+                        <button onClick={() => handleDeleteCourse(c._id || c.id)} className="bg-[#dd4b39] text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm hover:bg-[#d73925]">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -195,3 +219,7 @@ const Settings = () => {
 };
 
 export default Settings;
+
+
+
+

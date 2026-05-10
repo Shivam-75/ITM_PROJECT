@@ -4,14 +4,10 @@ import { toast } from "react-toastify";
 
 const AdministratorRegistration = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    role: "Admin",
-    department: "",
+    name: "",
+    mobNumber: "",
     password: "",
-    confirmPassword: "",
-    address: "",
+    superAdmin: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,17 +17,27 @@ const AdministratorRegistration = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      toast.success("Administrator Profile Created Successfully!", {
-        theme: "colored",
-        icon: "🚀"
-      });
-    }, 1500);
+    try {
+      const axios = (await import("axios")).default;
+      const payload = {
+          name: formData.name,
+          mobNumber: Number(formData.mobNumber),
+          password: formData.password,
+          superAdmin: formData.superAdmin
+      };
+      const res = await axios.post("http://localhost:5000/api/v1/Admin/registration", payload, { withCredentials: true });
+      if (res.status === 201 || res.status === 200) {
+          toast.success("Administrator Profile Created Successfully!", { theme: "colored", icon: "🚀" });
+          setFormData({ name: "", mobNumber: "", password: "", superAdmin: false });
+      }
+    } catch (err) {
+        toast.error(err.response?.data?.message || "Registration Failed");
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -51,7 +57,7 @@ const AdministratorRegistration = () => {
       <div className="max-w-4xl">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Section: Profile Identity */}
-          <div className="bg-white p-8 md:p-10 rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50 relative overflow-hidden group">
+          <div className="bg-white p-8 md:p-10 rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
                <FiShield size={120} className="text-red-600" />
             </div>
@@ -63,117 +69,56 @@ const AdministratorRegistration = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Canonical Name</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Canonical Name (name)</label>
                 <div className="relative">
                   <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                   <input
-                    type="text" name="fullName" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
-                    placeholder="Enter full legal name"
-                    value={formData.fullName} onChange={handleChange}
+                    type="text" name="name" required
+                    className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
+                    placeholder="Enter unique admin name"
+                    value={formData.name} onChange={handleChange}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Secure Email Node</label>
-                <div className="relative">
-                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                  <input
-                    type="email" name="email" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
-                    placeholder="admin@itm.edu"
-                    value={formData.email} onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Communication Link</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Secure Contact (mobNumber)</label>
                 <div className="relative">
                   <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                   <input
-                    type="tel" name="phone" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
-                    placeholder="+91 00000 00000"
-                    value={formData.phone} onChange={handleChange}
+                    type="number" name="mobNumber" required
+                    className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
+                    placeholder="91XXXXXXXX"
+                    value={formData.mobNumber} onChange={handleChange}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Assigned Department</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Super Admin Privileges</label>
                 <div className="relative">
                   <FiShield className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                   <select
-                    name="department" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all appearance-none cursor-pointer"
-                    value={formData.department} onChange={handleChange}
+                    name="superAdmin" required
+                    className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all appearance-none cursor-pointer"
+                    value={formData.superAdmin} onChange={(e) => setFormData({...formData, superAdmin: e.target.value === 'true'})}
                   >
-                    <option value="">Select Department</option>
-                    <option value="Executive">Executive Office</option>
-                    <option value="Academic">Academic Affairs</option>
-                    <option value="Admission">Admission Control</option>
-                    <option value="Finance">Financial Audit</option>
+                    <option value="false">Standard Admin</option>
+                    <option value="true">Super Administrator</option>
                   </select>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Section: Security Matrix */}
-          <div className="bg-white p-8 md:p-10 rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50">
-            <h3 className="text-[11px] font-black text-red-600 uppercase tracking-widest mb-8 flex items-center gap-3 italic">
-              <span className="w-6 h-[2px] bg-red-600"></span>
-              Security Authentication
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Establish Security Key</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Access Key</label>
                 <div className="relative">
                   <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                   <input
                     type="password" name="password" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
                     placeholder="••••••••"
                     value={formData.password} onChange={handleChange}
                   />
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Confirm Security Key</label>
-                <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                  <input
-                    type="password" name="confirmPassword" required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
-                    placeholder="••••••••"
-                    value={formData.confirmPassword} onChange={handleChange}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Section: Residence Metadata */}
-          <div className="bg-white p-8 md:p-10 rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50">
-            <h3 className="text-[11px] font-black text-red-600 uppercase tracking-widest mb-8 flex items-center gap-3 italic">
-              <span className="w-6 h-[2px] bg-red-600"></span>
-              Locational Metadata
-            </h3>
-
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Registered Address</label>
-              <div className="relative">
-                <FiMapPin className="absolute left-4 top-5 text-slate-300" />
-                <textarea
-                  name="address"
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all h-32 resize-none"
-                  placeholder="Enter full residential details"
-                  value={formData.address} onChange={handleChange}
-                ></textarea>
               </div>
             </div>
           </div>
@@ -181,7 +126,7 @@ const AdministratorRegistration = () => {
           <div className="flex justify-end pt-4">
             <button
               type="submit" disabled={loading}
-              className="px-12 py-5 bg-slate-900 text-white rounded-[2rem] text-[13px] font-black uppercase tracking-[0.3em] shadow-2xl hover:bg-red-600 transition-all active:scale-95 flex items-center gap-4 italic group"
+              className="px-12 py-5 bg-slate-900 text-white rounded-lg text-[13px] font-black uppercase tracking-[0.3em] shadow-2xl hover:bg-red-600 transition-all active:scale-95 flex items-center gap-4 italic group"
             >
               {loading ? (
                 "Processing Registry..."
@@ -200,3 +145,7 @@ const AdministratorRegistration = () => {
 };
 
 export default AdministratorRegistration;
+
+
+
+

@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   console.log("Multer FileFilter - Mimetype:", file.mimetype);
-  if (file.mimetype.startsWith("image/")) {
+  if (file.mimetype.startsWith("image/") || file.mimetype === "application/pdf") {
     cb(null, true);
   } else {
     console.warn("Multer FileFilter - Rejected mimetype:", file.mimetype);

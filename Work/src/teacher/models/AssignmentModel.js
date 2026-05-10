@@ -1,19 +1,17 @@
 import mongoose from "mongoose";
 
-const AssignmnetSchema = new mongoose.Schema({
+const AssignmentSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true
     },
     subject: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     semester: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     section: {
         type: String,
@@ -25,13 +23,11 @@ const AssignmnetSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: true,
-        lowercase: true
+        required: true
     },
     questions: {
         type: [String],
-        required: true,
-        lowercase: true
+        required: true
     },
     submissionDate: {
         type: String,
@@ -41,4 +37,4 @@ const AssignmnetSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-export const Assignment = mongoose.models.Assignmnet || mongoose.model("Assignmnet", AssignmnetSchema);
+export const Assignment = mongoose.models.Assignment || mongoose.model("Assignment", AssignmentSchema, "assignmnets");

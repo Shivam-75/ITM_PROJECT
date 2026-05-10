@@ -14,12 +14,33 @@ const StudentTokenData = async (userId) => {
 }
 
 class StudentController {
+    static async GetNextId(req, res) {
+        try {
+            const { course, year } = req.query;
+            if (!course || !year) {
+                return res.status(400).json({ message: "Course and Year required" });
+            }
+
+            const yearSuffix = year.toString().slice(-2) || "26";
+            const courseCode = course.split(" ")[0].toUpperCase();
+            
+            const count = await Student.countDocuments({ course, year });
+            const serial = (count + 1).toString().padStart(2, '0');
+            
+            const nextId = `ITM/${yearSuffix}/${courseCode}/${serial}`;
+            return res.status(200).json({ nextId });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
     static async Registration(req, res) {
         try {
             const {
-                name, course, year, moNumber, collegeName, stream,
+                name, course, year, moNumber, stream,
                 passingYear, caste, gender, board, parentName,
-                parentMobile, motherName, address, id, semester, section
+                parentMobile, motherName, address, id, semester, section,
+                batch, image, totalFee
             } = req.body;
 
             if (!name || !course || !year || !moNumber || !semester || !section) {
@@ -31,11 +52,23 @@ class StudentController {
                 return res.status(401).json({ message: "Student with this Mobile already exists !!", status: 401 });
             }
 
-            // Default password is the mobile number for first-time access
-            const password = moNumber.toString();
+            // Passwords are left blank/handled by the model default if not provided
+            const password = req.body.password || "";
+
+            // 🔹 Automatic ID Generation: ITM/YEAR/COURSE/SERIAL
+            let finalStudentId = id;
+            if (!finalStudentId) {
+                const yearSuffix = year.toString().slice(-2) || "26";
+                const courseCode = course.split(" ")[0].toUpperCase();
+                
+                // Count existing students in this course & year to determine serial
+                const count = await Student.countDocuments({ course, year });
+                const serial = (count + 1).toString().padStart(2, '0');
+                
+                finalStudentId = `ITM/${yearSuffix}/${courseCode}/${serial}`;
+            }
 
             const studentCreate = await Student.create({
-                collegeName,
                 name,
                 course,
                 year,
@@ -49,10 +82,13 @@ class StudentController {
                 parentMobile,
                 motherName,
                 address,
-                studentId: id,
+                studentId: finalStudentId,
                 password,
                 semester,
-                section
+                section,
+                batch,
+                image,
+                totalFee
             });
 
             const findUser = await Student.findById(studentCreate._id).select("-password -isBlock -refreshtkn");
@@ -176,7 +212,7 @@ class StudentController {
 
             const userVerification = await Student.findById(Decode.id).select("-password -isBlock");
 
-            if (userVerification.refreshtkn.toString() !== studentRefreshToken.toString()) {
+            if (!userVerification || userVerification.refreshtkn.toString() !== studentRefreshToken.toString()) {
                 return res.status(400).json({ message: "unAuthoirze Access !!", status: 400 });
             }
 

@@ -27,8 +27,8 @@ const Examdashboard = () => {
   const notEligible = students.filter((s) => s.attendance < 75);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white p-6">
+      <div className="w-full">
 
         {/* HEADER */}
         <div className="mb-6">
@@ -42,19 +42,19 @@ const Examdashboard = () => {
 
         {/* SUMMARY CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <p className="text-sm text-gray-500">Total Students</p>
             <p className="text-3xl font-bold mt-2">{exam.total}</p>
           </div>
 
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <p className="text-sm text-gray-500">Present</p>
             <p className="text-3xl font-bold text-green-600 mt-2">
               {exam.present}
             </p>
           </div>
 
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <p className="text-sm text-gray-500">Absent</p>
             <p className="text-3xl font-bold text-red-600 mt-2">
               {exam.absent}
@@ -66,7 +66,7 @@ const Examdashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
 
           {/* DONUT CHART */}
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <h2 className="text-sm font-semibold text-gray-700 mb-4">
               Attendance Distribution
             </h2>
@@ -107,7 +107,7 @@ const Examdashboard = () => {
           </div>
 
           {/* LINE STYLE BAR GRAPH */}
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <h2 className="text-sm font-semibold text-gray-700 mb-6">
               Present vs Absent (Line View)
             </h2>
@@ -158,14 +158,14 @@ const Examdashboard = () => {
 
         {/* D-10 ELIGIBILITY CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <p className="text-sm text-gray-500">Eligible (≥ 75%)</p>
             <p className="text-3xl font-bold text-green-600 mt-2">
               {eligible.length}
             </p>
           </div>
 
-          <div className="bg-white border rounded-xl p-6">
+          <div className="bg-white border rounded-lg p-6">
             <p className="text-sm text-gray-500">Not Eligible (&lt; 75%)</p>
             <p className="text-3xl font-bold text-red-600 mt-2">
               {notEligible.length}
@@ -174,13 +174,13 @@ const Examdashboard = () => {
         </div>
 
         {/* D-10 LIST */}
-        <div className="bg-white border rounded-xl p-6">
+        <div className="bg-white border rounded-lg p-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             D-10 Eligibility List (Attendance Based)
           </h2>
 
           <table className="w-full text-sm border">
-            <thead className="bg-gray-100">
+            <thead className="bg-white">
               <tr>
                 <th className="border px-3 py-2 text-left">Roll No</th>
                 <th className="border px-3 py-2 text-left">Student Name</th>
@@ -215,3 +215,7 @@ const Examdashboard = () => {
 };
 
 export default Examdashboard;
+
+
+
+

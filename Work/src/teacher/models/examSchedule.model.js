@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
-const examScheduleSchema = new mongoose.Schema({
+const examSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     },
     ct: {
         type: Number,
-        required: true,
-        enum: [1, 2, 3]
+        required: true
     },
     Subject: {
         type: String,
@@ -36,7 +36,11 @@ const examScheduleSchema = new mongoose.Schema({
     RoomNo: {
         type: String,
         required: true
+    },
+    isApproved: {
+        type: Boolean,
+        default: false
     }
-});
+}, { timestamps: true });
 
-export const Exam = mongoose.model("Exam", examScheduleSchema);
+export const Exam = mongoose.models.Exam || mongoose.model("Exam", examSchema, "exams");

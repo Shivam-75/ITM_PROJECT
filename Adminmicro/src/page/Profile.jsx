@@ -28,13 +28,13 @@ const Profile = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       {/* Header Profile Section */}
-      <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden w-[98%] mx-auto md:w-full">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden w-[98%] mx-auto md:w-full">
         <div className="h-32 bg-gradient-to-r from-[#111111] to-red-900 relative">
           <div className="absolute -bottom-12 left-10">
-            <div className="w-24 h-24 bg-white rounded-3xl p-1.5 shadow-xl">
-               <div className="w-full h-full bg-[#111111] rounded-2xl flex items-center justify-center text-white text-3xl font-black italic border-4 border-gray-50">
+            <div className="w-24 h-24 bg-white rounded-lg p-1.5 shadow-xl">
+               <div className="w-full h-full bg-[#111111] rounded-lg flex items-center justify-center text-white text-3xl font-black italic border-4 border-gray-50">
                   {profile?.name?.[0] || "A"}
                </div>
             </div>
@@ -51,7 +51,7 @@ const Profile = () => {
               Master Administrative Access
             </p>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 active:scale-95">
+          <button className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 active:scale-95">
             <FiEdit3 />
             Edit Profile
           </button>
@@ -61,9 +61,9 @@ const Profile = () => {
       {/* Profile Details Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Contact Info */}
-        <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 space-y-6 md:col-span-2 w-[98%] mx-auto md:w-full">
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100 space-y-6 md:col-span-2 w-[98%] mx-auto md:w-full">
           <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-            <div className="w-8 h-8 bg-red-50 text-red-600 rounded-xl flex items-center justify-center italic font-black text-sm">C</div>
+            <div className="w-8 h-8 bg-red-50 text-red-600 rounded-lg flex items-center justify-center italic font-black text-sm">C</div>
             Account Information
           </h2>
           
@@ -103,14 +103,14 @@ const Profile = () => {
         </div>
 
         {/* Status Card */}
-        <div className="bg-[#111111] rounded-[2rem] p-8 shadow-xl text-white space-y-6 w-[98%] mx-auto md:w-full">
+        <div className="bg-[#111111] rounded-lg p-8 shadow-xl text-white space-y-6 w-[98%] mx-auto md:w-full">
           <h2 className="text-xs font-black text-red-500 uppercase tracking-widest flex items-center gap-3 italic">
             <FiShield size={18} />
             Security Status
           </h2>
           
           <div className="space-y-6 pt-2">
-            <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+            <div className="p-4 bg-white/5 rounded-lg border border-white/5">
               <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1">Last Login</p>
               <div className="flex items-center gap-2 text-xs font-bold italic">
                 <FiCalendar className="text-red-500" />
@@ -118,7 +118,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+            <div className="p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
               <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest mb-1">Session Health</p>
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 italic">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -126,7 +126,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <button className="w-full py-4 bg-white/5 hover:bg-white/10 text-[10px] font-black uppercase tracking-widest rounded-2xl border border-white/10 transition-all italic">
+            <button className="w-full py-4 bg-white/5 hover:bg-white/10 text-[10px] font-black uppercase tracking-widest rounded-lg border border-white/10 transition-all italic">
               View Security Logs
             </button>
           </div>
@@ -137,3 +137,7 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+
+

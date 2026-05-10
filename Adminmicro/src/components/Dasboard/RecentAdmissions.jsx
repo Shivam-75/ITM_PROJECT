@@ -37,3 +37,7 @@ const RecentAdmissionss = memo(() => {
 });
 
 export default RecentAdmissionss;
+
+
+
+

@@ -118,7 +118,7 @@ class TeacherController {
         try {
             const user = req.user;
 
-            const userLogout = await Teacher.findByIdAndUpdate(user.id, { refreshToken: 1 }, { new: true }).select("-password");
+            const userLogout = await Teacher.findByIdAndUpdate(user.id, { refreshtkn: "1" }, { new: true }).select("-password");
 
             const option = {
                 httpOnly: true,
@@ -147,8 +147,8 @@ class TeacherController {
                 return res.status(400).json({ message: "invalid refresh token !!", status: 400 })
             }
 
-            if (userFind.refreshtkn !== teacherRefreshToken) {
-                return res.status(403).json({ messasge: "Access Denied !!", status: 403 });
+            if (!userFind || userFind.refreshtkn.toString() !== teacherRefreshToken.toString()) {
+                return res.status(403).json({ message: "Access Denied !!", status: 403 });
             }
             const { creatAccessToken, createRefreshToken } = await CreateTokenData(userFind._id);
 

@@ -8,13 +8,13 @@ import Loader from "../common/Loader";
 import { NavLink } from "react-router-dom";
 
 const StatCard = memo(({ title, value, icon: Icon, colorClass, trend }) => (
-  <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-100 transition-all group overflow-hidden relative">
-    <div className="absolute -right-4 -top-4 w-24 h-24 bg-slate-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <div className="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-100 transition-all group overflow-hidden relative">
+    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
     <div className="flex justify-between items-start mb-4 relative z-10">
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl ${colorClass} group-hover:scale-110 transition-transform duration-500`}>
+      <div className={`w-14 h-14 rounded-lg flex items-center justify-center text-white shadow-xl ${colorClass} group-hover:scale-110 transition-transform duration-500`}>
         <Icon size={26} />
       </div>
-      <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-xl uppercase tracking-widest">{trend || "+0%"}</span>
+      <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg uppercase tracking-widest">{trend || "+0%"}</span>
     </div>
     <div className="relative z-10">
       <h3 className="text-3xl font-black text-slate-900 tracking-tighter">{value}</h3>
@@ -28,7 +28,7 @@ const LiveScheduleItem = ({ lecture, isLast }) => {
   const isOngoing = lecture.time.toLowerCase().includes("10:30") || lecture.time.toLowerCase().includes("am"); // Placeholder logic
 
   return (
-    <div className={`relative flex gap-6 p-6 transition-all duration-300 group hover:bg-slate-50/80 rounded-[2rem] ${!isLast ? 'mb-2' : ''}`}>
+    <div className={`relative flex gap-6 p-6 transition-all duration-300 group hover:bg-white/80 rounded-lg ${!isLast ? 'mb-2' : ''}`}>
       {/* Time Column */}
       <div className="flex flex-col items-center min-w-[80px]">
          <span className="text-[11px] font-black text-slate-900 uppercase italic tracking-tighter">{lecture.time.split('-')[0]}</span>
@@ -50,7 +50,7 @@ const LiveScheduleItem = ({ lecture, isLast }) => {
             </div>
             
             <div className="flex items-center gap-4">
-               <div className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 text-slate-500 rounded-lg group-hover:bg-white transition-colors border border-transparent group-hover:border-slate-100">
+               <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white text-slate-500 rounded-lg group-hover:bg-white transition-colors border border-transparent group-hover:border-slate-100">
                   <FiUsers size={12} />
                   <span className="text-[9px] font-black uppercase tracking-widest">{lecture.info}</span>
                </div>
@@ -61,7 +61,7 @@ const LiveScheduleItem = ({ lecture, isLast }) => {
             </div>
          </div>
 
-         <button className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-indigo-600 group-hover:border-indigo-100 group-hover:shadow-lg group-hover:shadow-indigo-50 transition-all active:scale-90">
+         <button className="w-10 h-10 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-indigo-600 group-hover:border-indigo-100 group-hover:shadow-lg group-hover:shadow-indigo-50 transition-all active:scale-90">
             <FiArrowRight />
          </button>
       </div>
@@ -137,7 +137,7 @@ const Dashboard = () => {
       )}
 
       {/* Hero Welcome */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-slate-900 p-10 rounded-[3rem] text-white relative overflow-hidden shadow-2xl shadow-slate-200">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white p-10 rounded-lg text-slate-900 border border-slate-200 shadow-sm relative overflow-hidden shadow-2xl shadow-slate-200">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
         <div className="space-y-3 relative z-10">
           <div className="flex items-center gap-3">
@@ -154,7 +154,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl shadow-xl text-xs font-black text-white uppercase tracking-widest italic backdrop-blur-xl group hover:bg-indigo-600 hover:border-indigo-500 transition-all cursor-default relative z-10">
+        <div className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-lg shadow-xl text-xs font-black text-white uppercase tracking-widest italic backdrop-blur-xl group hover:bg-indigo-600 hover:border-indigo-500 transition-all cursor-default relative z-10">
            <FiCalendar className="text-indigo-400 group-hover:text-white group-hover:scale-125 transition-all" />
            {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
         </div>
@@ -172,7 +172,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         
         {/* PREMIUM LIVE SCHEDULE TIMELINE */}
-        <div className="lg:col-span-8 bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
+        <div className="lg:col-span-8 bg-white rounded-lg p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
            <div className="flex items-center justify-between mb-12">
               <div className="space-y-1">
                   <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest italic flex items-center gap-3">
@@ -181,14 +181,14 @@ const Dashboard = () => {
                   </h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tracking your current day lecture capacity</p>
               </div>
-              <NavLink to="/timetable" className="px-5 py-2.5 bg-slate-50 text-[10px] font-black text-slate-500 hover:bg-slate-900 hover:text-white rounded-xl uppercase tracking-widest transition-all italic border border-slate-100">
+              <NavLink to="/timetable" className="px-5 py-2.5 bg-white text-[10px] font-black text-slate-500 hover:bg-slate-900 hover:text-white rounded-lg uppercase tracking-widest transition-all italic border border-slate-100">
                  Manage TimeTable
               </NavLink>
            </div>
            
            <div className="space-y-4">
               {todayClasses.length === 0 ? (
-                <div className="py-20 text-center border-2 border-dashed border-slate-50 rounded-[2.5rem]">
+                <div className="py-20 text-center border-2 border-dashed border-slate-50 rounded-lg">
                     <FiClock size={40} className="mx-auto text-slate-100 mb-4" />
                     <p className="text-[11px] font-black text-slate-300 uppercase tracking-[0.3em]">Zero classes assigned for today.</p>
                 </div>
@@ -206,27 +206,27 @@ const Dashboard = () => {
 
         {/* Right Insights */}
         <div className="lg:col-span-4 space-y-8">
-             <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-[3rem] p-10 text-white relative overflow-hidden group shadow-2xl shadow-indigo-200 group">
+             <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-lg p-10 text-white relative overflow-hidden group shadow-2xl shadow-indigo-200 group">
                 <div className="absolute top-0 right-0 w-40 h-40 -mr-16 -mt-16 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000"></div>
                 <div className="relative z-10">
-                    <div className="p-3 bg-white/10 w-fit rounded-2xl mb-6 border border-white/5 backdrop-blur-md">
+                    <div className="p-3 bg-white/10 w-fit rounded-lg mb-6 border border-white/5 backdrop-blur-md">
                         <FiMessageCircle size={24} />
                     </div>
                     <h3 className="text-2xl font-black uppercase italic tracking-tight mb-3">Institutional Inbox</h3>
                     <p className="text-[11px] font-bold opacity-60 uppercase tracking-[0.2em] mb-10 leading-relaxed">Broadcast messages or connect with your students directly through the internal network.</p>
-                    <NavLink to="/message" className="block text-center w-full py-4 bg-white text-indigo-600 text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-slate-900 hover:text-white transition-all shadow-xl shadow-indigo-900/20 italic">
+                    <NavLink to="/message" className="block text-center w-full py-4 bg-white text-indigo-600 text-[10px] font-black uppercase tracking-[0.4em] rounded-lg hover:bg-slate-900 hover:text-white transition-all shadow-xl shadow-indigo-900/20 italic">
                        Open Interface
                     </NavLink>
                 </div>
              </div>
 
-             <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
+             <div className="bg-white rounded-lg p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
                 <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-black">85%</div>
+                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center font-black">85%</div>
                     <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest font-black">Course Completion</h4>
                 </div>
                 <div className="relative h-20 flex items-center">
-                    <div className="absolute inset-0 bg-slate-50 rounded-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-white rounded-lg overflow-hidden">
                         <div className="h-full w-[85%] bg-emerald-500 relative group-hover:w-[88%] transition-all duration-1000">
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 animate-shimmer"></div>
                         </div>
@@ -256,3 +256,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+

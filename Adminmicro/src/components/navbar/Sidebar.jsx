@@ -137,7 +137,7 @@ const Sidebar = ({ isMobile, onClose }) => {
   return (
     <div className={`h-full bg-white text-gray-700 flex flex-col border-r border-gray-100`}>
       {/* Sidebar Header */}
-      <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100 bg-gray-50/50">
+      <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100 bg-white/50">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white font-black italic shadow-md shadow-red-600/20">
             ITM
@@ -149,7 +149,7 @@ const Sidebar = ({ isMobile, onClose }) => {
         {isMobile && (
           <button 
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition-all"
+            className="p-2 text-gray-400 hover:text-black hover:bg-white rounded-lg transition-all"
           >
             <FiX size={24} />
           </button>
@@ -177,25 +177,25 @@ const Sidebar = ({ isMobile, onClose }) => {
                 <>
                   <button
                     onClick={() => toggleMenu(menu.title)}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all group ${
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all group ${
                       isParentOfActive 
-                        ? 'bg-[#0f172a] text-white shadow-lg' 
+                        ? 'text-red-600 bg-red-50/30' 
                         : openMenus[menu.title] 
-                          ? 'bg-gray-50 text-gray-900' 
-                          : 'hover:bg-gray-50'
+                          ? 'bg-white text-gray-900' 
+                          : 'hover:bg-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className={`${isParentOfActive ? 'text-white' : openMenus[menu.title] ? 'text-red-500' : 'text-gray-400 group-hover:text-red-500'}`}>
+                      <span className={`${isParentOfActive ? 'text-red-600' : openMenus[menu.title] ? 'text-red-500' : 'text-gray-400 group-hover:text-red-500'}`}>
                         {menu.icon}
                       </span>
-                      <span className={`text-[12px] font-bold tracking-wide uppercase ${isParentOfActive ? 'text-white' : 'text-slate-800'}`}>
+                      <span className={`text-[12px] font-bold tracking-wide uppercase ${isParentOfActive ? 'text-red-600' : 'text-slate-800'}`}>
                         {menu.title}
                       </span>
                     </div>
                     {openMenus[menu.title] ? 
-                      <FiChevronDown size={14} className={isParentOfActive ? 'text-white/70' : 'text-gray-400'} /> : 
-                      <FiChevronRight size={14} className={isParentOfActive ? 'text-white/70' : 'text-gray-400'} />
+                      <FiChevronDown size={14} className={isParentOfActive ? 'text-red-600/70' : 'text-gray-400'} /> : 
+                      <FiChevronRight size={14} className={isParentOfActive ? 'text-red-600/70' : 'text-gray-400'} />
                     }
                   </button>
                   {openMenus[menu.title] && (
@@ -210,7 +210,7 @@ const Sidebar = ({ isMobile, onClose }) => {
                             className={`block py-2 px-3 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all ${
                               isChildActive 
                                 ? 'text-red-500 bg-red-50/50' 
-                                : 'text-slate-500 hover:text-slate-900 hover:bg-gray-50'
+                                : 'text-slate-500 hover:text-slate-900 hover:bg-white'
                             }`}
                           >
                             {child.name}
@@ -225,17 +225,17 @@ const Sidebar = ({ isMobile, onClose }) => {
                   to={menu.route}
                   onClick={isMobile ? onClose : undefined}
                   className={({ isActive }) => 
-                    `flex items-center gap-3 p-3 rounded-xl transition-all group ${
+                    `flex items-center gap-3 p-3 rounded-lg transition-all group ${
                       isActive 
-                        ? 'bg-[#0f172a] text-white shadow-lg' 
-                        : 'hover:bg-gray-50'
+                        ? 'text-red-600 bg-red-50/30' 
+                        : 'hover:bg-white'
                     }`
                   }
                 >
                   {({ isActive }) => (
                     <>
-                      <span className={`${isActive ? 'text-white' : 'text-gray-400 group-hover:text-red-500'} transition-colors`}>{menu.icon}</span>
-                      <span className={`text-[12px] font-bold tracking-wide uppercase ${isActive ? 'text-white' : 'text-slate-800'}`}>{menu.title}</span>
+                      <span className={`${isActive ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500'} transition-colors`}>{menu.icon}</span>
+                      <span className={`text-[12px] font-bold tracking-wide uppercase ${isActive ? 'text-red-600' : 'text-slate-800'}`}>{menu.title}</span>
                     </>
                   )}
                 </NavLink>
@@ -246,10 +246,10 @@ const Sidebar = ({ isMobile, onClose }) => {
       </div>
 
       {/* Footer / User Session Info */}
-      <div className="p-4 border-t border-gray-100 bg-gray-50/50 space-y-3">
+      <div className="p-4 border-t border-gray-100 bg-white/50 space-y-3">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl transition-all bg-white border border-gray-100 shadow-sm hover:shadow-md text-red-500 font-bold uppercase tracking-[0.2em] text-[11px] italic"
+          className="w-full flex items-center justify-center gap-3 p-4 rounded-lg transition-all bg-white border border-gray-100 shadow-sm hover:shadow-md text-red-500 font-bold uppercase tracking-[0.2em] text-[11px] italic"
         >
           <FiLogOut size={16} />
           <span>Logout Session</span>
@@ -260,3 +260,7 @@ const Sidebar = ({ isMobile, onClose }) => {
 };
 
 export default Sidebar;
+
+
+
+

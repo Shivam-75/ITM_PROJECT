@@ -7,3 +7,4 @@ export const dummyLectures = [
     link: "https://youtube.com/watch?v=abcd",
   },
 ];
+

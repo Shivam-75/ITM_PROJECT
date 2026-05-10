@@ -3,9 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./ui/Layout";
 import Dashboards from "./page/Dashboard";
 import Profile from "./page/Profile";
-import Feedashboard from "./Fee/FeeDeshboard";
 import Feestructure from "./Fee/FeeStructure";
-import Feepayment from "./Fee/FeePayment";
 import Studentlist from "./academic/student/Studentlist";
 import Studentadd from "./academic/student/Studentadd";
 import Faculitylist from "./academic/faculity/Faculitylist";
@@ -20,14 +18,14 @@ import Hosteldeshboard from "./components/navbar/Hostel/Hosteldeshboard";
 import Roomallocation from "./components/navbar/Hostel/Roomallocation";
 import Hostelstudent from "./components/navbar/Hostel/Hostelstudent";
 import Hostelfee from "./components/navbar/Hostel/Hostelfee";
-import Hostelcomplaint from "./components/navbar/Hostel/Hostelcomplaint";
+import HostelFeeRegistry from "./components/navbar/Hostel/HostelFeeRegistry";
 import Settings from "./page/Settings";
 import SectionRegistry from "./academic/section/SectionRegistry";
 import SemesterRegistry from "./academic/semester/SemesterRegistry";
 import YearRegistry from "./academic/year/YearRegistry";
-import AcademicDocs from "./components/navbar/Exam/AcademicDocs";
+import BatchRegistry from "./academic/batch/BatchRegistry";
 import AdministratorRegistration from "./page/AdministratorRegistration";
-import TeacherRegistration from "./page/TeacherRegistration";
+import PlacementDashboard from "./components/navbar/Placement/PlacementDashboard";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -44,17 +42,10 @@ const App = () => {
           element: <Profile />,
         },
         {
-          path: "fees",
-          element: <Feedashboard />,
-        },
-        {
           path: "fee-structure",
           element: <Feestructure />,
         },
-        {
-          path: "fee-payments",
-          element: <Feepayment />,
-        },
+
         {
           path: "sections",
           element: <SectionRegistry />,
@@ -66,6 +57,10 @@ const App = () => {
         {
           path: "years",
           element: <YearRegistry />,
+        },
+        {
+          path: "batches",
+          element: <BatchRegistry />,
         },
         {
           path: "subjects",
@@ -93,8 +88,8 @@ const App = () => {
           element:<Hostelfee />
         },
         {
-          path:"/hostel/complaints",
-          element:<Hostelcomplaint />
+          path:"/hostel/fee-registry",
+          element:<HostelFeeRegistry />
         },
         {
           path:"exams",
@@ -109,8 +104,8 @@ const App = () => {
           element:<Exams />
         },
         {
-          path:"academic-docs",
-          element:<AcademicDocs />
+          path:"placements",
+          element:<PlacementDashboard />
         },
         {
           path:"attendance-report",
@@ -144,10 +139,6 @@ const App = () => {
           element: <AdministratorRegistration />,
         },
         {
-          path: "teacher-registration",
-          element: <TeacherRegistration />,
-        },
-        {
           path: "admin/settings/:tab?",
           element: <Settings />,
         },
@@ -158,3 +149,7 @@ const App = () => {
   return <RouterProvider router={routes} />;
 };
 export default App;
+
+
+
+

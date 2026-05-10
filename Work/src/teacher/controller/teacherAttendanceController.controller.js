@@ -5,25 +5,28 @@ class TeacherAttendanceController {
         const teacherId = req.user.id;
 
         try {
-            const { date, subject, course, semester, section, records } = req.body;
+            const { date, subject, course, semester, section, batch, year, period, students } = req.body;
 
-            if (!date || !subject || !course || !semester || !section || !records) {
+            if (!date || !subject || !course || !semester || !section || !batch || !year || !period || !students) {
                 return res.status(400).json({ message: "Fill all columns properly", status: 400 });
             }
 
-            // Upsert attendance for the given date and class
+            // Upsert attendance for the given date, class, and period
             const existingRecord = await Attendance.findOne({
                 date,
-                subject: subject.toLowerCase(),
-                course: course.toLowerCase(),
-                semester: Number(semester),
-                section: section.toLowerCase()
+                subject,
+                course,
+                semester,
+                section,
+                period
             });
 
             if (existingRecord) {
                 // Update existing
-                existingRecord.records = records;
+                existingRecord.students = students;
                 existingRecord.teacherId = teacherId;
+                existingRecord.batch = batch;
+                existingRecord.year = year;
                 await existingRecord.save();
 
                 return res.status(200).json({
@@ -39,9 +42,12 @@ class TeacherAttendanceController {
                 date,
                 subject,
                 course,
-                semester: Number(semester),
+                semester,
                 section,
-                records
+                batch,
+                year,
+                period,
+                students
             });
 
             return res.status(201).json({
@@ -58,8 +64,13 @@ class TeacherAttendanceController {
     static async viewAttendance(req, res) {
         try {
             const teacherId = req.user.id;
+            const { section, semester } = req.query;
 
-            const attendanceData = await Attendance.find({ teacherId }).sort({ date: -1 });
+            let query = { teacherId };
+            if (section) query.section = section;
+            if (semester) query.semester = semester;
+
+            const attendanceData = await Attendance.find(query).sort({ date: -1 });
 
             if (!attendanceData || attendanceData.length === 0) {
                 return res.status(404).json({ message: "No Attendance Records Found", status: 404 });
@@ -74,6 +85,7 @@ class TeacherAttendanceController {
             return res.status(500).json({ message: err.message, status: 500 });
         }
     }
+
     static async adminViewAttendance(req, res) {
         try {
             const attendanceData = await Attendance.find().sort({ date: -1 });

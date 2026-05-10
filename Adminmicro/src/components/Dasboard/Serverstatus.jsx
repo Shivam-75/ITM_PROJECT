@@ -13,7 +13,7 @@ const Serverstatus = memo(() => {
   );
 
   return (
-    <div className="bg-white border rounded-xl p-4 shadow-sm min-h-[120px]">
+    <div className="bg-white border rounded-lg p-4 shadow-sm min-h-[120px]">
       <h3 className="font-bold mb-2">System Status</h3>
       <div className="text-sm space-y-2">
         <div className="flex justify-between">
@@ -38,3 +38,7 @@ const Serverstatus = memo(() => {
 });
 
 export default Serverstatus;
+
+
+
+

@@ -74,7 +74,7 @@ const Complain = () => {
 
   return (
     // 🔥 Important Change Here
-    <div className="min-h-screen bg-gray-100 pt-24 px-8">
+    <div className="min-h-screen bg-white pt-24 px-8">
       
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         🏨 Hostel Complaint Management
@@ -103,7 +103,7 @@ const Complain = () => {
       </div>
 
       {/* 🔹 Table */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-x-auto">
+      <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-800 text-white uppercase text-xs tracking-wider">
             <tr>
@@ -122,7 +122,7 @@ const Complain = () => {
             {filteredComplaints.map((comp) => (
               <tr
                 key={comp.id}
-                className="border-b hover:bg-gray-50 transition"
+                className="border-b hover:bg-white transition"
               >
                 <td className="px-6 py-4 font-medium text-gray-800">
                   {comp.studentName}
@@ -186,3 +186,6 @@ const Complain = () => {
 };
 
 export default Complain;
+
+
+

@@ -66,3 +66,6 @@ const MessageBubble = ({ msg, role = "faculty" }) => {
 };
 
 export default MessageBubble;
+
+
+

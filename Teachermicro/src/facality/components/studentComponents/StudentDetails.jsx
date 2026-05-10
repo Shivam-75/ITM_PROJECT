@@ -15,3 +15,6 @@ export default function StudentDetails({ student }) {
     </div>
   );
 }
+
+
+

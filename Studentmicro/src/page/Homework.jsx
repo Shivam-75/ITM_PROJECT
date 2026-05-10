@@ -6,7 +6,7 @@ const HomeworkCard = memo(({ item }) => {
   const dueDate = item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : "N/A";
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between hover:shadow-md transition-shadow h-full">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 flex flex-col justify-between hover:shadow-md transition-shadow h-full">
       <div className="flex-1">
         <h3 className="text-xl font-black text-slate-800 tracking-tight leading-tight mb-1 uppercase">
             {item?.subject || "Subject"}
@@ -88,8 +88,8 @@ const Homework = () => {
       </div>
 
       {homeworkData.length === 0 && !loading && (
-           <div className="py-20 text-center bg-white rounded-3xl border border-slate-100 shadow-sm col-span-full">
-              <div className="w-16 h-1 w-slate-50 bg-slate-50 rounded-full mx-auto mb-4"></div>
+           <div className="py-20 text-center bg-white rounded-lg border border-slate-100 shadow-sm col-span-full">
+              <div className="w-16 h-1 w-slate-50 bg-white rounded-full mx-auto mb-4"></div>
               <p className="text-xs font-black text-slate-300 uppercase tracking-widest">No homework found.</p>
            </div>
       )}
@@ -98,3 +98,5 @@ const Homework = () => {
 };
 
 export default Homework;
+
+

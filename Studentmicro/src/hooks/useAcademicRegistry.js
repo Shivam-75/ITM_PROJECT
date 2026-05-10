@@ -14,10 +14,10 @@ export const useAcademicRegistry = () => {
             try {
                 setLoading(true);
                 const [cRes, yRes, semRes, secRes] = await Promise.all([
-                    AcademicAPI.get("/file-courses"),
-                    AcademicAPI.get("/file-years"),
-                    AcademicAPI.get("/file-semesters"),
-                    AcademicAPI.get("/file-sections")
+                    AcademicAPI.get("/courses"),
+                    AcademicAPI.get("/years"),
+                    AcademicAPI.get("/semesters"),
+                    AcademicAPI.get("/sections")
                 ]);
 
                 setCourses(cRes.data.courses || []);
@@ -37,3 +37,4 @@ export const useAcademicRegistry = () => {
 
     return { courses, years, semesters, sections, loading, error };
 };
+

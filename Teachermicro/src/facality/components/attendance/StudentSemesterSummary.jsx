@@ -14,7 +14,7 @@ function StudentSemesterSummary({ students, attendance }) {
   }, [attendance, students]);
 
   return (
-    <div className="bg-white p-4 rounded-xl border">
+    <div className="bg-white p-4 rounded-lg border">
       <h3 className="font-semibold mb-4">
         Semester Attendance (Per Student)
       </h3>
@@ -49,3 +49,6 @@ function StudentSemesterSummary({ students, attendance }) {
 }
 
 export default StudentSemesterSummary;
+
+
+

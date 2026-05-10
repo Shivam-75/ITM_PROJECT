@@ -4,7 +4,7 @@ export default function NotificationFilters({ filter, setFilter }) {
      ${
        filter === value
          ? "bg-blue-600 text-white border-blue-600"
-         : "bg-white text-slate-600 hover:bg-slate-50"
+         : "bg-white text-slate-600 hover:bg-white"
      }`;
 
   return (
@@ -20,3 +20,6 @@ export default function NotificationFilters({ filter, setFilter }) {
     </div>
   );
 }
+
+
+

@@ -80,7 +80,7 @@ function ExportAttendance({ attendance, students }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl border space-y-3">
+    <div className="bg-white p-4 rounded-lg border space-y-3">
       <h3 className="font-semibold text-gray-700">
         Export Summary
       </h3>
@@ -105,3 +105,6 @@ function ExportAttendance({ attendance, students }) {
 }
 
 export default ExportAttendance;
+
+
+

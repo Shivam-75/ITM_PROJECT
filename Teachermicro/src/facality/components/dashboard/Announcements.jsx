@@ -3,7 +3,7 @@ export default function Announcements() {
     <section>
       <h3 className="font-bold mb-4">Announcements</h3>
 
-      <div className="bg-white p-4 border rounded-xl mb-3">
+      <div className="bg-white p-4 border rounded-lg mb-3">
         <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
           Admin
         </span>
@@ -15,3 +15,6 @@ export default function Announcements() {
     </section>
   );
 }
+
+
+

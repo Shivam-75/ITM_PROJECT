@@ -25,9 +25,9 @@ export default function LectureForm({ onSuccess, refreshList }) {
     const fetchRegistries = async () => {
       try {
         const [cRes, sRes, secRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-semesters", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/file-sections", { withCredentials: true })
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true })
         ]);
         if (cRes.data.courses) setCourses(cRes.data.courses);
         if (sRes.data.semesters) setSemesters(sRes.data.semesters);
@@ -70,7 +70,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
   }, [link, toststyle, refreshList, onSuccess]);
 
   return (
-    <div className="bg-white rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
+    <div className="bg-white rounded-lg md:rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 p-6 md:p-10 group overflow-hidden relative">
       <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 relative z-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               <div className="space-y-1.5 sm:col-span-2 md:col-span-3">
@@ -82,7 +82,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
                         value={link.topic} 
                         onChange={handleChange} 
                         placeholder="E.G. ADVANCED DATA STRUCTURES - MODULE 4" 
-                        className="w-full pl-14 pr-5 py-3.5 bg-slate-50 border-none rounded-xl text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
+                        className="w-full pl-14 pr-5 py-3.5 bg-white border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
                         required 
                       />
                   </div>
@@ -92,7 +92,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Department</label>
                   <div className="relative">
                       <FiLayers className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                      <select name="department" value={link.department} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                      <select name="department" value={link.department} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
                           <option value="">Select Path</option>
                           {courses.map(c => <option key={c.id} value={c.name}>{c.name.toUpperCase()}</option>)}
                       </select>
@@ -103,7 +103,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Semester</label>
                   <div className="relative">
                       <FiBookOpen className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                      <select name="semester" value={link.semester} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                      <select name="semester" value={link.semester} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
                           <option value="">Select Stage</option>
                           {semesters.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
                       </select>
@@ -114,7 +114,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Section</label>
                   <div className="relative">
                       <FiCalendar className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                      <select name="section" value={link.section} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
+                      <select name="section" value={link.section} onChange={handleChange} className="w-full pl-14 pr-4 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase appearance-none outline-none focus:ring-2 focus:ring-indigo-900 transition-all cursor-pointer" required>
                           <option value="">Select Group</option>
                           {sections.map(sec => <option key={sec.id} value={sec.name}>{sec.name.toUpperCase()}</option>)}
                       </select>
@@ -131,7 +131,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
                         onChange={handleChange} 
                         type="url"
                         placeholder="HTTPS://YOUTUBE.COM/LIVE/..." 
-                        className="w-full pl-14 pr-5 py-3 bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
+                        className="w-full pl-14 pr-5 py-3 bg-white border-none rounded-lg text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-indigo-900 transition-all shadow-inner" 
                         required 
                       />
                   </div>
@@ -142,7 +142,7 @@ export default function LectureForm({ onSuccess, refreshList }) {
               <button 
                   type="submit" 
                   disabled={uploaderLoading} 
-                  className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-full md:w-fit"
+                  className="px-12 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.3em] italic shadow-xl hover:bg-indigo-600 hover:shadow-indigo-100 transition-all flex items-center justify-center gap-3 w-full md:w-fit"
               >
                   <FiMonitor size={14} />
                   {uploaderLoading ? "Broadcasting..." : "Publish Session"}
@@ -152,3 +152,5 @@ export default function LectureForm({ onSuccess, refreshList }) {
     </div>
   );
 }
+
+

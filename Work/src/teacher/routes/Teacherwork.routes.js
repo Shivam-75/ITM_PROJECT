@@ -4,6 +4,8 @@ import authorizeAccessChecker from "../middleware/authChecker.js";
 import AssignmnetFacality from "../controller/TeacherAss.Controller.js";
 import linksController from "../controller/Teacherlink.Controller.js";
 import NoticeController from "../controller/Teachernotice.Controller.js";
+import ModelPaperController from "../controller/ModelPaper.controller.js";
+import { upload } from "../../admin/middleware/multer.js";
 
 export const TeacherworkRoutes = Router();
 
@@ -29,3 +31,8 @@ TeacherworkRoutes.route("/Link/updated").put(authorizeAccessChecker.userVerifica
 
 TeacherworkRoutes.route("/Notice/uploader").post(authorizeAccessChecker.userVerification, NoticeController.uploader).get(authorizeAccessChecker.userVerification, NoticeController.showNotice)
 TeacherworkRoutes.route("/Notice/Delete/:id").delete(authorizeAccessChecker.userVerification, NoticeController.deleteNotice)
+
+//!-----------ModelPaper------Teacher---
+TeacherworkRoutes.route("/ModelPaper/uploader").post(authorizeAccessChecker.userVerification, upload.single("paperImage"), ModelPaperController.uploader).get(authorizeAccessChecker.userVerification, ModelPaperController.getTeacherPapers)
+TeacherworkRoutes.route("/ModelPaper/Delete/:id").delete(authorizeAccessChecker.userVerification, ModelPaperController.deletePaper)
+TeacherworkRoutes.route("/ModelPaper/update/:id").put(authorizeAccessChecker.userVerification, upload.single("paperImage"), ModelPaperController.updatePaper);

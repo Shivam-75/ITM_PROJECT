@@ -26,7 +26,7 @@ const DepartmentRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/file-departments", { withCredentials: true });
+      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/departments", { withCredentials: true });
       if (res.data.departments) setDepartments(res.data.departments);
     } catch (err) {
       console.error(err);
@@ -48,9 +48,9 @@ const DepartmentRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-departments/${editId}`, { withCredentials: true });
+        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/departments/${editId}`, { withCredentials: true });
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/file-departments", deptForm, { withCredentials: true });
+      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/departments", deptForm, { withCredentials: true });
       toast.success(editId ? "Entry Updated" : "Department Added", toststyle);
       
       fetchData();
@@ -76,7 +76,7 @@ const DepartmentRegistry = () => {
     if (!window.confirm("Purge this department from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/file-departments/${id}`, { withCredentials: true });
+      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/departments/${id}`, { withCredentials: true });
       toast.success("Department Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -151,7 +151,7 @@ const DepartmentRegistry = () => {
                 <tr><td colSpan="4" className="px-6 py-20 text-center text-gray-400 font-bold uppercase text-xs">No department records found</td></tr>
               ) : (
                 departments.map((d) => (
-                  <tr key={d.id} className="hover:bg-gray-50/50">
+                  <tr key={d.id} className="hover:bg-white/50">
                     <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{d.name}</td>
                     <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-gray-200 uppercase">{d.code}</td>
                     <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{d.hod}</td>
@@ -174,3 +174,7 @@ const DepartmentRegistry = () => {
 };
 
 export default DepartmentRegistry;
+
+
+
+

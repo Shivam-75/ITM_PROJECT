@@ -8,10 +8,31 @@ import { AdminRoutes } from "./src/routes/adminRoutes.route.js";
 import { StudentRoutes } from "./src/routes/studentRoutes.route.js";
 import { teacherRoutes } from "./src/routes/teacherRoutes.routes.js";
 import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 
 config();
 
 const app = express();
+
+// --- Rate Limiting ---
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: { message: "Too many requests from this IP, please try again after 15 minutes" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20, // stricter limit for login/verify
+  message: { message: "Too many login/verify attempts, please try again after 15 minutes" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply global limiter
+// app.use("/api/v1", apiLimiter);
 
 const allowedOrigins = [
   process.env.CORSE_ORIGIN1,

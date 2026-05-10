@@ -6,13 +6,13 @@ import { FiDownload, FiFileText, FiBookOpen, FiClock, FiSearch, FiLayers, FiChec
 // 🔹 Single Card Component
 const PaperCard = memo(({ paper }) => {
   return (
-    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-50/50 hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-lg p-8 border border-slate-100 shadow-xl shadow-slate-50/50 hover:shadow-2xl hover:shadow-indigo-100/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
       {/* Decorative Gradient Blob */}
-      <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-slate-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-white rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
       
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-6">
-            <div className="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-slate-200 group-hover:bg-indigo-600 transition-colors">
+            <div className="w-14 h-14 bg-slate-900 rounded-lg flex items-center justify-center text-white shadow-xl shadow-slate-200 group-hover:bg-indigo-600 transition-colors">
                <FiFileText size={28} />
             </div>
             <div className="text-right">
@@ -51,7 +51,7 @@ const PaperCard = memo(({ paper }) => {
           href={paper.fileUrl} 
           target="_blank" 
           rel="noreferrer" 
-          className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200 active:scale-95 italic"
+          className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-lg hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200 active:scale-95 italic"
         >
           <FiDownload size={16} />
           Acquire Assessment
@@ -131,14 +131,14 @@ const ModelPaper = () => {
                 placeholder="Find Subject / Paper..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-100/30 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all italic"
+                className="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-lg shadow-xl shadow-slate-100/30 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all italic"
              />
         </div>
       </div>
 
       {filteredList.length === 0 && !loading ? (
-        <div className="py-32 text-center bg-white rounded-[4rem] border border-slate-50 shadow-2xl shadow-slate-200/20 flex flex-col items-center">
-            <div className="w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center mb-10 group hover:rotate-12 transition-transform">
+        <div className="py-32 text-center bg-white rounded-lg border border-slate-50 shadow-2xl shadow-slate-200/20 flex flex-col items-center">
+            <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center mb-10 group hover:rotate-12 transition-transform">
                 <FiFileText size={48} className="text-slate-100" />
             </div>
             <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.6em] italic">No Resources Archived Yet</h3>
@@ -156,3 +156,6 @@ const ModelPaper = () => {
 };
 
 export default ModelPaper;
+
+
+

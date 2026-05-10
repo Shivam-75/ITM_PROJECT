@@ -7,3 +7,7 @@ const Enrollmentchart = ({ data = [] }) => {
 };
 
 export default memo(Enrollmentchart);
+
+
+
+

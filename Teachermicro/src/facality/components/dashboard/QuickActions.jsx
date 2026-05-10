@@ -17,7 +17,7 @@ export default function QuickActions() {
         {actions.map((a) => (
           <button
             key={a.label}
-            className="p-4 border rounded-xl hover:border-blue-500 hover:shadow transition flex flex-col items-center gap-2"
+            className="p-4 border rounded-lg hover:border-blue-500 hover:shadow transition flex flex-col items-center gap-2"
           >
             <span className="material-symbols-outlined text-blue-600">
               {a.icon}
@@ -29,3 +29,6 @@ export default function QuickActions() {
     </section>
   );
 }
+
+
+
