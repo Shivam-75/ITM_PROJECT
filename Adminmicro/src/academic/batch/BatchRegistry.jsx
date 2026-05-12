@@ -105,7 +105,7 @@ const BatchRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-full">
           <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-white border border-slate-100 text-indigo-600 rounded-lg">
                 <FiAward size={20} />
@@ -148,7 +148,7 @@ const BatchRegistry = () => {
           </form>
         </div>
 
-        <div className="bg-white border border-gray-300 rounded-sm shadow-md overflow-hidden w-[98%] mx-auto md:w-full">
+        <div className="bg-white border border-gray-300 rounded-sm shadow-md overflow-hidden w-full">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#f4f4f4] border-b border-gray-300 text-[11px] font-black uppercase text-gray-700">

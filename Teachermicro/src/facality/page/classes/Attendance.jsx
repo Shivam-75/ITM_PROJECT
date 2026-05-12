@@ -162,7 +162,11 @@ export default function AttendancePage() {
 
   return (
     <div className="min-h-[100dvh] bg-pink-50 pt-6 px-4 md:px-8 pb-32">
-      {(loading || registryLoading) && <BigLoader />}
+      {(loading || registryLoading) && (
+        <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-[100]">
+          <BigLoader />
+        </div>
+      )}
 
       {/* ===== REGISTRY HEADER ===== */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
@@ -186,8 +190,10 @@ export default function AttendancePage() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
                 <div className="relative group">
-                    <FiCalendar className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <input type="date" className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-sm" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                    <FiCalendar className="absolute left-5 top-1/2 -translate-y-1/2 text-indigo-600 pointer-events-none" />
+                    <div className="w-full pl-14 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-[10px] text-[11px] font-black uppercase shadow-sm flex items-center">
+                        {new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}
+                    </div>
                 </div>
 
                 <div className="relative group">
@@ -318,7 +324,16 @@ export default function AttendancePage() {
                             onClick={handleSaveAttendance}
                             className="px-16 py-5 bg-slate-900 text-white rounded-[10px] text-[12px] font-black uppercase tracking-[0.4em] italic shadow-2xl hover:bg-indigo-600 transition-all disabled:opacity-50 flex items-center gap-4"
                          >
-                            <FiSave size={20} /> SYNC REGISTRY
+                            {loading ? (
+                               <>
+                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                 SYNCING...
+                               </>
+                            ) : (
+                               <>
+                                 <FiSave size={20} /> SYNC REGISTRY
+                               </>
+                            )}
                          </button>
                     </div>
                 </div>

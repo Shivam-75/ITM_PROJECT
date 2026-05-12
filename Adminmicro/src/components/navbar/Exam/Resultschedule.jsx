@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ReportAPI } from "../../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../Loader";
@@ -47,7 +48,7 @@ const Resultschedule = () => {
   const handlePrint = () => window.print();
 
   return (
-    <div className="min-h-screen bg-white p-4 print:p-0">
+    <div className="min-h-screen p-4 print:p-0">
       {loading && (
         <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
             <Loader />
@@ -80,6 +81,15 @@ const Resultschedule = () => {
                 >
                   Retrieve Transcript
                 </button>
+
+                <div className="pt-2 text-center">
+                  <Link 
+                    to="/sessional-results"
+                    className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-all"
+                  >
+                    Switch to Bulk Marks View →
+                  </Link>
+                </div>
             </div>
           </div>
         )}

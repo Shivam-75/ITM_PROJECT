@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiArrowLeft, FiSave, FiUploadCloud, FiUser, FiBriefcase, FiMapPin, FiCalendar } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
-import { ReportAPI } from "../../api/apis";
+import { ReportAPI, AcademicAPI, authAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
@@ -34,9 +34,12 @@ const FaculityEdit = () => {
   useEffect(() => {
     const fetchDeps = async () => {
       try {
-        const axios = (await import("axios")).default;
-        const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true });
-        if (res.data.data) setDepartmentList(res.data.data);
+        const res = await AcademicAPI.get("/courses");
+        if (res.data.courses) {
+            setDepartmentList(res.data.courses);
+        } else if (res.data.data) {
+            setDepartmentList(res.data.data);
+        }
       } catch (err) {
         console.error("Registry load failed:", err);
       }
@@ -49,15 +52,16 @@ const FaculityEdit = () => {
     const fetchTeacher = async () => {
       try {
         setLoading(true);
-        const response = await ReportAPI.get(`/Staff/get/${id}`);
+        const response = await authAPI.get(`/Faculty/get/${id}`);
         if (response.data.data) {
           const data = response.data.data;
           setTeacher({
             ...data,
-            image: data.image || null, // Keep the path if it exists
+            phone: data.moNumber || "", // Map moNumber to phone for the form
+            image: data.image || null,
           });
           if (data.image) {
-            setPreview(`http://localhost:5002${data.image}`);
+            setPreview(`http://localhost:5001${data.image}`);
           }
         }
       } catch (error) {
@@ -98,7 +102,7 @@ const FaculityEdit = () => {
         formData.append("image", teacher.image);
       }
 
-      const response = await ReportAPI.put(`/Staff/update/${id}`, formData);
+      const response = await authAPI.put(`/Faculty/update/${id}`, formData);
       
       if (response.status === 200) {
         toast.success("Faculty record updated successfully!");

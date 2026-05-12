@@ -60,6 +60,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("Welcome To Auth MicroServicess #Shivam !!");

@@ -108,10 +108,10 @@ const Studentadd = () => {
     section: "",
     batch: "",
     image: "",
-    academicFee: 0,
-    hostel: "No",
-    hostelFee: 0,
-    totalFee: 0,
+    academicFee: "",
+    hostel: "",
+    hostelFee: "",
+    totalFee: "",
     id: "",
   });
 
@@ -179,6 +179,23 @@ const Studentadd = () => {
 
   const nextStep = (e) => {
     e.preventDefault();
+    
+    // 🔹 Step-wise Validation Logic
+    if (currentStep === 1) {
+      if (!student.name || !student.course || !student.year || !student.semester || !student.section) {
+        return toast.warning("CRITICAL: Please finalize Identity & Course parameters first.", { style: { borderRadius: '10px', fontSize: '10px', fontWeight: '900' } });
+      }
+    }
+
+    if (currentStep === 2) {
+      if (!student.mobile || !student.stream || !student.batch) {
+        return toast.warning("CRITICAL: Mobile, Stream, and Batch are mandatory for registry.", { style: { borderRadius: '10px', fontSize: '10px', fontWeight: '900' } });
+      }
+      if (student.mobile.length !== 10) {
+        return toast.warning("INVALID: Primary Mobile must be exactly 10 digits.", { style: { borderRadius: '10px', fontSize: '10px', fontWeight: '900' } });
+      }
+    }
+
     if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
   };
 
@@ -190,11 +207,15 @@ const Studentadd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // 🔹 Final Step Validation
+    if (!student.academicFee || !student.hostel) {
+      return toast.warning("CRITICAL: Academic Fee and Hostel preference are required.", { style: { borderRadius: '10px', fontSize: '10px', fontWeight: '900' } });
+    }
+
     setLoading(true);
 
     try {
-      const semStr = student.semester || "";
-      const semesterNumber = Number(semStr.replace(/\D/g, "")) || 1;
 
       const authPayload = {
         name: student.name,
@@ -210,8 +231,8 @@ const Studentadd = () => {
         parentMobile: Number(student.parentMobile),
         motherName: student.motherName,
         address: student.address,
-        semester: String(semesterNumber),
-        section: student.section,
+        semester: student.semester.toUpperCase(),
+        section: student.section.toUpperCase(),
         id: student.id,
         batch: student.batch,
         image: student.image,
@@ -220,6 +241,11 @@ const Studentadd = () => {
         hostelFee: Number(student.hostelFee),
         totalFee: Number(student.academicFee) + Number(student.hostelFee)
       };
+
+      authPayload.name = authPayload.name.toUpperCase();
+      authPayload.course = authPayload.course.toUpperCase();
+      if (authPayload.stream) authPayload.stream = authPayload.stream.toUpperCase();
+      if (authPayload.board) authPayload.board = authPayload.board.toUpperCase();
 
       // Register Login & Profile in Auth Service (Source of Truth)
       const res = await axios.post(`${AUTH_BASE_URL}/registration`, authPayload, {

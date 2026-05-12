@@ -65,11 +65,26 @@ class adminSesonalMarkController {
 
             const marksData = await Marks.find(filter).sort({ createdAt: -1 });
 
-            if (!marksData || marksData.length === 0) {
-                return res.status(404).json({ message: "No Marks Found !!", status: 404 });
+            return res.status(200).json({ 
+                message: marksData.length > 0 ? "Successfully Fetched Bulk Marks !!" : "No Marks Found for these filters.", 
+                status: 200, 
+                data: marksData 
+            });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async deleteMark(req, res) {
+        try {
+            const { id } = req.params;
+            const deletedMark = await Marks.findByIdAndDelete(id);
+
+            if (!deletedMark) {
+                return res.status(404).json({ message: "Mark Record Not Found !!", status: 404 });
             }
 
-            return res.status(200).json({ message: "Successfully Fetched Bulk Marks !!", status: 200, data: marksData });
+            return res.status(200).json({ message: "Mark Record Deleted Successfully !!", status: 200 });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }

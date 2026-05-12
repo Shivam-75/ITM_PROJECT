@@ -87,7 +87,7 @@ const Hosteldeshboard = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-white p-8 animate-in fade-in duration-700">
+        <div className="min-h-screen p-8 animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-slate-900 uppercase italic tracking-tighter flex items-center gap-4">

@@ -186,7 +186,7 @@ const Feestructure = () => {
       {/* 🏛️ Professional Header Bar */}
       <div className="py-6 px-4 md:px-0">
         <div className="w-full mx-auto flex justify-start">
-          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-slate-100 p-3 md:p-4 w-[98%] mx-auto md:w-[90%] lg:w-[80%] flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
+          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-slate-100 p-3 md:p-4 w-full flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
             
             <div className="hidden sm:block space-y-1">
               <h2 className="text-lg md:text-2xl font-black text-gray-900 uppercase italic tracking-tighter leading-none">
@@ -250,7 +250,7 @@ const Feestructure = () => {
           </div>
 
           <div className="w-full mx-auto px-2 md:px-4 relative z-10">
-            <div className="w-[98%] mx-auto md:w-full h-[490px] overflow-y-auto bg-white border-[1px] border-slate-900 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] rounded-sm p-1 custom-scrollbar">
+            <div className="w-full h-[490px] overflow-y-auto bg-white border-[1px] border-slate-900 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] rounded-sm p-1 custom-scrollbar">
               <div className="border-[0.5px] border-slate-900/30 p-4 md:p-6 relative overflow-hidden">
                 <div className="text-center space-y-1 mb-6 relative">
                   <h1 className="text-lg md:text-2xl font-black text-slate-900 uppercase tracking-tighter leading-none">
@@ -359,9 +359,9 @@ const Feestructure = () => {
       ) : (
         <div className="min-h-[60vh] py-12 flex flex-col items-center justify-center text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 z-0"></div>
-          <div className="relative z-10 w-full max-w-4xl mx-auto px-4">
+          <div className="relative z-10 w-full px-4">
             {/* Recent Submissions Section */}
-            <div className="w-full max-w-[98%] mx-auto">
+            <div className="w-full">
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/40">
                 <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">

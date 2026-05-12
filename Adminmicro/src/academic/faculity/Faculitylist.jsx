@@ -136,7 +136,7 @@ const Faculitylist = () => {
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-sm border border-slate-100 w-[98%] mx-auto md:w-full">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-sm border border-slate-100 w-full">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Faculty Directory</h2>
           <p className="text-gray-500 text-sm mt-1">Manage {facultyData.length} academic staff members</p>
@@ -168,7 +168,7 @@ const Faculitylist = () => {
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden w-[98%] mx-auto md:w-full">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden w-full">
         <div className="overflow-x-auto min-h-[400px]">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -187,7 +187,7 @@ const Faculitylist = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img
-                          src={faculty.image?.startsWith("http") ? faculty.image : `http://localhost:5002${faculty.image}`}
+                          src={faculty.image?.startsWith("http") ? faculty.image : `http://localhost:5001${faculty.image}`}
                           alt={faculty.name}
                           className="w-11 h-11 rounded-lg bg-white object-cover ring-2 ring-white shadow-sm"
                         />

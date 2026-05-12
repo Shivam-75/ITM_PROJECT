@@ -155,9 +155,9 @@ const Exams = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white pt-24 p-3 sm:p-6 pb-20">
+    <div className="min-h-screen pt-24 p-3 sm:p-6 pb-20">
       {loading && (
-        <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-slate-50/60 backdrop-blur-sm flex justify-center items-center z-50">
             <Loader />
         </div>
       )}
@@ -338,7 +338,7 @@ const Exams = () => {
         {/* TABLE */}
         <div className="relative w-full overflow-x-auto scroller-style">
           <table className="min-w-[1000px] w-full text-sm border-collapse">
-            <thead className="bg-white sticky top-0">
+            <thead className="bg-slate-50 sticky top-0">
               <tr className="border-b border-slate-100">
                 <th className="px-8 py-5 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest italic">Subject Protocol</th>
                 <th className="px-6 py-5 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest italic">Format</th>
@@ -393,7 +393,7 @@ const Exams = () => {
                 <tr>
                   <td
                     colSpan="7"
-                    className="py-32 text-center text-slate-300 flex flex-col items-center justify-center gap-4 bg-white"
+                    className="py-32 text-center text-slate-300 flex flex-col items-center justify-center gap-4"
                   >
                     <div className="w-16 h-1 bg-white rounded-full mb-4"></div>
                     <p className="text-[10px] font-black uppercase tracking-[0.4em] italic leading-loose">No examination protocols indexed <br/> for this selection</p>

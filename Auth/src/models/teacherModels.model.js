@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 const TeacherSchema = new mongoose.Schema({
     name: { type: String, required: true, lowercase: true },
-    password: { type: String, required: true },
+    password: { type: String },
     email: { type: String, lowercase: true },
     department: [{ type: String, uppercase: true }],
     moNumber: { type: Number, required: true },
@@ -35,8 +35,7 @@ const TeacherSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 TeacherSchema.pre("save", async function () {
-    if (!this.isModified("password")) return;
-
+    if (!this.password) return; // Skip hashing if password is blank
     this.password = await bcrypt.hash(this.password, 10);
 });
 
