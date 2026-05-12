@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthStore";
-import { WorkAPI } from "../api/apis";
+import { WorkAPI, AcademicAPI } from "../api/apis";
 import { 
   FiBookOpen, FiEdit3, FiTv, FiBell, FiClock, 
   FiFileText, FiLayers, FiBriefcase, FiArrowRight, 
@@ -68,19 +68,44 @@ const Dashboard = () => {
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      const [hwRes, assRes, mpRes, sylRes, noteRes] = await Promise.all([
+      
+      // Initial parallel fetch for departmental work
+      const [hwRes, assRes, mpRes, noteRes] = await Promise.all([
         WorkAPI.get("/HomeWork/getHwDpt"),
         WorkAPI.get("/Assignment/getAssDpt"),
         WorkAPI.get("/ModelPaper/all"),
-        WorkAPI.get("/Syllabus/getSyllabus"),
         WorkAPI.get("/Notice/getNoticeDpt")
       ]);
+
+      // Specialized fetch for Syllabus/Subjects based on student profile
+      let syllabusCount = 0;
+      if (student) {
+        try {
+          const { data } = await AcademicAPI.get("/subjects", {
+            params: {
+              department: student.course,
+              semester: student.semester
+            }
+          });
+          
+          if (Array.isArray(data?.subjects)) {
+            syllabusCount = data.subjects.length;
+          } else {
+            const sylRes = await WorkAPI.get("/Syllabus/getSyllabus");
+            syllabusCount = Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0;
+          }
+        } catch (sylErr) {
+          console.error("Syllabus fetch failed", sylErr);
+          const sylRes = await WorkAPI.get("/Syllabus/getSyllabus");
+          syllabusCount = Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0;
+        }
+      }
 
       setCounts({
         homework: Array.isArray(hwRes.data?.data) ? hwRes.data.data.length : 0,
         assignments: Array.isArray(assRes.data?.data) ? assRes.data.data.length : 0,
         modelPapers: Array.isArray(mpRes.data?.data) ? mpRes.data.data.length : 0,
-        syllabus: Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0,
+        syllabus: syllabusCount,
         notices: Array.isArray(noteRes.data?.data) ? noteRes.data.data.length : 0
       });
     } catch (error) {
@@ -88,7 +113,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [student]);
 
   useEffect(() => {
     fetchDashboardData();
