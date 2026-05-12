@@ -24,7 +24,10 @@ class StudentController {
             const yearSuffix = year.toString().split('-')[0].slice(-2) || "26";
             const courseCode = course.split(" ")[0].toUpperCase();
             
-            const count = await Student.countDocuments({ course, year });
+            const count = await Student.countDocuments({ 
+                course: course.toUpperCase(), 
+                year: year.toUpperCase() 
+            });
             const serial = (count + 1).toString().padStart(2, '0');
             
             const nextId = `ITM/${yearSuffix}/${courseCode}/${serial}`;
@@ -62,30 +65,33 @@ class StudentController {
                 const courseCode = course.split(" ")[0].toUpperCase();
                 
                 // Count existing students in this course & year to determine serial
-                const count = await Student.countDocuments({ course, year });
+                const count = await Student.countDocuments({ 
+                    course: course.toUpperCase(), 
+                    year: year.toUpperCase() 
+                });
                 const serial = (count + 1).toString().padStart(2, '0');
                 
                 finalStudentId = `ITM/${yearSuffix}/${courseCode}/${serial}`;
             }
 
             const studentCreate = await Student.create({
-                name,
-                course,
+                name: name.toUpperCase(),
+                course: course.toUpperCase(),
                 year,
                 moNumber,
-                stream,
+                stream: stream?.toUpperCase(),
                 passingYear,
                 caste,
                 gender,
-                board,
+                board: board?.toUpperCase(),
                 parentName,
                 parentMobile,
                 motherName,
                 address,
                 studentId: finalStudentId,
                 password,
-                semester,
-                section,
+                semester: semester.toUpperCase(),
+                section: section.toUpperCase(),
                 batch,
                 image,
                 academicFee,

@@ -92,7 +92,7 @@ const SemesterRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-full">
           <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
                 <FiCalendar size={20} />
@@ -106,7 +106,7 @@ const SemesterRegistry = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-1">
                 <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Semester Name</label>
-                <input type="text" placeholder="e.g. Spring 2024" value={semForm.name} onChange={(e) => setSemForm({ ...semForm, name: e.target.value })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-amber-500 uppercase" />
+                <input type="text" placeholder="e.g. SEMESTER 1ST" value={semForm.name} onChange={(e) => setSemForm({ ...semForm, name: e.target.value.toUpperCase() })} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm font-semibold outline-none transition-all focus:border-amber-500 uppercase" />
               </div>
               
               <div className="space-y-1">
@@ -135,7 +135,7 @@ const SemesterRegistry = () => {
           </form>
         </div>
 
-        <div className="bg-white border border-gray-300 rounded-sm shadow-md overflow-hidden w-[98%] mx-auto md:w-full">
+        <div className="bg-white border border-gray-300 rounded-sm shadow-md overflow-hidden w-full">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#f4f4f4] border-b border-gray-300 text-[11px] font-black uppercase text-gray-700">

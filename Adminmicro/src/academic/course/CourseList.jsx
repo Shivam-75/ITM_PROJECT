@@ -40,7 +40,12 @@ const CourseList = () => {
   }, []);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (["name", "department", "deptCode", "hod"].includes(name)) {
+        setForm({ ...form, [name]: value.toUpperCase() });
+    } else {
+        setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {

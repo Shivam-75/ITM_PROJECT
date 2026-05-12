@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FiArrowLeft, FiSave, FiUploadCloud, FiUser, FiBriefcase, FiMapPin, FiCalendar, FiMail } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { ReportAPI } from "../../api/apis";
+import { ReportAPI, AcademicAPI, authAPI } from "../../api/apis";
+import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { useEffect } from "react";
@@ -64,8 +65,12 @@ const FaculityAdd = () => {
   useEffect(() => {
     const fetchDeps = async () => {
       try {
-        const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true });
-        if (res.data.data) setDepartmentList(res.data.data);
+        const res = await AcademicAPI.get("/courses");
+        if (res.data.courses) {
+            setDepartmentList(res.data.courses);
+        } else if (res.data.data) {
+            setDepartmentList(res.data.data);
+        }
       } catch (err) {
         console.error("Registry load failed:", err);
       }
@@ -101,7 +106,7 @@ const FaculityAdd = () => {
         formData.append("image", teacher.image);
       }
 
-      const response = await ReportAPI.post("/Staff/add", formData);
+      const response = await authAPI.post("/Faculty/add", formData);
 
       if (response.status === 201) {
         toast.success("Teacher Added Successfully!");

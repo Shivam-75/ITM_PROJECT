@@ -8,6 +8,7 @@ export const adminRoute = Router();
 
 adminRoute.route("/Mark/ShowResult/:department").get(AdminVerifation.TokenVerification, adminSesonalMarkController.showDepartmentResult);
 adminRoute.route("/Mark/BulkView").get(AdminVerifation.TokenVerification, adminSesonalMarkController.bulkMarksView);
+adminRoute.route("/Mark/delete/:id").delete(AdminVerifation.TokenVerification, adminSesonalMarkController.deleteMark);
 
 adminRoute.route("/Timetable/View/:department").get(adminSesonalMarkController.showDepartmentTimeTable);
 adminRoute.route("/Timetable/delete/:id").delete(adminSesonalMarkController.deleteDepartmentTimeTable);

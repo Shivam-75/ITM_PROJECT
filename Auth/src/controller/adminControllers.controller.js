@@ -15,34 +15,21 @@ const AdminTokenCreator = async (userId) => {
 
 }
 class AdminController {
-    static async GetNextAdminId(req, res) {
-        try {
-            const yearSuffix = new Date().getFullYear().toString().slice(-2);
-            const count = await Admin.countDocuments();
-            const serial = (count + 1).toString().padStart(2, '0');
-            const nextId = `ADM/${yearSuffix}/${serial}`;
-
-            return res.status(200).json({ nextId, status: 200 });
-        } catch (err) {
-            return res.status(500).json({ message: err.message });
-        }
-    }
-
     static async AdminRegistration(req, res) {
         try {
-            const { name, password, mobNumber, adminId, superAdmin } = req.body;
+            const { name, password, mobNumber, superAdmin } = req.body;
 
-            if (!name || !password || !mobNumber || !adminId) {
-                return res.status(400).json({ message: "Fill All column !!", status: 400 });
-            }
+            if (!name) return res.status(400).json({ message: "Name is required", status: 400 });
+            if (!password) return res.status(400).json({ message: "Password is required", status: 400 });
+            if (!mobNumber) return res.status(400).json({ message: "Mobile Number is required", status: 400 });
 
-            const findUser = await Admin.findOne({ $or: [{ mobNumber }, { adminId }] });
+            const findUser = await Admin.findOne({ mobNumber });
             if (findUser) {
-                return res.status(400).json({ message: "Admin ID or Mobile Number already exists !!", status: 400 });
+                return res.status(400).json({ message: "Mobile Number already exists !!", status: 400 });
             }
 
             const createUser = await Admin.create({
-                name, password, mobNumber, adminId, superAdmin: superAdmin || false
+                name, password, mobNumber, superAdmin: superAdmin || false
             })
 
             const searchUser = await Admin.findById(createUser._id).select("-password ");
@@ -255,6 +242,98 @@ class AdminController {
             return res.status(500).json({ message: err.message });
         }
     }
+
+    static async FacultyRegistration(req, res) {
+        try {
+            const { 
+                name, email, department, age, gender, address, 
+                qualification, higherQualification, fatherName, 
+                aadhaar, dob, doj, maritalStatus, phone 
+            } = req.body;
+
+            if (!name || !email || !phone) {
+                return res.status(400).json({ message: "Name, Email, and Phone are mandatory", status: 400 });
+            }
+
+            const findUser = await Teacher.findOne({ moNumber: phone });
+            if (findUser) {
+                return res.status(400).json({ message: "Teacher with this phone number already exists !!", status: 400 });
+            }
+
+            let imagePath = "";
+            if (req.file) {
+                imagePath = `/public/faculty/${req.file.filename}`;
+            }
+
+            const newTeacher = await Teacher.create({
+                name,
+                email,
+                password: "", // Set as blank as requested
+                department: department ? [department] : [],
+                moNumber: Number(phone),
+                age: Number(age),
+                gender,
+                address,
+                qualification,
+                higherQualification,
+                fatherName,
+                aadhaar,
+                dob,
+                doj,
+                maritalStatus,
+                image: imagePath,
+                role: "Faculty",
+                isFaculty: true
+            });
+
+            return res.status(201).json({ message: "Faculty Registered Successfully", data: newTeacher, status: 201 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async FacultyUpdate(req, res) {
+        try {
+            const { id } = req.params;
+            const updateData = { ...req.body };
+
+            if (updateData.phone) {
+                updateData.moNumber = Number(updateData.phone);
+                delete updateData.phone;
+            }
+
+            if (req.file) {
+                updateData.image = `/public/faculty/${req.file.filename}`;
+            }
+
+            if (updateData.department && typeof updateData.department === 'string') {
+                updateData.department = [updateData.department];
+            }
+
+            const updated = await Teacher.findByIdAndUpdate(id, updateData, { new: true }).select("-password");
+            if (!updated) {
+                return res.status(404).json({ message: "Faculty not found", status: 404 });
+            }
+
+            return res.status(200).json({ message: "Faculty Profile Updated", data: updated, status: 200 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async GetFacultyProfile(req, res) {
+        try {
+            const { id } = req.params;
+            const faculty = await Teacher.findById(id).select("-password");
+            if (!faculty) {
+                return res.status(404).json({ message: "Faculty not found", status: 404 });
+            }
+            return res.status(200).json({ data: faculty, status: 200 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
     static async StudentDelete(req, res) {
         try {
             const { id } = req.params;
@@ -270,6 +349,40 @@ class AdminController {
             }
 
             return res.status(200).json({ message: "Successfully Student Deleted !!", status: 200 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async AdminList(req, res) {
+        try {
+            const adminList = await Admin.find().select("-password -refreshtkn").sort({ createdAt: -1 });
+
+            if (!adminList) {
+                return res.status(400).json({ message: "Admin Not Found !!", status: 400 });
+            }
+
+            return res.status(200).json({ message: "Successfully Admin Fetched !!", status: 200, adminList });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async AdminDelete(req, res) {
+        try {
+            const { id } = req.params;
+
+            if (!id) {
+                return res.status(400).json({ message: "Select Admin to delete !!", status: 400 });
+            }
+
+            const deletedAdmin = await Admin.findByIdAndDelete(id);
+
+            if (!deletedAdmin) {
+                return res.status(400).json({ message: "Failed to Delete Admin !!", status: 400 });
+            }
+
+            return res.status(200).json({ message: "Successfully Admin Deleted !!", status: 200 });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }
