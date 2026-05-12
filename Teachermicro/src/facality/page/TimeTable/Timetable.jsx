@@ -153,8 +153,8 @@ const Timetable = () => {
 
       {/* Simplified Header */}
       <div className="flex items-center gap-4">
-          <div className="w-2 h-8 bg-indigo-600 rounded-full"></div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">
+          <div className="w-1.5 h-10 bg-slate-900 rounded-full"></div>
+          <h1 className="text-4xl font-black text-slate-900 uppercase italic tracking-tighter">
             Timetable Architect
           </h1>
       </div>
@@ -166,7 +166,7 @@ const Timetable = () => {
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-white  rounded-[10px] text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white rounded-[10px] text-[10px] font-black uppercase tracking-[0.2em] focus:ring-0 focus:border-slate-900 transition-all outline-none appearance-none cursor-pointer border border-slate-100"
                         value={course}
                         onChange={(e) => setCourse(e.target.value)}
                     >
@@ -177,7 +177,7 @@ const Timetable = () => {
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-white  rounded-[10px] text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white rounded-[10px] text-[10px] font-black uppercase tracking-[0.2em] focus:ring-0 focus:border-slate-900 transition-all outline-none appearance-none cursor-pointer border border-slate-100"
                         value={section}
                         onChange={(e) => setSection(e.target.value)}
                     >
@@ -188,7 +188,7 @@ const Timetable = () => {
                 <div className="relative group">
                     <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
                     <select
-                        className="w-full pl-12 pr-4 py-4 bg-white  rounded-[10px] text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 transition-all outline-none appearance-none cursor-pointer"
+                        className="w-full pl-12 pr-4 py-4 bg-white rounded-[10px] text-[10px] font-black uppercase tracking-[0.2em] focus:ring-0 focus:border-slate-900 transition-all outline-none appearance-none cursor-pointer border border-slate-100"
                         value={semester}
                         onChange={(e) => setSemester(e.target.value)}
                     >
@@ -204,7 +204,7 @@ const Timetable = () => {
                     <button
                         key={day}
                         onClick={() => setActiveDay(day)}
-                        className={`flex-1 py-3 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all ${
+                        className={`flex-1 py-3 rounded-[10px] text-[10px] font-black uppercase tracking-[0.3em] italic transition-all ${
                             activeDay === day 
                                 ? "bg-slate-900 text-white shadow-xl shadow-slate-200" 
                                 : "text-slate-400 hover:text-slate-900 hover:bg-white"
