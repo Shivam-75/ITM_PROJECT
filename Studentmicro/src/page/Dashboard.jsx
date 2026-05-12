@@ -1,116 +1,220 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthStore";
+import { WorkAPI } from "../api/apis";
 import { 
   FiBookOpen, FiEdit3, FiTv, FiBell, FiClock, 
   FiFileText, FiLayers, FiBriefcase, FiArrowRight, 
-  FiCheckCircle, FiAward, FiCalendar
+  FiCheckCircle, FiAward, FiCalendar, FiUser, FiInfo,
+  FiActivity, FiZap, FiTarget, FiTrendingUp
 } from "react-icons/fi";
+import Loader from "../components/common/Loader";
 
-const StatTile = ({ title, value, icon: Icon, colorClass, path }) => {
+const GlassCard = ({ children, className = "" }) => (
+  <div className={`bg-white border-2 border-gray-100 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.15)] transition-all duration-500 ${className}`}>
+    {children}
+  </div>
+);
+
+const StatCard = ({ title, value, icon: Icon, colorClass, path, description, loading }) => {
   const navigate = useNavigate();
   
   return (
     <div 
       onClick={() => path && navigate(path)}
-      className="bg-white rounded-lg p-8 shadow-sm border border-gray-100 hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group cursor-pointer relative overflow-hidden active:scale-95"
+      className="group relative cursor-pointer active:scale-95 transition-all duration-300"
     >
-      <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] transition-transform duration-700 group-hover:scale-150 ${colorClass}`}></div>
-      <div className="flex justify-between items-start relative z-10">
-          <div className={`w-14 h-14 rounded-lg flex items-center justify-center shadow-xl ${colorClass} text-white group-hover:scale-110 transition-transform duration-500`}>
-             <Icon size={24} />
+      <div className="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-pink-500/20 rounded-[2rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <GlassCard className="relative p-5 rounded-[2rem] h-40 flex flex-col justify-between overflow-hidden group-hover:border-rose-300/50 transition-all duration-300">
+        <div className="absolute -right-4 -top-4 w-32 h-32 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+        
+        <div className="flex justify-between items-start relative z-10">
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg ${colorClass} text-white group-hover:rotate-6 transition-all duration-500`}>
+            <Icon size={20} />
           </div>
-          <FiArrowRight className="text-gray-200 group-hover:text-red-600 group-hover:translate-x-1 transition-all" size={20} />
-      </div>
-      <div className="mt-8 relative z-10">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1.5 italic">
+          <div className="w-8 h-8 rounded-full bg-white/50 backdrop-blur-md flex items-center justify-center border border-white/50 group-hover:bg-black group-hover:text-white transition-all duration-300">
+            <FiArrowRight size={14} />
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-1 group-hover:text-black transition-colors">
             {title}
           </p>
-          <p className="text-4xl font-black text-gray-900 leading-none tracking-tighter italic">
-            {value}
-          </p>
-      </div>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-3xl font-extrabold text-black tracking-tight group-hover:scale-105 origin-left transition-transform duration-300">
+              {loading ? "..." : (value || "0")}
+            </h3>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{description}</span>
+          </div>
+        </div>
+      </GlassCard>
     </div>
   );
 };
 
 const Dashboard = () => {
   const { student } = useAuth();
+  const navigate = useNavigate();
+  const [counts, setCounts] = useState({
+    homework: 0,
+    assignments: 0,
+    modelPapers: 0,
+    syllabus: 0,
+    notices: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  const fetchDashboardData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [hwRes, assRes, mpRes, sylRes, noteRes] = await Promise.all([
+        WorkAPI.get("/HomeWork/getHwDpt"),
+        WorkAPI.get("/Assignment/getAssDpt"),
+        WorkAPI.get("/ModelPaper/all"),
+        WorkAPI.get("/Syllabus/getSyllabus"),
+        WorkAPI.get("/Notice/getNoticeDpt")
+      ]);
+
+      setCounts({
+        homework: Array.isArray(hwRes.data?.data) ? hwRes.data.data.length : 0,
+        assignments: Array.isArray(assRes.data?.data) ? assRes.data.data.length : 0,
+        modelPapers: Array.isArray(mpRes.data?.data) ? mpRes.data.data.length : 0,
+        syllabus: Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0,
+        notices: Array.isArray(noteRes.data?.data) ? noteRes.data.data.length : 0
+      });
+    } catch (error) {
+      console.error("Failed to fetch dashboard counts", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+
+  const getTimeOfDay = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-1000">
+    <div className="max-w-[1440px] mx-auto p-4 md:p-8 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-24">
       
-      {/* 🔹 Premium Hero Welcome */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white p-10 rounded-lg text-gray-900 border border-gray-200 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-600 rounded-full -mr-20 -mt-20 blur-[100px] opacity-20"></div>
-        <div className="space-y-4 relative z-10">
+      {/* 🌟 ULTRA-SLIM HERO STRIP */}
+      <div className="relative overflow-hidden rounded-[10px] bg-black py-8 px-6 group shadow-xl">
+        <div className="absolute top-0 right-0 w-[40%] h-full bg-gradient-to-l from-rose-600 via-pink-600 to-transparent opacity-20 transition-opacity duration-1000"></div>
+        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-24 right-24 w-64 h-64 bg-indigo-500/20 rounded-full blur-[80px]"></div>
+
+        <div className="relative z-10 flex items-center justify-between gap-6 px-4">
+          <div className="flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-2.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+              <FiZap className="text-yellow-400 fill-yellow-400" size={10} />
+              <span className="text-[8px] font-black text-white uppercase tracking-widest">{getTimeOfDay()}</span>
+            </div>
+            
+            <div>
+              <h1 className="text-xl md:text-2xl font-black tracking-tight text-white leading-none">
+                Welcome, <span className="text-rose-400">{student?.name?.split(" ")[0] || "Scholar"}</span>
+              </h1>
+              <p className="hidden sm:block text-[8px] font-black text-gray-500 uppercase tracking-[0.3em] mt-1">
+                {student?.course} • Active Session
+              </p>
+            </div>
+          </div>
+
           <div className="flex items-center gap-3">
-             <span className="px-3 py-1 bg-white/10 text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-lg italic backdrop-blur-md border border-white/5">Student Control Panel</span>
-             <span className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
-                <FiCheckCircle size={10} /> Identity Verified
-             </span>
+             <div className="px-5 py-2.5 bg-white text-black rounded-xl font-black text-[8px] uppercase tracking-widest hover:scale-105 transition-transform cursor-pointer">
+                Achievements
+             </div>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-none">
-            Welcome, <span className="text-red-600">{student?.name?.split(' ')[0] || "Scholar"}</span>
-          </h1>
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] leading-relaxed max-w-xl">
-            You are currently enrolled in the <span className="text-white">{student?.course || "Academic"} Program.</span> Access your learning modules below.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-lg shadow-xl text-xs font-black text-white uppercase tracking-widest italic backdrop-blur-xl group hover:bg-red-600 hover:border-red-500 transition-all cursor-default relative z-10">
-           <FiCalendar className="text-red-500 group-hover:text-white group-hover:scale-125 transition-all" />
-           {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
         </div>
       </div>
 
-      {/* 🔹 STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
-        <StatTile title="Homework" value="12" icon={FiEdit3} colorClass="bg-red-600" path="/homework" />
-        <StatTile title="Assignments" value="08" icon={FiBookOpen} colorClass="bg-[#111111]" path="/assignment" />
-        <StatTile title="Live Classes" value="24" icon={FiTv} colorClass="bg-gray-400" path="/online" />
-        <StatTile title="Notifications" value="05" icon={FiBell} colorClass="bg-red-900" path="/Notice" />
-      </div>
-
-      {/* 🔹 SECONDARY SECTION */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-2">
+      {/* 🚀 MAIN CONTENT GRID */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-12 gap-10">
         
-        {/* Recent Updates */}
-        <div className="lg:col-span-2 bg-white rounded-lg border border-gray-100 shadow-sm p-10 space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
-          <div className="flex justify-between items-center">
-             <h2 className="text-lg font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
-                <FiBell className="text-red-600" />
-                Live Timeline
-             </h2>
-             <button className="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors italic">View Archive</button>
+        {/* Left Section - Academic Modules */}
+        <div className="xl:col-span-8 space-y-10">
+          <div className="flex items-center justify-between px-4">
+            <div className="space-y-1">
+              <h2 className="text-3xl font-black tracking-tight text-black">Academic Modules</h2>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Everything you need to excel</p>
+            </div>
+            <div className="hidden md:flex items-center gap-4 px-5 py-2 bg-gray-50 border border-gray-100 rounded-full">
+               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Live Updates Syncing</p>
+            </div>
           </div>
-          <div className="space-y-6">
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-6 p-6 rounded-lg border border-gray-50 bg-white/30 hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all group">
-                   <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center border border-gray-100 shadow-sm shrink-0 group-hover:scale-110 transition-transform">
-                      <FiBell className="text-red-600" />
-                   </div>
-                   <div>
-                      <p className="text-sm font-black text-gray-900 uppercase italic tracking-tight">New Mathematics assignment posted</p>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 italic">Due in 3 days • Posted by Prof. Sharma</p>
-                   </div>
-                </div>
-             ))}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StatCard title="Homework" value={counts.homework} icon={FiEdit3} colorClass="bg-black" path="/homework" description="Active Tasks" loading={loading} />
+            <StatCard title="Assignments" value={counts.assignments} icon={FiBookOpen} colorClass="bg-rose-600" path="/assignment" description="Pending Submissions" loading={loading} />
+            <StatCard title="Model Papers" value={counts.modelPapers} icon={FiFileText} colorClass="bg-pink-600" path="/model-paper" description="Available Resources" loading={loading} />
+            <StatCard title="Syllabus" value={counts.syllabus} icon={FiLayers} colorClass="bg-rose-500" path="/Syllbus" description="Study Units" loading={loading} />
+            <StatCard title="Time Table" value="LIVE" icon={FiClock} colorClass="bg-indigo-600" path="/timetable" description="Daily Schedule" loading={false} />
+            <StatCard title="Attendance" value="92%" icon={FiTrendingUp} colorClass="bg-emerald-600" path="/attendance" description="Current Status" loading={false} />
+            <StatCard title="Exam Schedule" value="12" icon={FiCalendar} colorClass="bg-amber-600" path="/exam-schedule" description="Upcoming Dates" loading={false} />
+            <StatCard title="Results" value="VIEW" icon={FiAward} colorClass="bg-purple-600" path="/result" description="Academic Record" loading={false} />
+            <StatCard title="Placements" value="NEW" icon={FiBriefcase} colorClass="bg-blue-600" path="/placements" description="Opportunities" loading={false} />
           </div>
         </div>
 
-        {/* Support Card */}
-        <div className="bg-[#111111] rounded-lg p-10 text-white relative overflow-hidden shadow-2xl shadow-gray-200 group">
-           <div className="absolute top-0 right-0 w-40 h-40 -mr-16 -mt-16 bg-red-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
-           <div className="relative z-10 space-y-8">
-              <div className="p-4 bg-white/10 w-fit rounded-lg border border-white/5 backdrop-blur-md">
-                 <FiBriefcase size={28} className="text-red-500" />
+        {/* Right Section - Notices & Support */}
+        <div className="xl:col-span-4 space-y-10">
+           <GlassCard className="rounded-[3.5rem] p-10 space-y-8 flex flex-col h-full">
+            <div className="flex justify-between items-center">
+               <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-xl shadow-black/20">
+                     <FiBell size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold tracking-tight text-black">Notices</h2>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{counts.notices} Active Alerts</p>
+                  </div>
+               </div>
+            </div>
+            
+            <div className="flex-grow space-y-6 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
+               {counts.notices === 0 ? (
+                 <div className="flex flex-col items-center justify-center py-20 text-center bg-white/50 border-2 border-dashed border-gray-100 rounded-[2.5rem]">
+                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
+                       <FiInfo size={32} className="text-gray-200" />
+                    </div>
+                    <p className="text-[11px] font-black text-gray-300 uppercase tracking-[0.4em]">No New Alerts</p>
+                 </div>
+               ) : (
+                 <div className="space-y-4">
+                    <p className="text-center text-gray-400 text-xs font-medium py-10">Check the notice board for detailed updates.</p>
+                 </div>
+               )}
+            </div>
+
+            <div className="space-y-4 pt-6">
+              <button 
+                onClick={() => navigate("/Notice")}
+                className="w-full py-6 bg-black text-white rounded-[2rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-gray-900 transition-all flex items-center justify-center gap-4 active:scale-[0.98] shadow-2xl shadow-black/20"
+              >
+                Enter Notice Board <FiArrowRight size={18} />
+              </button>
+
+              <div className="p-8 bg-indigo-50/50 border border-indigo-100 rounded-[2.5rem] group/support cursor-pointer hover:bg-white transition-all">
+                <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-50 group-hover/support:scale-110 transition-transform duration-500">
+                       <FiBriefcase size={22} />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black tracking-tight text-black">Support Desk</h3>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Connect with Admin</p>
+                    </div>
+                </div>
               </div>
-              <h2 className="text-2xl font-black uppercase italic tracking-tight">Scholar Support</h2>
-              <p className="text-gray-400 text-xs font-bold uppercase tracking-widest leading-relaxed">Having technical difficulties? Contact our academic infrastructure desk.</p>
-              <button className="w-full py-4 bg-white text-black font-black text-[10px] uppercase tracking-[0.3em] rounded-lg shadow-xl hover:bg-red-600 hover:text-white transition-all italic">Launch Protocol</button>
-           </div>
+            </div>
+          </GlassCard>
         </div>
 
       </div>
@@ -119,6 +223,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
 

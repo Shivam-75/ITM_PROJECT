@@ -40,6 +40,7 @@ class CourseController {
             return res.status(200).json({
                 message: "Courses fetched successfully",
                 status: 200,
+                courses: courses, // Named key for frontend
                 data: courses
             });
         } catch (err) {

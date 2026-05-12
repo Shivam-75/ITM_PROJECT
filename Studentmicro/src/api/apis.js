@@ -89,7 +89,7 @@ export const StudentProfileService = {
 };
 
 export const StudentAcademicService = {
-    getNotice: () => WorkAPI.get("/Notice/get-notice"),
+    getNotice: () => WorkAPI.get("/Notice/getNoticeDpt"),
     getFees: () => WorkAPI.get("/Fee/get-fee-structure"),
 };
 

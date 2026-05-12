@@ -11,11 +11,13 @@ const AssignmentSchema = new mongoose.Schema({
     },
     semester: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     section: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     year: {
         type: String,
@@ -23,7 +25,8 @@ const AssignmentSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     questions: {
         type: [String],

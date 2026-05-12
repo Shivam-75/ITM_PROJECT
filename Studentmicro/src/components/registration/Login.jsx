@@ -30,7 +30,7 @@ const Login = () => {
       setLoading(true);
       const { data } = await authAPI.post("/login", formData, { withCredentials: true });
       toast.success(data?.message || "Login Success", toaststyle);
-      UserLogsData();
+      UserLogsData(data?.data?.userData);
     } catch (err) {
       toast.error(err.response?.data?.message || "Login Failed", toaststyle);
     } finally {
