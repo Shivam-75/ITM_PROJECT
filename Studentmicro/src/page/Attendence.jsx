@@ -10,9 +10,9 @@ const AttendanceRow = memo(({ item }) => {
   const isPresent = item.status?.toLowerCase() === "present";
 
   return (
-    <div className="flex justify-between items-center p-4 md:p-5 bg-white rounded-lg border border-slate-50 hover:shadow-xl hover:shadow-indigo-50/50 transition-all group animate-in fade-in slide-in-from-bottom-2">
+    <div className="flex justify-between items-center p-4 md:p-5 bg-white rounded-[10px] border border-slate-50 hover:shadow-xl hover:shadow-indigo-50/50 transition-all group animate-in fade-in slide-in-from-bottom-2">
       <div className="flex items-center gap-3 md:gap-4">
-        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors ${
+        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-[10px] flex items-center justify-center transition-colors ${
             isPresent ? "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white" : "bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white"
         }`}>
             {isPresent ? <FiCheckCircle size={20} /> : <FiXCircle size={20} />}
@@ -92,8 +92,8 @@ const Attendence = () => {
       {/* Header Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-4 md:px-0">
         <div className="space-y-1">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight italic uppercase">Daily Attendance</h2>
-            <p className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-[0.3em]">
+            <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight italic uppercase">Daily Attendance</h2>
+            <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
                 {studentInfo?.course || "STUDENT"} • SEM {studentInfo?.semester || "1"} • {studentInfo?.section || "A1"}
             </p>
         </div>
@@ -106,13 +106,13 @@ const Attendence = () => {
                     type="date" 
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 md:py-3.5 bg-white border border-slate-100 rounded-lg shadow-sm text-xs font-black uppercase text-slate-700 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all cursor-pointer"
+                    className="w-full pl-12 pr-4 py-3 md:py-3.5 bg-white border border-slate-100 rounded-[10px] shadow-sm text-xs font-black uppercase text-slate-700 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all cursor-pointer"
                 />
             </div>
             {selectedDate && (
                 <button 
                     onClick={() => setSelectedDate("")}
-                    className="p-3.5 bg-white text-slate-500 rounded-lg hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                    className="p-3.5 bg-white text-slate-500 rounded-[10px] hover:bg-rose-50 hover:text-rose-600 transition-colors"
                 >
                     <FiRefreshCw size={18} />
                 </button>
@@ -122,29 +122,29 @@ const Attendence = () => {
 
       {/* Dashboard Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 px-4 md:px-0">
-        <div className="bg-emerald-500 rounded-lg p-6 md:p-8 text-white shadow-xl shadow-emerald-100 relative overflow-hidden group">
+        <div className="bg-emerald-500 rounded-[10px] p-6 md:p-8 text-white shadow-xl shadow-emerald-100 relative overflow-hidden group">
           <FiCheckCircle size={100} className="absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform rotate-12" />
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80 mb-1">Present</p>
           <div className="flex items-baseline gap-1">
-              <h3 className="text-4xl md:text-5xl font-black">{presentCount}</h3>
-              <span className="text-xs font-black opacity-60">sessions</span>
+              <h3 className="text-3xl md:text-4xl font-black">{presentCount}</h3>
+              <span className="text-[10px] font-black opacity-60 uppercase tracking-widest">sessions</span>
           </div>
         </div>
 
-        <div className="bg-rose-500 rounded-lg p-6 md:p-8 text-white shadow-xl shadow-rose-100 relative overflow-hidden group">
+        <div className="bg-rose-500 rounded-[10px] p-6 md:p-8 text-white shadow-xl shadow-rose-100 relative overflow-hidden group">
           <FiXCircle size={100} className="absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform -rotate-12" />
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80 mb-1">Absent</p>
           <div className="flex items-baseline gap-1">
-              <h3 className="text-4xl md:text-5xl font-black">{absentCount}</h3>
-              <span className="text-xs font-black opacity-60">sessions</span>
+              <h3 className="text-3xl md:text-4xl font-black">{absentCount}</h3>
+              <span className="text-[10px] font-black opacity-60 uppercase tracking-widest">sessions</span>
           </div>
         </div>
 
-        <div className="bg-slate-900 rounded-lg p-6 md:p-8 text-white shadow-xl shadow-slate-200 relative overflow-hidden group">
+        <div className="bg-slate-900 rounded-[10px] p-6 md:p-8 text-white shadow-xl shadow-slate-200 relative overflow-hidden group">
           <FiPieChart size={100} className="absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform" />
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80 mb-1">Attendance Rate</p>
           <div className="flex items-baseline gap-1">
-              <h3 className={`text-4xl md:text-5xl font-black ${attendancePercentage >= 75 ? "text-emerald-400" : "text-rose-400"}`}>
+              <h3 className={`text-3xl md:text-4xl font-black ${attendancePercentage >= 75 ? "text-emerald-400" : "text-rose-400"}`}>
                 {attendancePercentage}%
               </h3>
           </div>
@@ -154,7 +154,7 @@ const Attendence = () => {
       {/* List Section */}
       <div className="space-y-6 px-4 md:px-0">
         <div className="flex items-center gap-3">
-           <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-indigo-600">
+           <div className="w-8 h-8 rounded-[10px] bg-white border border-slate-100 flex items-center justify-center text-indigo-600">
               <FiFilter size={14} />
            </div>
            <h3 className="text-sm md:text-lg font-black text-slate-800 tracking-tight italic uppercase">
@@ -163,8 +163,8 @@ const Attendence = () => {
         </div>
 
         {filteredData.length === 0 ? (
-          <div className="py-20 text-center bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col items-center">
-             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center mb-4">
+          <div className="py-20 text-center bg-white rounded-[10px] border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col items-center">
+             <div className="w-16 h-16 bg-white rounded-[10px] flex items-center justify-center mb-4">
                 <FiActivity size={24} className="text-slate-200" />
              </div>
              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">No sessions found for this day</p>

@@ -101,8 +101,7 @@ class StudentwrokController {
             
             const syllabusData = await Syllabus.find({
                 department: user.course.toLowerCase(),
-                semester: user.semester.toString().toLowerCase(),
-                section: user.section.toLowerCase()
+                semester: user.semester.toString().toLowerCase()
             }).sort({ createdAt: -1 });
 
             return res.status(200).json({ 

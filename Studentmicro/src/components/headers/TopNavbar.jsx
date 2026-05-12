@@ -52,6 +52,7 @@ const TopNavbar = () => {
                 { name: "Time Table", route: "/timetable", icon: <FiClock size={14} /> },
                 { name: "Attendance", route: "/attendance", icon: <FiTrendingUp size={14} /> },
                 { name: "Exam Schedule", route: "/exam-schedule", icon: <FiCalendar size={14} /> },
+                { name: "Notice", route: "/notice", icon: <FiBell size={14} /> },
             ]
         },
         {
@@ -161,10 +162,10 @@ const TopNavbar = () => {
                         <h4 className="text-[10px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
                             {student?.name || "Student"}
                         </h4>
-                        <p className="text-[8px] font-bold text-rose-500 uppercase tracking-widest flex items-center justify-end gap-1">
+                        <div className="text-[8px] font-bold text-rose-500 uppercase tracking-widest flex items-center justify-end gap-1">
                             <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div> 
                             {student?.course || "Scholar"}
-                        </p>
+                        </div>
                     </div>
 
                     <div className="relative">

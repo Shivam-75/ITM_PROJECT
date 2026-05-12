@@ -63,7 +63,7 @@ const Sidebar = () => {
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="lg:hidden fixed top-6 left-6 z-50 p-4 bg-black text-white rounded-2xl shadow-2xl"
+          className="lg:hidden fixed top-6 left-6 z-50 p-4 bg-black text-white rounded-[10px] shadow-2xl"
         >
           <FiMenu size={24} />
         </button>
@@ -83,7 +83,7 @@ const Sidebar = () => {
         {/* Branding Section */}
         <div className="h-28 flex items-center px-10 border-b border-gray-50 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
           <div className="flex items-center gap-4 group cursor-pointer" onClick={() => navigate("/")}>
-            <div className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center text-sm font-black shadow-2xl shadow-black/20 group-hover:rotate-6 transition-transform duration-500">
+            <div className="w-12 h-12 rounded-[10px] bg-black text-white flex items-center justify-center text-sm font-black shadow-2xl shadow-black/20 group-hover:rotate-6 transition-transform duration-500">
                 ITM
             </div>
             <div className="flex flex-col">
@@ -111,7 +111,7 @@ const Sidebar = () => {
                     to={item.route}
                     onClick={handleLinkClick}
                     className={({ isActive }) => `
-                      flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group relative
+                      flex items-center gap-4 px-5 py-4 rounded-[10px] transition-all duration-300 group relative
                       ${isActive
                         ? "bg-black text-white shadow-xl shadow-black/10"
                         : "text-gray-400 hover:bg-gray-50 hover:text-black"}
@@ -136,7 +136,7 @@ const Sidebar = () => {
         <div className="p-8 bg-white border-t border-gray-50">
           <button
             onClick={LogoutUser}
-            className="w-full flex items-center justify-center gap-4 px-6 py-5 rounded-[2rem] bg-gray-50 text-gray-400 hover:bg-rose-500 hover:text-white transition-all duration-500 font-black text-[11px] uppercase tracking-widest shadow-sm hover:shadow-xl hover:shadow-rose-500/20 group active:scale-95"
+            className="w-full flex items-center justify-center gap-4 px-6 py-5 rounded-[10px] bg-gray-50 text-gray-400 hover:bg-rose-500 hover:text-white transition-all duration-500 font-black text-[11px] uppercase tracking-widest shadow-sm hover:shadow-xl hover:shadow-rose-500/20 group active:scale-95"
           >
             <FiLogOut className="text-xl group-hover:-translate-x-1 transition-transform" />
             <span>Sign Out Portal</span>
