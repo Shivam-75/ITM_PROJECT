@@ -36,6 +36,7 @@ class SectionController {
             return res.status(200).json({
                 message: "Sections fetched successfully",
                 status: 200,
+                sections: sections,
                 data: sections
             });
         } catch (err) {

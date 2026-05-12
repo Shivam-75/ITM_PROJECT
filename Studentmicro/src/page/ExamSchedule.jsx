@@ -18,7 +18,7 @@ const ExamCard = memo(({ exam }) => {
           <h3 className="text-2xl font-[900] text-slate-900 uppercase tracking-tighter italic leading-none group-hover:text-indigo-600 transition-colors">
             {exam.Subject}
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-widest">
+          <p className="text-[10px] font-black text-slate-400 mt-2 uppercase tracking-widest">
             Protocol: {exam.ExamType}
           </p>
         </div>
@@ -127,7 +127,7 @@ const ExamSchedule = () => {
             <div className="py-32 text-center bg-white rounded-lg border border-slate-50 shadow-sm flex flex-col items-center">
                 <div className="w-16 h-1 bg-white rounded-full mb-6"></div>
                 <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.4em] italic mb-2">No schedules released for your session</h3>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Update Frequency: Real-time</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Update Frequency: Real-time</p>
             </div>
         )
       )}

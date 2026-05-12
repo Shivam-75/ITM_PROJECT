@@ -1,20 +1,11 @@
 import mongoose from "mongoose";
 
-const NoticeSchema = new mongoose.Schema({
+const SyllabusSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
-    description: {
-        type: String,
-        required: true
-    },
-    department: {
-        type: String,
-        required: true,
-        lowercase: true
-    },
-    year: {
+    title: {
         type: String,
         required: true
     },
@@ -28,10 +19,19 @@ const NoticeSchema = new mongoose.Schema({
         required: true,
         lowercase: true
     },
-    title: {
+    year: {
+        type: String,
+        required: true
+    },
+    department: {
+        type: String,
+        required: true,
+        lowercase: true
+    },
+    fileUrl: {
         type: String,
         required: true
     }
 }, { timestamps: true });
 
-export const Notice = mongoose.models.Notice || mongoose.model("Notice", NoticeSchema, "notices");
+export const Syllabus = mongoose.models.Syllabus || mongoose.model("Syllabus", SyllabusSchema, "syllabus");

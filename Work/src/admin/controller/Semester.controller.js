@@ -37,6 +37,7 @@ class SemesterController {
             return res.status(200).json({
                 message: "Semesters fetched successfully",
                 status: 200,
+                semesters: semesters, // Named key for frontend
                 data: semesters
             });
         } catch (err) {

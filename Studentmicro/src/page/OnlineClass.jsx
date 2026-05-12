@@ -42,7 +42,7 @@ const LectureCard = memo(({ lecture }) => {
               <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center border border-slate-100 text-slate-400">
                  <FiUser size={12} />
               </div>
-              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-tight italic">Verified Academic Host</p>
+              <p className="text-[11px] font-black text-slate-500 uppercase tracking-tight italic">Verified Academic Host</p>
            </div>
         </div>
 
@@ -122,7 +122,7 @@ const OnlineClass = () => {
            <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
                 Digital <span className="text-indigo-600">Learning</span> Hub
            </h1>
-           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest italic">
+           <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest italic">
                 {studentInfo?.course || "ITM"} • Authorized Session Archives
            </p>
         </div>
@@ -137,7 +137,7 @@ const OnlineClass = () => {
            </div>
            <div>
                 <p className="text-[10px] font-black text-slate-900 leading-none">1.2K+ STUDENTS</p>
-                <p className="text-[8px] font-bold text-slate-400">ACTIVELY STREAMING</p>
+                <p className="text-[8px] font-black text-slate-400">ACTIVELY STREAMING</p>
            </div>
         </div>
       </div>
@@ -155,7 +155,7 @@ const OnlineClass = () => {
                     <FiVideo size={48} className="text-slate-100" />
                 </div>
                 <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.5em] italic">No Published Sessions Found</h3>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">{studentInfo?.course} Registry Sync: Online</p>
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-2">{studentInfo?.course} Registry Sync: Online</p>
             </div>
         )
       )}
