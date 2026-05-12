@@ -10,10 +10,103 @@ import {
   FiCalendar,
   FiTarget,
   FiZap,
-  FiChevronRight
+  FiArrowRight,
+  FiX,
+  FiAward,
+  FiActivity
 } from "react-icons/fi";
 import { useAuth } from "../store/AuthStore";
 import Loader from "../components/common/Loader";
+
+// 🔹 Drive Detail Modal
+const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
+  if (!drive) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
+        onClick={onClose}
+      ></div>
+      
+      {/* Modal Content */}
+      <div className="relative bg-white w-full max-w-lg rounded-[10px] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 border border-gray-100">
+        <div className="p-6 md:p-8 space-y-6">
+          {/* Header */}
+          <div className="flex justify-between items-start">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                 <span className="px-2 py-0.5 bg-black text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full">Placement Drive</span>
+                 <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{drive.year || "2026-27"}</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black text-black tracking-tighter uppercase leading-tight">{drive.companyName}</h2>
+            </div>
+            <button 
+              onClick={onClose}
+              className="p-2 bg-gray-50 text-gray-400 rounded-[10px] hover:bg-black hover:text-white transition-all active:scale-90"
+            >
+              <FiX size={20} />
+            </button>
+          </div>
+
+          {/* Compact Details Grid */}
+          <div className="grid grid-cols-3 gap-3">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Role</p>
+                <p className="text-[10px] font-black text-black uppercase truncate">{drive.jobProfile}</p>
+             </div>
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Package</p>
+                <p className="text-[10px] font-black text-black">{drive.ctc} LPA</p>
+             </div>
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Deadline</p>
+                <p className="text-[10px] font-black text-black uppercase">{new Date(drive.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+             </div>
+          </div>
+
+          {/* Description Section */}
+          <div className="space-y-4">
+             <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 bg-black text-white rounded-[10px] flex items-center justify-center">
+                   <FiActivity size={14} />
+                </div>
+                <h3 className="text-sm font-black tracking-tight uppercase">Job Overview</h3>
+             </div>
+             
+             <div className="space-y-3">
+                <div className="p-4 bg-gray-50 rounded-[10px] border border-gray-100">
+                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-gray-200 pb-1.5 mb-2">Description</p>
+                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-3">{drive.description || "Detailed description will be shared during the pre-placement talk."}</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-[10px] border border-gray-100">
+                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-gray-200 pb-1.5 mb-2">Eligibility Criteria</p>
+                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-2">{drive.eligibility}</p>
+                </div>
+             </div>
+          </div>
+
+          {/* Action Button */}
+          <div className="pt-2">
+             <button 
+                onClick={() => onApply(drive)}
+                disabled={isApplied}
+                className={`w-full py-4 rounded-[10px] font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-lg active:scale-95 ${
+                  isApplied 
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-100 cursor-default' 
+                    : 'bg-black text-white hover:bg-gray-900 shadow-gray-200'
+                }`}
+             >
+                {isApplied ? <FiCheckCircle size={16} /> : <FiZap size={16} />}
+                {status}
+             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Placements = () => {
   const { student, toaststyle } = useAuth();
@@ -55,7 +148,7 @@ const Placements = () => {
         semester: student.semester,
         studentMobile: student.moNumber
       });
-      toast.success(`Applied for ${drive.companyName}`, toaststyle);
+      toast.success(`Successfully Applied for ${drive.companyName}`, toaststyle);
       fetchData();
       setSelectedDrive(null);
     } catch (err) {
@@ -69,150 +162,139 @@ const Placements = () => {
   const getStatus = (driveId) => applications.find(app => app.placementId === driveId)?.status || "Apply Now";
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-1000 p-2 md:p-6 lg:p-10">
-      {loading && <Loader />}
-
-      {/* Hero Header */}
-      <div className="bg-white p-12 rounded-lg text-gray-900 border border-slate-100 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-red-600 rounded-full -mr-32 -mt-32 blur-[120px] opacity-20 animate-pulse"></div>
-        <div className="relative z-10 space-y-6">
-           <div className="flex items-center gap-3">
-              <span className="px-4 py-1.5 bg-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-lg italic border border-white/5 backdrop-blur-md">Career Advancement Center</span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
-                 <FiZap size={10} /> Active Recruitment Phase
-              </span>
-           </div>
-           <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-none">
-             Future <span className="text-red-600">Forge</span>
-           </h1>
-           <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] leading-relaxed max-w-2xl">
-             Connect with industry leaders and launch your professional journey. Your academic excellence meets corporate opportunity here.
-           </p>
-        </div>
-      </div>
-
-      {/* Drives Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {drives.length === 0 ? (
-          <div className="col-span-full py-32 text-center bg-white rounded-lg border border-slate-100 shadow-sm">
-             <FiBriefcase size={48} className="mx-auto text-gray-100 mb-6" />
-             <p className="text-[11px] font-black text-gray-300 uppercase tracking-[0.4em] italic">No active placement windows</p>
+    <div className="min-h-screen bg-rose-50/50">
+      <div className="max-w-[1400px] mx-auto space-y-8 pb-32 animate-in fade-in slide-in-from-bottom-6 duration-1000 px-6">
+        {loading && (
+          <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-[150]">
+            <Loader />
           </div>
-        ) : (
-          drives.map((drive) => (
-            <div key={drive._id} className="bg-white rounded-lg p-10 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
-               
-               <div className="flex justify-between items-start relative z-10 mb-8">
-                  <div className="flex items-center gap-5">
-                     <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center text-white shadow-xl shadow-gray-200 group-hover:scale-110 transition-transform duration-500">
-                        <FiBriefcase size={28} />
-                     </div>
-                     <div>
-                        <h3 className="text-2xl font-black text-gray-900 uppercase italic tracking-tighter group-hover:text-red-600 transition-colors">{drive.companyName}</h3>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{drive.jobProfile}</p>
-                     </div>
-                  </div>
-                  <div className="text-right">
-                     <p className="text-2xl font-black text-gray-900 leading-none italic">{drive.ctc} <span className="text-[10px] uppercase tracking-widest text-gray-400 not-italic ml-1">LPA</span></p>
-                     <p className="text-[8px] font-black text-emerald-500 uppercase tracking-[0.2em] mt-1">Package Offered</p>
-                  </div>
-               </div>
-
-               <div className="grid grid-cols-2 gap-6 mb-10 relative z-10">
-                  <div className="p-4 bg-white rounded-lg border border-slate-100 group-hover:bg-white transition-colors">
-                     <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2"><FiTarget /> Eligibility</p>
-                     <p className="text-[10px] font-black text-gray-800 uppercase italic line-clamp-1">{drive.eligibility}</p>
-                  </div>
-                  <div className="p-4 bg-white rounded-lg border border-slate-100 group-hover:bg-white transition-colors">
-                     <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2"><FiCalendar /> Deadline</p>
-                     <p className="text-[10px] font-black text-red-600 uppercase italic">{new Date(drive.deadline).toLocaleDateString()}</p>
-                  </div>
-               </div>
-
-               <div className="flex items-center gap-4 relative z-10">
-                  <button 
-                    onClick={() => setSelectedDrive(drive)}
-                    className="flex-1 py-4 bg-white text-gray-900 text-[10px] font-black uppercase tracking-[0.3em] rounded-lg hover:bg-black hover:text-white transition-all italic border border-transparent hover:border-white/10"
-                  >
-                    View Details
-                  </button>
-                  <button 
-                    onClick={() => handleApply(drive)}
-                    disabled={isApplied(drive._id)}
-                    className={`flex-[1.5] py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.3em] transition-all italic shadow-xl ${
-                      isApplied(drive._id) 
-                        ? 'bg-emerald-50 text-emerald-600 cursor-default border border-emerald-100' 
-                        : 'bg-red-600 text-white hover:bg-red-700 shadow-red-200'
-                    }`}
-                  >
-                    {getStatus(drive._id)}
-                  </button>
-               </div>
-            </div>
-          ))
         )}
-      </div>
 
-      {/* Detail Modal */}
-      {selectedDrive && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-           <div className="bg-white w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-              <div className="p-10 bg-[#111111] text-white flex justify-between items-start relative">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/20 rounded-full blur-2xl"></div>
-                 <div className="relative z-10">
-                    <h3 className="text-3xl font-black uppercase italic tracking-tighter">{selectedDrive.companyName}</h3>
-                    <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mt-1">Institutional Drive Details</p>
-                 </div>
-                 <button onClick={() => setSelectedDrive(null)} className="relative z-10 p-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">
-                    <FiCheckCircle size={20} className="rotate-45" />
-                 </button>
-              </div>
+        {/* Detail Modal */}
+        {selectedDrive && (
+          <DriveModal 
+             drive={selectedDrive} 
+             onClose={() => setSelectedDrive(null)} 
+             onApply={handleApply}
+             isApplied={isApplied(selectedDrive._id)}
+             status={getStatus(selectedDrive._id)}
+          />
+        )}
 
-              <div className="p-10 space-y-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
-                 <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-1">
-                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Role</p>
-                       <p className="text-sm font-black text-gray-900 uppercase italic">{selectedDrive.jobProfile}</p>
-                    </div>
-                    <div className="space-y-1 text-right">
-                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Package</p>
-                       <p className="text-sm font-black text-red-600 uppercase italic">{selectedDrive.ctc} LPA</p>
-                    </div>
-                 </div>
+        {/* 🚀 PREMIUM PLACEMENT REGISTRY TABLE */}
+        <div className="bg-white rounded-[10px] border border-gray-100 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
+          {/* Table Header Overlay */}
+          <div className="p-10 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-gradient-to-r from-gray-50/50 to-transparent">
+             <div className="space-y-1">
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-1 bg-black rounded-full"></div>
+                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.5em]">Active Registry</p>
+                </div>
+                <h2 className="text-3xl font-black text-black tracking-tighter uppercase italic">Placement Opportunities.</h2>
+             </div>
+             <div className="flex items-center gap-4">
+                <div className="bg-black text-white px-6 py-3 rounded-[10px] text-[10px] font-black uppercase tracking-[0.2em] shadow-xl">
+                   {drives.length} Drives Active
+                </div>
+             </div>
+          </div>
 
-                 <div className="space-y-3">
-                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-slate-100 pb-2 flex items-center gap-2"><FiInfo /> Description</h4>
-                    <p className="text-xs font-bold text-gray-500 uppercase leading-relaxed tracking-wide">{selectedDrive.description}</p>
-                 </div>
-
-                 <div className="space-y-3">
-                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-slate-100 pb-2 flex items-center gap-2"><FiTarget /> Requirements</h4>
-                    <p className="text-xs font-bold text-gray-500 uppercase leading-relaxed tracking-wide">{selectedDrive.eligibility}</p>
-                 </div>
-
-                 <div className="flex items-center gap-4 pt-6">
-                    <button 
-                      onClick={() => handleApply(selectedDrive)}
-                      disabled={isApplied(selectedDrive._id)}
-                      className={`w-full py-5 rounded-lg text-[11px] font-black uppercase tracking-[0.4em] transition-all italic shadow-2xl ${
-                        isApplied(selectedDrive._id) 
-                          ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' 
-                          : 'bg-red-600 text-white hover:bg-red-700 shadow-red-100'
-                      }`}
-                    >
-                      {getStatus(selectedDrive._id)}
-                    </button>
-                 </div>
-              </div>
-           </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50/50">
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">#</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Company</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Role Profile</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">CTC (LPA)</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Eligibility</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Deadline</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Status</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {drives.length === 0 && !loading ? (
+                  <tr>
+                    <td colSpan="8" className="py-48 text-center">
+                      <div className="flex flex-col items-center opacity-30">
+                         <FiBriefcase size={56} className="mb-6 text-gray-300" />
+                         <p className="text-sm font-black uppercase tracking-[0.5em]">Registry Empty</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  drives.map((drive, index) => {
+                    const applied = isApplied(drive._id);
+                    const statusText = getStatus(drive._id);
+                    
+                    return (
+                      <tr key={drive._id} className="group hover:bg-gray-50 transition-all duration-300">
+                        <td className="px-10 py-8">
+                           <span className="text-xs font-black text-gray-300">{(index + 1).toString().padStart(2, '0')}</span>
+                        </td>
+                        <td className="px-10 py-8">
+                          <div className="flex items-center gap-5">
+                             <div className="w-14 h-14 bg-black text-white rounded-[10px] flex items-center justify-center shadow-xl group-hover:rotate-6 transition-transform duration-500">
+                                <FiBriefcase size={24} />
+                             </div>
+                             <div className="space-y-0.5">
+                                <p className="text-base font-black text-black uppercase tracking-tight group-hover:text-black/60 transition-colors">{drive.companyName}</p>
+                                <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">{drive.year || "2026-27"}</p>
+                             </div>
+                          </div>
+                        </td>
+                        <td className="px-10 py-8">
+                          <span className="px-4 py-1.5 bg-gray-50 text-black text-[9px] font-black uppercase tracking-widest rounded-full border border-gray-100">
+                            {drive.jobProfile}
+                          </span>
+                        </td>
+                        <td className="px-10 py-8">
+                          <div className="flex items-baseline gap-1.5">
+                             <span className="text-2xl font-black text-black tracking-tighter leading-none">{drive.ctc}</span>
+                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">LPA</span>
+                          </div>
+                        </td>
+                        <td className="px-10 py-8">
+                           <p className="text-[11px] font-black text-gray-500 uppercase tracking-tight max-w-[140px] truncate">{drive.eligibility}</p>
+                        </td>
+                        <td className="px-10 py-8">
+                           <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Apply Before</span>
+                              <span className="text-xs font-black text-black uppercase flex items-center gap-2 italic">
+                                 <FiCalendar size={14} />
+                                 {new Date(drive.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </span>
+                           </div>
+                        </td>
+                        <td className="px-10 py-8">
+                           <div className={`px-5 py-2 rounded-[10px] text-[9px] font-black uppercase tracking-[0.2em] border text-center w-fit ${
+                             applied 
+                               ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+                               : 'bg-black text-white border-black shadow-[0_5px_15px_-5px_rgba(0,0,0,0.3)]'
+                           }`}>
+                             {statusText}
+                           </div>
+                        </td>
+                        <td className="px-10 py-8 text-right">
+                           <button 
+                             onClick={() => setSelectedDrive(drive)}
+                             className="w-12 h-12 bg-black text-white rounded-[10px] hover:bg-gray-800 transition-all active:scale-95 shadow-xl flex items-center justify-center group/btn"
+                           >
+                             <FiArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                           </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 export default Placements;
-
-
-

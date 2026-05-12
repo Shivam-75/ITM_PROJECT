@@ -37,6 +37,7 @@ class YearController {
             return res.status(200).json({
                 message: "Academic years fetched successfully",
                 status: 200,
+                years: years,
                 data: years
             });
         } catch (err) {

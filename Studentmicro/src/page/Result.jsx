@@ -18,7 +18,7 @@ const ResultCard = memo(({ result }) => {
           <h3 className="text-2xl font-[900] text-slate-900 uppercase tracking-tighter italic leading-none">
             {result.name}
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-widest">
+          <p className="text-[10px] font-black text-slate-400 mt-2 uppercase tracking-widest">
             {result.course} • SEM {result.semester}
           </p>
         </div>
@@ -34,7 +34,7 @@ const ResultCard = memo(({ result }) => {
       <div className="space-y-3 mb-8">
         {result.subjects?.map((s, i) => (
              <div key={i} className="flex justify-between items-center py-2 border-b border-slate-50 last:border-0">
-                <span className="text-[11px] font-bold text-slate-600 uppercase">{s.subName}</span>
+                <span className="text-[11px] font-black text-slate-600 uppercase">{s.subName}</span>
                 <span className="text-[12px] font-black text-slate-900 italic">{Number(s.marks).toFixed(1)}</span>
              </div>
         ))}
@@ -105,25 +105,6 @@ const Result = () => {
             <p className="text-sm font-medium text-slate-500">Access your official sessional performance logs.</p>
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="relative flex-1 md:w-80">
-                <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" />
-                <input
-                    type="text"
-                    placeholder="ENTER ROLL ID TO FILTER"
-                    value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && fetchResults(studentId)}
-                    className="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-lg shadow-sm text-[11px] font-black uppercase text-slate-700 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all"
-                />
-            </div>
-            <button
-                onClick={() => fetchResults(studentId)}
-                className="p-4 bg-slate-900 text-white rounded-lg shadow-xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95"
-            >
-                <FiSearch size={20} />
-            </button>
-        </div>
       </div>
 
       {results.length > 0 ? (

@@ -12,9 +12,10 @@ export const AuthContextProvider = ({ children }) => {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const UserLogsData = () => {
+    const UserLogsData = (data) => {
         setuserLogin(true);
         localStorage.setItem("stLogged", "true");
+        if (data) setStudent(data);
     };
 
     const userLooutData = () => {
@@ -59,9 +60,9 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        // Always attempt to fetch profile on mount to check for valid cookies/tokens
+        // Always attempt to fetch profile on mount or when login status changes
         fetchUserProfile();
-    }, [fetchUserProfile]);
+    }, [fetchUserProfile, userLogin]);
 
     return (
         <AuthContext.Provider

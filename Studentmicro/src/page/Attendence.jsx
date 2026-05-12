@@ -19,7 +19,7 @@ const AttendanceRow = memo(({ item }) => {
         </div>
         <div>
           <p className="text-xs md:text-sm font-black text-slate-800 uppercase tracking-tight italic">{item.subject}</p>
-          <p className="text-[9px] md:text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest leading-none">
+          <p className="text-[9px] md:text-[10px] font-black text-slate-400 mt-0.5 uppercase tracking-widest leading-none">
              {new Date(item.date).toDateString()}
           </p>
         </div>
@@ -127,7 +127,7 @@ const Attendence = () => {
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80 mb-1">Present</p>
           <div className="flex items-baseline gap-1">
               <h3 className="text-4xl md:text-5xl font-black">{presentCount}</h3>
-              <span className="text-xs font-bold opacity-60">sessions</span>
+              <span className="text-xs font-black opacity-60">sessions</span>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ const Attendence = () => {
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80 mb-1">Absent</p>
           <div className="flex items-baseline gap-1">
               <h3 className="text-4xl md:text-5xl font-black">{absentCount}</h3>
-              <span className="text-xs font-bold opacity-60">sessions</span>
+              <span className="text-xs font-black opacity-60">sessions</span>
           </div>
         </div>
 

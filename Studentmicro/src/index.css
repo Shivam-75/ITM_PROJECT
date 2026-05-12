@@ -1,34 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #135bec;
+  --primary: #111111;
 }
 
 /* ===============================
    Custom Theme (Tailwind v4 way)
-================================ */
+ ================================ */
 
 @theme {
-  --color-primary: #1111d4;
-  --color-background-light: #f6f6f8;
-  --font-display: "Inter", sans-serif;
+  --color-primary: #000000;
+  --color-accent: #c2410c; /* Refined Orange/Red */
+  --color-background-light: #ffeef2; /* More visible Light Pink */
+  --font-display: "Outfit", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
 /* Global */
 body {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   background-color: var(--color-background-light);
-  color: #0d0d1b;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-heading {
+  font-family: var(--font-display);
+}
+
+/* Enforce Outfit on headings and Inter on body */
+* {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display) !important;
 }
 
 /* Input reuse class */
 .input-style {
-  @apply w-full bg-[#f8f8fc] border border-[#cfcfe7]
-  text-sm rounded-lg p-3.5
-  focus:ring-2 focus:ring-primary
-  focus:border-primary outline-none;
+  @apply w-full bg-white border border-gray-200
+  text-sm rounded-xl p-4
+  focus:ring-2 focus:ring-black
+  focus:border-black outline-none transition-all;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
 
+/* Animations */
+.hover-lift {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+}

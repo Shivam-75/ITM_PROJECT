@@ -37,6 +37,7 @@ class PeriodController {
             return res.status(200).json({
                 message: "Periods fetched successfully",
                 status: 200,
+                periods: periods,
                 data: periods
             });
         } catch (err) {

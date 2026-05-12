@@ -92,7 +92,7 @@ const Timetable = () => {
                                     <td className="p-5 border-r border-slate-200 bg-white/30">
                                         <div className="flex flex-col">
                                             <span className="text-xs font-black text-slate-800">Period {slot.id}</span>
-                                            <span className="text-[9px] font-bold text-slate-400 mt-1 uppercase whitespace-nowrap">{slot.range}</span>
+                                            <span className="text-[9px] font-black text-slate-400 mt-1 uppercase whitespace-nowrap">{slot.range}</span>
                                         </div>
                                     </td>
 
