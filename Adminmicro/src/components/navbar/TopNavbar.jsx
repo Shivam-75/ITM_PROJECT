@@ -140,12 +140,13 @@ const TopNavbar = () => {
           onClick={() => navigate("/")}
           className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200 group-hover:scale-105 transition-all">
-            <FiShield size={26} strokeWidth={2.5} />
+          <div className="w-16 h-12 bg-slate-900 rounded-[10px] flex items-center justify-center text-white shadow-xl group-hover:scale-105 transition-all relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-8 h-8 bg-white/10 rounded-full -mr-4 -mt-4 blur-xl"></div>
+             <span className="text-[10px] font-black tracking-[0.2em] uppercase italic">Admin</span>
           </div>
-          <div className="hidden 2xl:block">
-            <h1 className="text-blue-900 font-black tracking-tighter uppercase italic text-xl leading-none">ITM ADMIN</h1>
-            <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mt-1">Nexus Portal</p>
+          <div className="hidden lg:block">
+            <h1 className="text-slate-900 font-black tracking-tighter uppercase italic text-xl leading-none">ITMIAN <span className="text-blue-600">Pro.</span></h1>
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mt-1">Management Node</p>
           </div>
         </div>
       </div>

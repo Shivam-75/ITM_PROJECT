@@ -67,182 +67,124 @@ const TopNavbar = () => {
         <header className={`w-full h-24 z-50 sticky top-0 transition-all duration-500 ${
             scrolled ? 'bg-white/80 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border-b border-white/20' : 'bg-transparent'
         }`}>
-            <div className="max-w-[1440px] mx-auto h-full px-8 flex items-center justify-between">
+            <div className="max-w-[1440px] mx-auto h-full px-8 flex items-center justify-between gap-4">
                 
-                {/* Brand & Nav */}
-                <div className="flex items-center gap-16">
-                    <div 
-                        onClick={() => navigate("/")}
-                        className="flex items-center gap-4 cursor-pointer group"
-                    >
-                        <div className="w-14 h-14 bg-black text-white rounded-2xl flex items-center justify-center text-sm font-black shadow-2xl group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
-                            ITM
-                        </div>
-                        <div className="hidden lg:block">
-                            <span className="text-black font-black tracking-tight uppercase text-2xl leading-none block group-hover:translate-x-1 transition-transform">Student Hub</span>
-                            <span className="text-[10px] font-black text-rose-500 uppercase tracking-[0.4em] mt-1.5 block">Academic Portal</span>
-                        </div>
+                {/* Brand Section */}
+                <div 
+                    onClick={() => navigate("/")}
+                    className="flex items-center gap-4 cursor-pointer group shrink-0"
+                >
+                    <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center text-xs font-black shadow-2xl group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
+                        ITM
+                    </div>
+                    <div className="hidden xl:block">
+                        <span className="text-black font-black tracking-tight uppercase text-xl leading-none block group-hover:translate-x-1 transition-transform">Student Hub</span>
+                        <span className="text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] mt-1 block">Academic Portal</span>
                     </div>
                 </div>
-            </div>
 
-                    <nav className="hidden lg:flex items-center gap-2">
-                        {navMenus.map((menu) => (
-                            <div key={menu.title} className="relative">
+                {/* Center Navigation */}
+                <nav className="hidden lg:flex items-center gap-1">
+                    {navMenus.map((menu) => (
+                        <div key={menu.title} className="relative">
+                            {menu.children ? (
                                 <button
                                     onMouseEnter={() => setActiveMenu(menu.title)}
-                                    className={`flex items-center gap-3 px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
+                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                                         activeMenu === menu.title ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
                                     }`}
                                 >
-                                    <span className="text-lg opacity-70">{menu.icon}</span>
+                                    <span className="text-base opacity-70">{menu.icon}</span>
                                     {menu.title}
                                     <FiChevronDown className={`transition-transform duration-500 ${activeMenu === menu.title ? 'rotate-180' : ''}`} />
                                 </button>
-
-                                {activeMenu === menu.title && (
-                                    <div 
-                                        onMouseLeave={() => setActiveMenu(null)}
-                                        className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/20 p-3 z-20 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300"
-                                    >
-                                        <div className="p-4 mb-2 border-b border-gray-50">
-                                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Select Module</p>
-                                        </div>
-                                        {menu.children.map((child) => (
-                                            <NavLink
-                                                key={child.route}
-                                                to={child.route}
-                                                onClick={() => setActiveMenu(null)}
-                                                className={({ isActive }) => 
-                                                    `flex items-center gap-4 px-5 py-3.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
-                                                        isActive ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'text-gray-500 hover:bg-gray-50 hover:text-black'
-                                                    }`
-                                                }
-                                            >
-                                                <span className="opacity-70">{child.icon}</span>
-                                                {child.name}
-                                            </NavLink>
-                                        ))}
-                                    </div>
-                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] italic">
-                                        {menu.title}
-                                    </span>
+                            ) : (
+                                <NavLink
+                                    to={menu.route}
+                                    className={({ isActive }) => 
+                                        `flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+                                            isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
+                                        }`
+                                    }
+                                >
+                                    <span className="text-base opacity-70">{menu.icon}</span>
+                                    {menu.title}
                                 </NavLink>
                             )}
-                        </div>
-                    );
-                })}
-            </nav>
 
-            {/* Right Section */}
-            <div className="flex items-center gap-6">
-                <div className="text-right hidden sm:block border-r border-slate-100 pr-6 mr-2">
-                    <h4 className="text-[11px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
-                        {student?.name || "Student"}
-                    </h4>
-                    <p className="text-[9px] font-bold text-blue-500 uppercase tracking-widest flex items-center justify-end gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div> 
-                        {student?.course || "Scholar"}
-                    </p>
-                </div>
-
-                {/* Right Profile */}
-                <div className="flex items-center gap-8">
-                    <button className="p-4 bg-white/50 backdrop-blur-xl text-black rounded-2xl hover:bg-black hover:text-white transition-all relative group shadow-sm border border-white/50">
-                        <FiBell size={22} className="group-hover:rotate-12 transition-transform" />
-                        <span className="absolute top-4 right-4 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
-                    </button>
-                    
-                    <div className="flex items-center gap-5 pl-8 border-l border-gray-100">
-                        <div className="flex flex-col items-end hidden md:flex">
-                            <p className="text-[11px] font-black text-black uppercase tracking-tight leading-none">{student?.name}</p>
-                            <p className="text-[9px] font-black text-rose-500/60 uppercase tracking-[0.2em] mt-1">{student?.course}</p>
-                        </div>
-                        
-                        {/* Profile Dropdown Container */}
-                        <div className="relative">
-                            <div 
-                                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                                className="relative group cursor-pointer"
-                            >
-                                <div className="w-14 h-14 bg-black text-white rounded-2xl flex items-center justify-center text-sm font-black shadow-2xl group-hover:scale-105 transition-transform border-4 border-transparent hover:border-rose-100">
-                                    {student?.name?.[0]}
+                            {activeMenu === menu.title && menu.children && (
+                                <div 
+                                    onMouseLeave={() => setActiveMenu(null)}
+                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/20 p-2 z-20 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300"
+                                >
+                                    {menu.children.map((child) => (
+                                        <NavLink
+                                            key={child.route}
+                                            to={child.route}
+                                            onClick={() => setActiveMenu(null)}
+                                            className={({ isActive }) => 
+                                                `flex items-center gap-4 px-4 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+                                                    isActive ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                                }`
+                                            }
+                                        >
+                                            <span className="opacity-70">{child.icon}</span>
+                                            {child.name}
+                                        </NavLink>
+                                    ))}
                                 </div>
-                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-lg border-2 border-white shadow-sm"></div>
-                            </div>
+                            )}
+                        </div>
+                    ))}
+                </nav>
 
-                            {isProfileOpen && (
-                                <>
-                                    <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)}></div>
-                                    <div className="absolute top-full right-0 mt-6 w-[340px] bg-white rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-gray-50 overflow-hidden z-20 animate-in fade-in zoom-in-95 slide-in-from-top-4 duration-500">
-                                        {/* Profile Card Header */}
-                                        <div className="p-8 bg-black text-white relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
-                                            <div className="flex items-center gap-5 relative z-10">
-                                                <div className="w-16 h-16 bg-white text-black rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl">
-                                                    {student?.name?.[0]}
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-lg font-black tracking-tight leading-none mb-1.5">{student?.name}</h3>
-                                                    <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">{student?.roll_no || "STU-2024-001"}</p>
-                                                </div>
+                {/* Right Section */}
+                <div className="flex items-center gap-4 shrink-0">
+                    <div className="text-right hidden sm:block border-r border-slate-100 pr-4">
+                        <h4 className="text-[10px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
+                            {student?.name || "Student"}
+                        </h4>
+                        <p className="text-[8px] font-bold text-rose-500 uppercase tracking-widest flex items-center justify-end gap-1">
+                            <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div> 
+                            {student?.course || "Scholar"}
+                        </p>
+                    </div>
+
+                    <div className="relative">
+                        <div 
+                            onClick={() => setIsProfileOpen(!isProfileOpen)}
+                            className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center text-xs font-black shadow-xl cursor-pointer hover:scale-105 transition-transform"
+                        >
+                            {student?.name?.[0]}
+                        </div>
+                        {isProfileOpen && (
+                            <>
+                                <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)}></div>
+                                <div className="absolute top-full right-0 mt-4 w-72 bg-white rounded-[1.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-gray-50 overflow-hidden z-20 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-500">
+                                    <div className="p-6 bg-black text-white relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                                        <div className="flex items-center gap-4 relative z-10">
+                                            <div className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center text-xl font-black shadow-xl">
+                                                {student?.name?.[0]}
                                             </div>
-                                        </div>
-
-                                        {/* Profile Details */}
-                                        <div className="p-8 space-y-8">
-                                            <div className="grid grid-cols-2 gap-6">
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Course</p>
-                                                    <p className="text-xs font-black text-black">{student?.course}</p>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Semester</p>
-                                                    <p className="text-xs font-black text-black">{student?.semester || "4TH"}</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <div className="flex justify-between items-center">
-                                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Academic Mastery</p>
-                                                    <p className="text-[10px] font-black text-rose-500">85%</p>
-                                                </div>
-                                                <div className="h-2 bg-gray-50 rounded-full overflow-hidden p-0.5 border border-gray-100">
-                                                    <div className="h-full w-[85%] bg-gradient-to-r from-rose-500 to-pink-500 rounded-full shadow-lg shadow-rose-500/20"></div>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-3 pt-4 border-t border-gray-50">
-                                                <button className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-black hover:text-white rounded-2xl transition-all group">
-                                                    <div className="flex items-center gap-3">
-                                                        <FiUser className="text-gray-400 group-hover:text-rose-500" />
-                                                        <span className="text-[11px] font-black uppercase tracking-widest">Edit Profile</span>
-                                                    </div>
-                                                    <FiChevronDown className="-rotate-90 text-gray-300" />
-                                                </button>
-                                                <button 
-                                                    onClick={handleLogout}
-                                                    className="w-full flex items-center justify-between p-4 bg-rose-50 hover:bg-rose-500 hover:text-white text-rose-500 rounded-2xl transition-all group shadow-sm shadow-rose-500/5"
-                                                >
-                                                    <div className="flex items-center gap-3">
-                                                        <FiLogOut className="group-hover:translate-x-1 transition-transform" />
-                                                        <span className="text-[11px] font-black uppercase tracking-widest">Sign Out</span>
-                                                    </div>
-                                                </button>
+                                            <div>
+                                                <h3 className="text-sm font-black tracking-tight leading-none mb-1">{student?.name}</h3>
+                                                <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest">{student?.roll_no}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </>
-                            )}
-                        </div>
-
-                        <button 
-                            onClick={handleLogout}
-                            className="p-4 bg-gray-50 text-gray-400 hover:bg-rose-50 hover:text-rose-600 rounded-2xl transition-all shadow-sm group"
-                            title="Sign Out"
-                        >
-                            <FiLogOut size={22} className="group-hover:-translate-x-1 transition-transform" />
-                        </button>
+                                    <div className="p-4 space-y-2">
+                                        <button 
+                                            onClick={handleLogout}
+                                            className="w-full flex items-center gap-3 p-3 text-rose-500 hover:bg-rose-50 rounded-xl transition-all text-[10px] font-black uppercase tracking-widest italic"
+                                        >
+                                            <FiLogOut />
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

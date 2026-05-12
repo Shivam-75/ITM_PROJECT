@@ -17,8 +17,8 @@ const StatCard = memo(({ title, value, icon: Icon, colorClass, trend }) => (
       <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-[10px] uppercase tracking-widest">{trend || "+0%"}</span>
     </div>
     <div className="relative z-10">
-      <h3 className="text-3xl font-black text-slate-900 tracking-tighter">{value}</h3>
-      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1 italic">{title}</p>
+      <h3 className="text-3xl font-black text-slate-900 tracking-tighter uppercase italic">{value}</h3>
+      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-1 italic">{title}</p>
     </div>
   </div>
 ));
@@ -37,9 +37,9 @@ const LiveScheduleItem = ({ lecture, isLast }) => {
 
       {/* Content Card */}
       <div className="flex-1 flex items-center justify-between gap-4">
-         <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-3">
-               <h4 className="text-sm font-black text-slate-900 uppercase italic tracking-tight group-hover:text-indigo-600 transition-colors">
+               <h4 className="text-base font-black text-slate-900 uppercase italic tracking-tight group-hover:text-black transition-colors">
                   {lecture.subject}
                </h4>
                {isOngoing && (
@@ -137,26 +137,26 @@ const Dashboard = () => {
       )}
 
       {/* Hero Welcome */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white p-10 rounded-[10px] text-slate-900 border border-slate-200 shadow-sm relative overflow-hidden shadow-2xl shadow-slate-200">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
-        <div className="space-y-3 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-white p-6 rounded-[10px] text-slate-900 border border-slate-100 shadow-sm relative overflow-hidden shadow-2xl shadow-slate-100/20">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+        <div className="space-y-2 relative z-10">
           <div className="flex items-center gap-3">
-             <span className="px-3 py-1 bg-white/10 text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-[10px] italic backdrop-blur-md border border-white/5">Faculty Control Panel</span>
-             <span className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
+             <span className="px-2 py-0.5 bg-black text-white text-[8px] font-black uppercase tracking-[0.3em] rounded-full italic">Pedagogical Engine</span>
+             <span className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
                 <FiShield size={10} /> Authenticated Access
              </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-none">
             Welcome, {profile?.name?.split(' ')[0] || "Professor"}
           </h1>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.15em] leading-loose max-w-xl">
-            You are currently managing the <span className="text-white">{profile?.course || "Academic"} Department.</span> Access all pedagogical tools below.
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] leading-relaxed max-w-xl">
+            You are currently managing the <span className="text-black font-black">{profile?.course || "Academic"}</span> tools below.
           </p>
         </div>
 
-        <div className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-[10px] shadow-xl text-xs font-black text-white uppercase tracking-widest italic backdrop-blur-xl group hover:bg-indigo-600 hover:border-indigo-500 transition-all cursor-default relative z-10">
-           <FiCalendar className="text-indigo-400 group-hover:text-white group-hover:scale-125 transition-all" />
-           {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+        <div className="flex items-center gap-4 px-6 py-3 bg-white border border-slate-100 rounded-[10px] shadow-xl text-[10px] font-black text-black uppercase tracking-[0.3em] italic group hover:bg-black hover:text-white transition-all cursor-default relative z-10">
+           <FiCalendar className="text-slate-400 group-hover:text-white group-hover:scale-110 transition-all" />
+           {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </div>
       </div>
 
@@ -175,11 +175,11 @@ const Dashboard = () => {
         <div className="lg:col-span-8 bg-white rounded-[10px] p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
            <div className="flex items-center justify-between mb-12">
               <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest italic flex items-center gap-3">
-                     <FiTrendingUp className="text-indigo-600" />
+                  <h3 className="text-base font-black text-slate-900 uppercase tracking-[0.2em] italic flex items-center gap-3">
+                     <FiTrendingUp className="text-black" />
                      Live Academic Schedule
                   </h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tracking your current day lecture capacity</p>
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Tracking your current day lecture capacity</p>
               </div>
               <NavLink to="/timetable" className="px-5 py-2.5 bg-white text-[10px] font-black text-slate-500 hover:bg-slate-900 hover:text-white rounded-[10px] uppercase tracking-widest transition-all italic border border-slate-100">
                  Manage TimeTable
@@ -210,7 +210,7 @@ const Dashboard = () => {
              <div className="bg-white rounded-[10px] p-10 border border-slate-100 shadow-xl shadow-slate-100/50">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-[10px] flex items-center justify-center font-black">85%</div>
-                    <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest font-black">Course Completion</h4>
+                    <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Course Completion</h4>
                 </div>
                 <div className="relative h-20 flex items-center">
                     <div className="absolute inset-0 bg-white rounded-[10px] overflow-hidden">
