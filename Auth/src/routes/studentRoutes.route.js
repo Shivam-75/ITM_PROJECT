@@ -7,6 +7,8 @@ StudentRoutes.route("/registration").post(StudentController.Registration);
 StudentRoutes.route("/registration/next-id").get(StudentController.GetNextId);
 
 StudentRoutes.route("/login").post(StudentController.Login)
+StudentRoutes.route("/verify-contact").post(StudentController.verifyContact);
+StudentRoutes.route("/setup-password").post(StudentController.setupPassword);
 
 StudentRoutes.route("/userProfile").get(StudentAccessChecker.userVerification, StudentController.StudentProgileShow);
 StudentRoutes.route("/Logout").patch(StudentAccessChecker.userVerification, StudentController.StudentLogut);

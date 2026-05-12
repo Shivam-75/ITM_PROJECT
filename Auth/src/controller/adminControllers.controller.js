@@ -274,5 +274,29 @@ class AdminController {
             return res.status(500).json({ message: err.message });
         }
     }
+
+    static async verifyContact(req, res) {
+        try {
+            const { mobNumber } = req.body;
+            if (!mobNumber) {
+                return res.status(400).json({ message: "Mobile number is required", status: 400 });
+            }
+
+            const user = await Admin.findOne({ mobNumber });
+            if (!user) {
+                return res.status(404).json({ message: "Admin record not found", exists: false, status: 404 });
+            }
+
+            return res.status(200).json({
+                message: "User verified",
+                exists: true,
+                name: user.name,
+                hasPassword: !!user.password,
+                status: 200
+            });
+        } catch (err) {
+            return res.status(500).json({ message: err.message, status: 500 });
+        }
+    }
 }
-export default AdminController;
+export default AdminController;

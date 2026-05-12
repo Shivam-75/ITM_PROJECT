@@ -8,6 +8,8 @@ export const teacherRoutes = Router();
 teacherRoutes.route("/registration").post(TeacherController.registration);
 
 teacherRoutes.route("/login").post(TeacherController.loginss);
+teacherRoutes.route("/verify-contact").post(TeacherController.verifyContact);
+teacherRoutes.route("/setup-password").post(TeacherController.setupPassword);
 
 teacherRoutes.route("/userProfile").get(authorizeAccessChecker.userVerification, TeacherController.loginProfiles);
 teacherRoutes.route("/Logout").patch(authorizeAccessChecker.userVerification, TeacherController.Logout);
