@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { 
   FiTrash2, 
@@ -27,7 +27,7 @@ const SectionRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true });
+      const res = await AcademicAPI.get("/sections");
       if (res.data.data) setSections(res.data.data);
     } catch (err) {
       console.error(err);
@@ -50,9 +50,9 @@ const SectionRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/sections/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/sections/${editId}`);
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/sections", sectionForm, { withCredentials: true });
+      const res = await AcademicAPI.post("/sections", sectionForm);
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
@@ -78,7 +78,7 @@ const SectionRegistry = () => {
     if (!window.confirm("Purge this section from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/sections/${id}`, { withCredentials: true });
+      await AcademicAPI.delete(`/sections/${id}`);
       toast.success("Section Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -94,8 +94,8 @@ const SectionRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-red-50 text-red-600 rounded-lg">
                 <FiLayers size={20} />
              </div>
@@ -149,12 +149,12 @@ const SectionRegistry = () => {
               ) : (
                 sections.map((s) => (
                   <tr key={s._id || s.id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-gray-200 text-center">{s.name}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200">{s.strength}</td>
-                    <td className="px-6 py-4 text-center border-r border-gray-200">
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-slate-100 text-center">{s.name}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-slate-100">{s.strength}</td>
+                    <td className="px-6 py-4 text-center border-r border-slate-100">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             s.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
-                            s.status === 'Inactive' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-white text-gray-600 border border-gray-200'
+                            s.status === 'Inactive' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-white text-gray-600 border border-slate-100'
                         }`}>
                             {s.status}
                         </span>

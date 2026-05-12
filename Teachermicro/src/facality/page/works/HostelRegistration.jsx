@@ -46,15 +46,15 @@ const HostelRegistration = () => {
                 
                 <button
                     onClick={fetchAllotments}
-                    className="p-3 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-red-600 transition-all shadow-sm active:scale-95"
+                    className="p-3 bg-white border border-slate-100 rounded-[10px] text-gray-400 hover:text-red-600 transition-all shadow-sm active:scale-95"
                 >
                     <FiRefreshCw size={20} className={loading ? "animate-spin" : ""} />
                 </button>
             </div>
 
             {/* Recent Allotments (24h) */}
-            <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-gray-50 bg-white/30 flex items-center justify-between">
+            <div className="bg-white rounded-[10px] border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-50 bg-white/30 flex items-center justify-between">
                     <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 italic flex items-center gap-2">
                         <FiClock className="text-red-600" /> Recent Registrations (Last 24h)
                     </h2>
@@ -67,10 +67,10 @@ const HostelRegistration = () => {
                     <table className="w-full text-left">
                         <thead className="bg-white">
                             <tr>
-                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-50">Student ID</th>
-                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-50">Full Name</th>
-                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-50">Room / Block</th>
-                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-50">Timestamp</th>
+                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-slate-50">Student ID</th>
+                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-slate-50">Full Name</th>
+                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-slate-50">Room / Block</th>
+                                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-gray-400 border-b border-slate-50">Timestamp</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -78,7 +78,7 @@ const HostelRegistration = () => {
                                 recentAllotments.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-white/50 transition-all">
                                         <td className="px-6 py-4">
-                                            <span className="text-[10px] font-black bg-white px-2 py-1 rounded border border-gray-200">{item.studentId}</span>
+                                            <span className="text-[10px] font-black bg-white px-2 py-1 rounded border border-slate-100">{item.studentId}</span>
                                         </td>
                                         <td className="px-6 py-4 text-[10px] font-black uppercase italic text-gray-700">{item.studentName}</td>
                                         <td className="px-6 py-4">
@@ -107,19 +107,19 @@ const HostelRegistration = () => {
 
             {/* General Registry Snapshot */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm relative overflow-hidden group">
+                <div className="bg-white p-8 rounded-[10px] border border-slate-100 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700"></div>
                     <FiUsers className="text-red-600 mb-4" size={24} />
                     <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Total Allotments</h3>
                     <p className="text-3xl font-black text-gray-900 mt-2 tracking-tighter">{allotments.length}</p>
                 </div>
-                <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700"></div>
+                <div className="bg-white p-8 rounded-[10px] border border-slate-100 shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-white border border-slate-1000/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700"></div>
                     <FiHome className="text-blue-600 mb-4" size={24} />
                     <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Hostel Inventory</h3>
                     <p className="text-3xl font-black text-gray-900 mt-2 tracking-tighter">Live</p>
                 </div>
-                <div className="bg-[#111111] p-8 rounded-lg shadow-xl relative overflow-hidden">
+                <div className="bg-[#111111] p-8 rounded-[10px] shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-red-600/20 rounded-full blur-2xl -mr-12 -mt-12"></div>
                     <FiShield className="text-red-600 mb-4" size={24} />
                     <h3 className="text-[10px] font-black text-white/40 uppercase tracking-widest italic">Registry Integrity</h3>

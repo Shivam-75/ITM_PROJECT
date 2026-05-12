@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { 
   FiTrash2, 
@@ -26,7 +26,7 @@ const DepartmentRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/departments", { withCredentials: true });
+      const res = await AcademicAPI.get("/departments");
       if (res.data.departments) setDepartments(res.data.departments);
     } catch (err) {
       console.error(err);
@@ -48,9 +48,9 @@ const DepartmentRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/departments/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/departments/${editId}`);
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/departments", deptForm, { withCredentials: true });
+      const res = await AcademicAPI.post("/departments", deptForm);
       toast.success(editId ? "Entry Updated" : "Department Added", toststyle);
       
       fetchData();
@@ -76,7 +76,7 @@ const DepartmentRegistry = () => {
     if (!window.confirm("Purge this department from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/departments/${id}`, { withCredentials: true });
+      await AcademicAPI.delete(`/departments/${id}`);
       toast.success("Department Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -92,8 +92,8 @@ const DepartmentRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
                 <FiHome size={20} />
              </div>
@@ -152,9 +152,9 @@ const DepartmentRegistry = () => {
               ) : (
                 departments.map((d) => (
                   <tr key={d.id} className="hover:bg-white/50">
-                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{d.name}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-gray-200 uppercase">{d.code}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{d.hod}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-slate-100">{d.name}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-slate-100 uppercase">{d.code}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{d.hod}</td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button onClick={() => triggerEdit(d)} className="bg-[#3c8dbc] text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider">Edit</button>

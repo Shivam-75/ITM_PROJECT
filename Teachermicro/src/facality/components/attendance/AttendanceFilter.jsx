@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 
 function AttendanceFilter({
   selectedDate,
@@ -21,9 +21,9 @@ function AttendanceFilter({
     const fetchRegistries = async () => {
       try {
         const [cRes, sRes, secRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true })
+          AcademicAPI.get("/courses"),
+          AcademicAPI.get("/semesters"),
+          AcademicAPI.get("/sections")
         ]);
         if (cRes.data.courses) setCourses(cRes.data.courses);
         if (sRes.data.semesters) setSemesters(sRes.data.semesters);
@@ -36,7 +36,7 @@ function AttendanceFilter({
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 bg-white p-4 rounded-lg border">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 bg-white p-4 rounded-[10px] border">
       <input
         type="date"
         value={selectedDate}

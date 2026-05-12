@@ -1,42 +1,31 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
-  FiBell,
-  FiUser,
-  FiInfo,
-  FiHash,
-  FiAward,
-  FiGrid,
-  FiClock,
-  FiBook,
-  FiEdit3,
-  FiStar,
-  FiUsers,
-  FiFileText,
-  FiHome,
-  FiVideo,
-  FiChevronDown,
-  FiLogOut
+  FiGrid, FiBook, FiEdit3, FiUsers,
+  FiBell, FiUser, FiLogOut, FiChevronDown,
+  FiInfo, FiHash, FiAward, FiShield, FiActivity, FiMoon,
+  FiClock, FiCheckSquare, FiBookOpen
 } from "react-icons/fi";
 import { authAPI } from "../api/apis";
 import useAuth from "../../store/FacultyStore";
+import { toast } from "react-toastify";
 
 const TopNavbar = () => {
   const [teacherProfile, setTeacherProfile] = useState({});
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(null);
   const dropdownRef = useRef(null);
-  const navRef = useRef(null);
   const navigate = useNavigate();
-  const { userLogoutData } = useAuth();
+  const location = useLocation();
+  const { userLogoutData, toststyle } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await authAPI.post("/logout", {}, { withCredentials: true });
+      await authAPI.patch("/Logout");
     } catch (err) {
       console.error(err);
     } finally {
       userLogoutData();
+      toast.success("User Logout Successfully !!", toststyle);
       navigate("/");
     }
   };
@@ -59,195 +48,135 @@ const TopNavbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsProfileOpen(false);
       }
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setActiveMenu(null);
-      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const menuItems = [
-    {
-      title: "Academic",
-      icon: <FiGrid />,
-      children: [
-        { name: "Dashboard", route: "/" },
-        { name: "Live Schedule", route: "/timetable" },
-      ],
-    },
-    {
-      title: "Coursework",
-      icon: <FiBook />,
-      children: [
-        { name: "Homework", route: "/homework" },
-        { name: "Assignments", route: "/assignment" },
-        { name: "Notice Board", route: "/notice" },
-        { name: "Model Papers", route: "/model-paper" },
-        { name: "Virtual Class", route: "/online" },
-      ],
-    },
-    {
-      title: "Exams",
-      icon: <FiEdit3 />,
-      children: [
-        { name: "Exam Schedule", route: "/exam-schedule" },
-      ],
-    },
-
-    {
-      title: "Management",
-      icon: <FiUsers />,
-      children: [
-
-        { name: "Daily Attendance", route: "/attendance" },
-        { name: "Grade Entries", route: "/results" },
-        { name: "Result Registry", route: "/result-list" },
-      ],
-    },
+  const navLinks = [
+    { name: "Dashboard", route: "/", icon: <FiGrid /> },
+    { name: "Schedule", route: "/timetable", icon: <FiClock /> },
+    { name: "Attendance", route: "/attendance", icon: <FiCheckSquare /> },
+    { name: "Homework", route: "/homework", icon: <FiEdit3 /> },
+    { name: "Assignments", route: "/assignment", icon: <FiBook /> },
+    { name: "Notice", route: "/notice", icon: <FiBell /> },
+    { name: "Papers", route: "/model-paper", icon: <FiBookOpen /> },
+    { name: "Online", route: "/online", icon: <FiActivity /> },
+    { name: "Exams", route: "/exam-schedule", icon: <FiAward /> },
+    { name: "Grades", route: "/results", icon: <FiHash /> },
 
   ];
 
   return (
-    <header className="h-20 bg-white border-b border-slate-100 px-8 flex items-center justify-between sticky top-0 z-50">
-      {/* Brand & Nav */}
-      <div className="flex items-center gap-8">
+    <header className="h-[100px] bg-white border-b border-slate-100 px-6 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+      {/* Brand Section */}
+      <div className="flex items-center gap-4 shrink-0">
         <div
           onClick={() => navigate("/")}
           className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white text-lg font-black italic shadow-lg shadow-slate-200 group-hover:scale-110 transition-all">
-            F
+          <div className="w-12 h-12 bg-[#111111] rounded-[10px] flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-all">
+            <span className="text-xl font-black italic">F</span>
           </div>
-          <div className="hidden lg:block">
-            <span className="text-slate-900 font-black tracking-tighter uppercase italic text-lg leading-none block">Faculty</span>
-            <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Digital Portal</span>
+          <div className="hidden 2xl:block text-left">
+            <h1 className="text-[#111111] font-black tracking-tighter uppercase italic text-xl leading-none">ITM FACULTY</h1>
+            <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mt-1">Digital Portal</p>
           </div>
         </div>
-
-        {/* Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-2" ref={navRef}>
-          {menuItems.map((menu) => (
-            <div key={menu.title} className="relative">
-              <button
-                onClick={() => setActiveMenu(activeMenu === menu.title ? null : menu.title)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-[11px] font-black uppercase tracking-widest italic transition-all ${activeMenu === menu.title ? 'bg-indigo-50 text-indigo-600' : 'text-slate-500 hover:bg-white'
-                  }`}
-              >
-                <span className="text-lg">{menu.icon}</span>
-                {menu.title}
-                <FiChevronDown className={`transition-transform duration-300 ${activeMenu === menu.title ? 'rotate-180' : ''}`} />
-              </button>
-
-              {activeMenu === menu.title && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-2xl border border-slate-50 p-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {menu.children.map((child) => (
-                    <NavLink
-                      key={child.route}
-                      to={child.route}
-                      onClick={() => setActiveMenu(null)}
-                      className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-white'
-                        }`
-                      }
-                    >
-                      {child.name}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-6">
-        {/* Notifications */}
-        <NavLink
-          to="/notifications"
-          className="relative p-3 bg-white text-slate-400 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-all group"
-        >
-          <FiBell size={20} className="group-hover:rotate-12 transition-transform" />
-          <span className="absolute top-0 right-0 w-5 h-5 bg-rose-500 border-4 border-white text-white text-[8px] font-black flex items-center justify-center rounded-full leading-none">
-            3
-          </span>
-        </NavLink>
-
-        {/* Profile Section */}
-        <div className="relative" ref={dropdownRef}>
-          <div
-            className="flex items-center gap-4 pl-4 border-l border-slate-100 cursor-pointer group"
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
+      {/* Center Navigation - Flat Icons */}
+      <nav className="flex items-center justify-center gap-0.5 overflow-x-auto no-scrollbar mx-2 py-1 flex-nowrap">
+        {navLinks.map((link) => (
+          <NavLink
+            key={link.route}
+            to={link.route}
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-1 px-2 py-1.5 rounded-[10px] transition-all duration-300 min-w-[60px] ${isActive
+                ? "text-blue-600 scale-105"
+                : "text-slate-400 hover:text-slate-600 hover:bg-white border border-slate-100"
+              }`
+            }
           >
-            <div className="text-right hidden sm:block">
-              <h4 className="text-[11px] font-black text-slate-800 uppercase italic tracking-tight group-hover:text-indigo-600 transition-colors">
-                {teacherProfile?.name || "Faculty Member"}
-              </h4>
-              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                {teacherProfile?.role || "Department head"}
-              </p>
-            </div>
-            <div className={`w-11 h-11 bg-slate-900 rounded-lg flex items-center justify-center text-white ring-4 ring-slate-100 shadow-sm relative overflow-hidden transition-all group-hover:scale-105 active:scale-95 ${isProfileOpen ? 'ring-indigo-100' : ''}`}>
+            {({ isActive }) => (
+              <>
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 ${isActive ? "bg-white border border-slate-100 shadow-sm" : "bg-transparent"
+                  }`}>
+                  <span className="text-lg">{link.icon}</span>
+                </div>
+                <span className="text-[7px] font-black uppercase tracking-widest italic text-center leading-none">
+                  {link.name}
+                </span>
+              </>
+            )}
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* Right Section */}
+      <div className="flex items-center gap-4 shrink-0">
+        {/* User Profile Info */}
+        <div className="text-right hidden xl:block border-r border-slate-100 pr-4 mr-2">
+          <h4 className="text-[11px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
+            {teacherProfile?.name || "Faculty User"}
+          </h4>
+          <p className="text-[9px] font-bold text-blue-500 uppercase tracking-widest flex items-center justify-end gap-1">
+            <FiActivity size={10} className="animate-pulse" /> {teacherProfile?.role || "Faculty Node"}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-blue-600 rounded-[10px] transition-all cursor-pointer">
+            <FiMoon size={20} />
+          </div>
+
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className={`w-12 h-12 bg-[#111111] text-white rounded-[10px] flex items-center justify-center shadow-lg transition-all active:scale-95 ${isProfileOpen ? "ring-4 ring-blue-50" : ""
+                }`}
+            >
               {teacherProfile?.name ? (
                 <span className="text-sm font-black italic uppercase">{teacherProfile.name[0]}</span>
               ) : (
-                <FiUser size={18} />
+                <FiUser size={22} />
               )}
-            </div>
-          </div>
+            </button>
 
-          {isProfileOpen && (
-            <div className="absolute top-full right-0 mt-4 w-72 bg-white rounded-lg shadow-2xl shadow-indigo-200/50 border border-slate-100 p-6 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
-              <div className="space-y-6">
-                <div className="pb-4 border-b border-slate-50">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Identity Verified</p>
-                  <h3 className="text-sm font-black text-slate-900 uppercase italic tracking-tight">{teacherProfile?.name}</h3>
+            {isProfileOpen && (
+              <div className="absolute top-full right-0 mt-4 w-64 bg-white rounded-3xl shadow-2xl border border-slate-50 p-4 animate-in fade-in zoom-in-95 duration-300 origin-top-right z-50">
+                <div className="p-4 mb-3 bg-white border border-slate-100 rounded-[10px] text-center">
+                  <div className="w-16 h-16 rounded-[10px] bg-[#111111] text-white flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-xl border-4 border-white uppercase italic">
+                    {teacherProfile?.name?.[0] || "F"}
+                  </div>
+                  <h3 className="text-xs font-black text-slate-900 uppercase italic truncate">
+                    {teacherProfile?.name || "Faculty"}
+                  </h3>
+                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mt-1 italic">{teacherProfile?.course}</p>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                      <FiInfo size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Department</p>
-                      <p className="text-[11px] font-bold text-slate-800 uppercase italic">{teacherProfile?.course || "Engineering"}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                      <FiHash size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Year Assignment</p>
-                      <p className="text-[11px] font-bold text-slate-800 uppercase italic">Year - {teacherProfile?.year || "1"}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-all">
-                      <FiAward size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Role Authority</p>
-                      <p className="text-[11px] font-bold text-slate-800 uppercase italic">{teacherProfile?.role || "Faculty"}</p>
-                    </div>
+                <div className="p-4 space-y-2 border-b border-slate-50 mb-2">
+                  <div className="flex justify-between items-center text-[9px] font-black italic">
+                    <span className="text-slate-400 uppercase tracking-widest">Dept</span>
+                    <span className="text-blue-600 bg-white border border-slate-100 px-3 py-1 rounded-[10px]">{teacherProfile?.course || "N/A"}</span>
                   </div>
                 </div>
-                <div className="pt-4 border-t border-slate-50 mt-4">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 p-3 rounded-lg text-rose-500 hover:bg-rose-50 transition-all font-black uppercase tracking-widest text-[10px] italic"
-                  >
-                    <FiLogOut size={16} />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-between p-4 rounded-[10px] text-rose-500 hover:bg-rose-50 transition-all font-black uppercase tracking-widest text-[10px] italic group"
+                >
+                  <div className="flex items-center gap-3">
+                    <FiLogOut size={18} />
+                    <span>Terminate Session</span>
+                  </div>
+                  <div className="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                    <FiLogOut size={12} />
+                  </div>
+                </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>
@@ -255,6 +184,4 @@ const TopNavbar = () => {
 };
 
 export default TopNavbar;
-
-
 

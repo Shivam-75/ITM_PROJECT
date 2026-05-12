@@ -8,9 +8,26 @@ const AdministratorRegistration = () => {
     mobNumber: "",
     password: "",
     superAdmin: false,
+    adminId: "",
   });
 
   const [loading, setLoading] = useState(false);
+
+  // 🔹 Fetch Next Admin ID
+  React.useEffect(() => {
+    const fetchNextId = async () => {
+      try {
+        const axios = (await import("axios")).default;
+        const { data } = await axios.get("http://localhost:5000/api/v1/Admin/registration/next-id", { withCredentials: true });
+        if (data.nextId) {
+          setFormData(prev => ({ ...prev, adminId: data.nextId }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch Admin ID", err);
+      }
+    };
+    fetchNextId();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +43,8 @@ const AdministratorRegistration = () => {
           name: formData.name,
           mobNumber: Number(formData.mobNumber),
           password: formData.password,
-          superAdmin: formData.superAdmin
+          superAdmin: formData.superAdmin,
+          adminId: formData.adminId
       };
       const res = await axios.post("http://localhost:5000/api/v1/Admin/registration", payload, { withCredentials: true });
       if (res.status === 201 || res.status === 200) {
@@ -77,6 +95,18 @@ const AdministratorRegistration = () => {
                     className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-lg text-xs font-bold focus:ring-2 focus:ring-red-600 outline-none transition-all"
                     placeholder="Enter unique admin name"
                     value={formData.name} onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-red-600 uppercase tracking-widest ml-1">Assigned Admin ID</label>
+                <div className="relative">
+                  <FiShield className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
+                  <input
+                    type="text" readOnly
+                    className="w-full pl-12 pr-4 py-4 bg-red-50/30 border-none rounded-lg text-xs font-black text-red-600 outline-none cursor-not-allowed"
+                    value={formData.adminId}
                   />
                 </div>
               </div>

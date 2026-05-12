@@ -55,7 +55,7 @@ export default function ResultList() {
 
   return (
     <div className="min-h-screen bg-white p-6">
-      <div className="w-full py-[70px] bg-white p-6 rounded-lg shadow-sm">
+      <div className="w-full py-[70px] bg-white p-6 rounded-[10px] shadow-sm">
 
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-4 mb-6">

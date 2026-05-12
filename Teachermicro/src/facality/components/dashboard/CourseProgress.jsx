@@ -1,12 +1,12 @@
 const courses = [
-  { name: "Intro to CS", progress: 75, color: "bg-blue-500" },
+  { name: "Intro to CS", progress: 75, color: "bg-white border border-slate-1000" },
   { name: "Data Structures", progress: 45, color: "bg-orange-500" },
   { name: "Web Development", progress: 90, color: "bg-green-500" },
 ];
 
 export default function CourseProgress() {
   return (
-    <section className="bg-white p-6 border rounded-lg">
+    <section className="bg-white p-6 border rounded-[10px]">
       <h3 className="font-bold mb-4">Active Courses Progress</h3>
 
       {courses.map((c) => (

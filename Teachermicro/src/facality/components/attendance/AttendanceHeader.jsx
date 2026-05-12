@@ -8,7 +8,7 @@ function AttendanceHeader({ showData, setShowData }) {
       {/* Show / Hide Button */}
       <button
         onClick={() => setShowData((prev) => !prev)}
-        className="px-4 py-2 rounded-lg text-sm font-semibold
+        className="px-4 py-2 rounded-[10px] text-sm font-semibold
                    bg-[var(--primary)] text-white hover:opacity-90"
       >
         {showData ? "Hide Data" : "Show Data"}

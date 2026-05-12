@@ -25,6 +25,11 @@ const createAxiosInstance = (baseURL) => {
         async (error) => {
             const originalRequest = error.config;
 
+            // 🛑 CRITICAL: If we are already redirecting due to a session failure, block everything
+            if (window._isAuthRedirecting) {
+                return new Promise(() => {}); 
+            }
+
             if (
                 (error.response?.status === 401 || error.response?.status === 403) &&
                 !originalRequest._retry
@@ -34,6 +39,7 @@ const createAxiosInstance = (baseURL) => {
                         failedQueue.push({ resolve, reject });
                     })
                         .then(() => {
+                            originalRequest._retry = true;
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
@@ -53,12 +59,17 @@ const createAxiosInstance = (baseURL) => {
                     isRefreshing = false;
                     return axiosInstance(originalRequest);
                 } catch (refreshError) {
+                    window._isAuthRedirecting = true; // Block all future interceptor logic
                     processQueue(refreshError, null);
-                    isRefreshing = false;
-                    console.error("Refresh token expired, logging out...");
-                    // Optional: clear local storage/store here
+                    
+                    console.error("Session Expired: Redirecting to login...");
+                    
+                    // Clear storage to prevent loops in components
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
                     window.location.href = "/";
-                    return Promise.reject(refreshError);
+                    return new Promise(() => {}); // Swallow the error to prevent component-level retries
                 }
             }
 
@@ -83,11 +94,15 @@ export const TeacherAuthAPI = createAxiosInstance(
     import.meta.env.VITE_BASE_Teacher_Auth
 );
 
+export const AcademicAPI = createAxiosInstance(
+    import.meta.env.VITE_BASE_ACADEMIC || "http://localhost:5002/api/v3/Admin/Academic"
+);
+
 // 🔹 Academic & Student Services
 export const AcademicService = {
-    getCourses: () => axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-    getYears: (courseName) => axios.get(`http://localhost:5002/api/v3/Admin/Academic/years?courseName=${courseName}`, { withCredentials: true }),
-    getSemesters: (courseName, yearName) => axios.get(`http://localhost:5002/api/v3/Admin/Academic/semesters?courseName=${courseName}&yearName=${yearName}`, { withCredentials: true }),
+    getCourses: () => AcademicAPI.get("/courses"),
+    getYears: (courseName) => AcademicAPI.get(`/years?courseName=${courseName}`),
+    getSemesters: (courseName, yearName) => AcademicAPI.get(`/semesters?courseName=${courseName}&yearName=${yearName}`),
     migrateStudents: (data) => WorkAPI.post("/Admin/migrate-students", data),
 };
 

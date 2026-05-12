@@ -46,10 +46,35 @@ class FeeController {
     static async getSpecificStructure(req, res) {
         try {
             const { department, course, batch } = req.query;
-            const structure = await FeeStructure.findOne({ department, course, batch });
+
+            if (!course || !batch) {
+                return res.status(400).json({ message: "Course and Batch are required", status: 400 });
+            }
+
+            // Case-insensitive search for flexibility
+            const query = {
+                course: { $regex: new RegExp(`^${course}$`, 'i') },
+                batch: { $regex: new RegExp(`^${batch}$`, 'i') }
+            };
+
+            // Only add department if it's provided and not equal to course
+            if (department && department !== course) {
+                query.department = { $regex: new RegExp(`^${department}$`, 'i') };
+            }
+
+            const structure = await FeeStructure.findOne(query);
             
             if (!structure) {
-                return res.status(404).json({ message: "Fee structure not found", status: 404 });
+                // If specific with department fails, try just course and batch as fallback
+                const fallback = await FeeStructure.findOne({
+                    course: { $regex: new RegExp(`^${course}$`, 'i') },
+                    batch: { $regex: new RegExp(`^${batch}$`, 'i') }
+                });
+                
+                if (!fallback) {
+                    return res.status(404).json({ message: "Fee structure not found for this course/batch", status: 404 });
+                }
+                return res.status(200).json({ structure: fallback, status: 200 });
             }
 
             return res.status(200).json({ structure, status: 200 });

@@ -87,13 +87,13 @@ const Complain = () => {
           placeholder="Search by student or room..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-lg px-4 py-2 w-full md:w-1/3 shadow-sm"
+          className="border rounded-[10px] px-4 py-2 w-full md:w-1/3 shadow-sm"
         />
 
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="border rounded-lg px-4 py-2 w-full md:w-1/4 shadow-sm"
+          className="border rounded-[10px] px-4 py-2 w-full md:w-1/4 shadow-sm"
         >
           <option value="All">All Status</option>
           <option value="Pending">Pending</option>
@@ -103,7 +103,7 @@ const Complain = () => {
       </div>
 
       {/* 🔹 Table */}
-      <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
+      <div className="bg-white rounded-[10px] shadow-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-800 text-white uppercase text-xs tracking-wider">
             <tr>

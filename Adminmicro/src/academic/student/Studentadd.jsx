@@ -18,7 +18,8 @@ import {
   FiAward,
   FiHash,
   FiBriefcase,
-  FiHome
+  FiHome,
+  FiDollarSign
 } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -44,7 +45,7 @@ const InputField = ({ label, name, type = "text", placeholder, icon: Icon, requi
         placeholder={placeholder}
         required={required}
         autoComplete="off"
-        className="w-full bg-white border border-gray-100 p-3.5 pl-4 rounded-lg text-sm font-bold placeholder:text-gray-300 focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic"
+        className="w-full bg-white border border-slate-100 p-3.5 pl-4 rounded-lg text-sm font-bold placeholder:text-gray-300 focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic"
       />
     </div>
   </div>
@@ -62,7 +63,7 @@ const SelectField = ({ label, name, options = [], icon: Icon, required = false, 
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full bg-white border border-gray-100 p-3.5 pl-4 rounded-lg text-sm font-bold focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic appearance-none cursor-pointer"
+        className="w-full bg-white border border-slate-100 p-3.5 pl-4 rounded-lg text-sm font-bold focus:bg-white focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all outline-none italic appearance-none cursor-pointer"
       >
         <option value="" disabled className="text-gray-300">Select {label}</option>
         {options.map((opt) => (
@@ -105,10 +106,13 @@ const Studentadd = () => {
     address: "",
     semester: "",
     section: "",
-    id: "",
     batch: "",
     image: "",
+    academicFee: 0,
+    hostel: "No",
+    hostelFee: 0,
     totalFee: 0,
+    id: "",
   });
 
   // 🔹 Fetch Registry Data
@@ -140,7 +144,10 @@ const Studentadd = () => {
       if (student.course && student.year) {
         try {
           const res = await axios.get(`${AUTH_BASE_URL}/registration/next-id`, {
-            params: { course: student.course, year: student.year },
+            params: { 
+              course: student.course.toLowerCase(), 
+              year: student.year 
+            },
             withCredentials: true
           });
           if (res.data.nextId) {
@@ -208,7 +215,10 @@ const Studentadd = () => {
         id: student.id,
         batch: student.batch,
         image: student.image,
-        totalFee: Number(student.totalFee)
+        academicFee: Number(student.academicFee),
+        isHostel: student.hostel === "Yes",
+        hostelFee: Number(student.hostelFee),
+        totalFee: Number(student.academicFee) + Number(student.hostelFee)
       };
 
       // Register Login & Profile in Auth Service (Source of Truth)
@@ -240,7 +250,7 @@ const Studentadd = () => {
         <React.Fragment key={step}>
           <div className="flex flex-col items-center gap-2 shrink-0">
             <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-lg flex items-center justify-center font-black italic transition-all duration-500 shadow-lg ${
-              currentStep === step ? 'bg-red-600 text-white scale-110 shadow-red-600/20' : currentStep > step ? 'bg-emerald-500 text-white' : 'bg-white text-gray-300 border border-gray-100'
+              currentStep === step ? 'bg-red-600 text-white scale-110 shadow-red-600/20' : currentStep > step ? 'bg-emerald-500 text-white' : 'bg-white text-gray-300 border border-slate-100'
             }`}>
               {currentStep > step ? <FiCheckCircle size={18} /> : <span className="text-xs md:text-sm">{step}</span>}
             </div>
@@ -266,14 +276,14 @@ const Studentadd = () => {
             Priority: Report Microservice First
           </p>
         </div>
-        <button onClick={() => navigate("/students")} className="btn-secondary flex items-center justify-center gap-3 px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-white transition-all active:scale-95 w-full md:w-auto">
+        <button onClick={() => navigate("/students")} className="btn-secondary flex items-center justify-center gap-3 px-6 py-3 bg-white border border-slate-100 text-gray-600 rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-white transition-all active:scale-95 w-full md:w-auto">
           <FiList size={16} /> Registry
         </button>
       </div>
 
       <StepIndicator />
 
-      <div className="bg-white rounded-lg p-4 md:p-10 shadow-sm border border-gray-100 min-h-[440px] flex flex-col justify-between overflow-hidden relative">
+      <div className="bg-white rounded-lg p-4 md:p-10 shadow-sm border border-slate-100 min-h-[440px] flex flex-col justify-between overflow-hidden relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-red-600/10"></div>
         
         <form onSubmit={handleSubmit} autoComplete="off" className="space-y-8 h-full flex flex-col">
@@ -372,12 +382,35 @@ const Studentadd = () => {
                    <div className="w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center font-black italic shadow-lg shadow-red-600/20">04</div>
                    Final Academic Assignment
                 </h2>
-                <div className="max-w-md mx-auto py-12 px-6 bg-white/50 rounded-lg border border-dashed border-gray-200">
-                  <div className="space-y-4">
+                <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 py-8 px-6 bg-white/50 rounded-lg border border-dashed border-slate-100">
+                  <div className="md:col-span-2">
                     <InputField label="Student ID / Roll Number" name="id" value={student.id} onChange={handleChange} placeholder="Generating ID..." icon={FiHash} />
-                    <InputField label="Initial Fee Amount" name="totalFee" type="number" value={student.totalFee} onChange={handleChange} placeholder="0" icon={FiHome} />
                   </div>
-                  <p className="mt-4 text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed italic">
+                  
+                  <InputField label="Academic Tuition Fee (₹)" name="academicFee" type="number" value={student.academicFee} onChange={handleChange} placeholder="60000" icon={FiDollarSign} required />
+                  
+                  <SelectField 
+                    label="Residential Support (Hostel)" 
+                    name="hostel" 
+                    value={student.hostel} 
+                    onChange={handleChange} 
+                    options={["No", "Yes"]} 
+                    icon={FiHome} 
+                    required 
+                  />
+
+                  {student.hostel === "Yes" && (
+                    <div className="md:col-span-2 animate-in slide-in-from-top-2 duration-300">
+                      <InputField label="Hostel Service Fee (₹)" name="hostelFee" type="number" value={student.hostelFee} onChange={handleChange} placeholder="65000" icon={FiHome} />
+                    </div>
+                  )}
+
+                  <div className="md:col-span-2 bg-gray-900 p-4 rounded-lg flex items-center justify-between">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Cumulative Total Assessment</p>
+                    <p className="text-xl font-black text-white italic">₹ {(Number(student.academicFee) + (student.hostel === "Yes" ? Number(student.hostelFee) : 0)).toLocaleString()}</p>
+                  </div>
+
+                  <p className="md:col-span-2 mt-2 text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed italic">
                     This profile will be synchronized FIRST with the Report Microservice.
                   </p>
                 </div>
@@ -385,8 +418,8 @@ const Studentadd = () => {
             )}
           </div>
 
-          <div className="pt-6 md:pt-10 flex items-center justify-between border-t border-gray-50 mt-auto gap-4">
-            <button type="button" onClick={prevStep} disabled={currentStep === 1} className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all ${currentStep === 1 ? 'bg-white text-gray-300 pointer-events-none' : 'bg-white border border-gray-200 text-gray-600 hover:bg-white active:scale-95'} flex-1 md:flex-none`}>
+          <div className="pt-6 md:pt-10 flex items-center justify-between border-t border-slate-50 mt-auto gap-4">
+            <button type="button" onClick={prevStep} disabled={currentStep === 1} className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 rounded-lg md:rounded-lg font-black uppercase tracking-widest text-[8px] md:text-[10px] italic transition-all ${currentStep === 1 ? 'bg-white text-gray-300 pointer-events-none' : 'bg-white border border-slate-100 text-gray-600 hover:bg-white active:scale-95'} flex-1 md:flex-none`}>
               <FiArrowLeft size={16} /> <span className="hidden xs:inline">Prev</span>
             </button>
             {currentStep < totalSteps ? (

@@ -4,9 +4,9 @@ class linksController {
     static async uploader(req, res) {
         const user = await req.user;
         try {
-            const { course, semester, section, linkas, topic } = req.body
+            const { course, semester, section, linkas, topic, subject } = req.body
 
-            if (!course || !semester || !section || !linkas || !topic) {
+            if (!course || !semester || !section || !linkas || !topic || !subject) {
                 return res.status(400).json({ message: "Fill all Column !!", status: 400 });
             }
             const uploadLinks = await Link.create({
@@ -15,7 +15,8 @@ class linksController {
                 semester,
                 section,
                 linkas,
-                topic
+                topic,
+                subject
             })
 
             const searchUserData = await Link.findById(uploadLinks._id);

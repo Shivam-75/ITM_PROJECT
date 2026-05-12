@@ -36,13 +36,17 @@ const feeStructureSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    hostelFee: {
+        type: Number,
+        default: 0
+    },
     totalFee: {
         type: Number,
         default: 0
     }
 }, { timestamps: true });
 
-// Pre-save hook to calculate totalFee
+// Pre-save hook to calculate totalFee (Academic portion)
 feeStructureSchema.pre("save", function(next) {
     this.totalFee = this.academicFee + this.transportFee + this.examinationFee + this.uniformFee + this.otherFee;
     next();

@@ -3,11 +3,15 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const AdminSchema = new mongoose.Schema({
+    adminId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
-        require: true,
-        unique: true,
-        lowercase: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,

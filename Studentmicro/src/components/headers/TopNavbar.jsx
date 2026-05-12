@@ -23,6 +23,11 @@ const TopNavbar = () => {
 
     const navMenus = [
         {
+            title: "Dashboard",
+            icon: <FiGrid />,
+            route: "/",
+        },
+        {
             title: "Navigation",
             icon: <FiHome />,
             children: [
@@ -78,6 +83,8 @@ const TopNavbar = () => {
                             <span className="text-[10px] font-black text-rose-500 uppercase tracking-[0.4em] mt-1.5 block">Academic Portal</span>
                         </div>
                     </div>
+                </div>
+            </div>
 
                     <nav className="hidden lg:flex items-center gap-2">
                         {navMenus.map((menu) => (
@@ -117,10 +124,26 @@ const TopNavbar = () => {
                                             </NavLink>
                                         ))}
                                     </div>
-                                )}
-                            </div>
-                        ))}
-                    </nav>
+                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] italic">
+                                        {menu.title}
+                                    </span>
+                                </NavLink>
+                            )}
+                        </div>
+                    );
+                })}
+            </nav>
+
+            {/* Right Section */}
+            <div className="flex items-center gap-6">
+                <div className="text-right hidden sm:block border-r border-slate-100 pr-6 mr-2">
+                    <h4 className="text-[11px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
+                        {student?.name || "Student"}
+                    </h4>
+                    <p className="text-[9px] font-bold text-blue-500 uppercase tracking-widest flex items-center justify-end gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div> 
+                        {student?.course || "Scholar"}
+                    </p>
                 </div>
 
                 {/* Right Profile */}

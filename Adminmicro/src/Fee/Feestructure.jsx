@@ -8,8 +8,11 @@ import {
 } from "react-icons/fi";
 import { toast } from "react-toastify";
 import useAuth from "../store/AdminStore";
+import { useNavigate } from "react-router-dom";
+import { FiCreditCard } from "react-icons/fi";
 
 const Feestructure = () => {
+  const navigate = useNavigate();
   const { toststyle } = useAuth();
   const printRef = useRef();
 
@@ -24,7 +27,14 @@ const Feestructure = () => {
   const [registry, setRegistry] = useState({
     courses: [],
     batches: [],
-    departments: []
+    semesters: []
+  });
+
+  const [recentPayments, setRecentPayments] = useState([]);
+  const [activeFilters, setActiveFilters] = useState({
+    course: "",
+    semester: "",
+    batch: ""
   });
 
   // New States for Fee Publishing
@@ -37,25 +47,30 @@ const Feestructure = () => {
     transportFee: 0,
     examinationFee: 0,
     uniformFee: 0,
-    otherFee: 0
+    otherFee: 0,
+    hostelFee: 0
   });
 
   /* ================= FETCHING ================= */
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [feeRes, courseRes, batchRes, deptRes] = await Promise.all([
+      const [feeRes, courseRes, batchRes, semRes] = await Promise.all([
         axios.get("http://localhost:5002/api/v3/Admin/Fee/structure", { withCredentials: true }),
         axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
         axios.get("http://localhost:5002/api/v3/Admin/Academic/batches", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/departments", { withCredentials: true })
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
       ]);
 
       if (feeRes.data.structures) setFeeStructures(feeRes.data.structures);
+      
+      // Fetch Recent Payments
+      await fetchRecentCollections();
+
       setRegistry({
         courses: courseRes.data.data || [],
         batches: batchRes.data.batches || [],
-        departments: deptRes.data.departments || []
+        semesters: semRes.data.data || []
       });
     } catch (err) {
       console.error(err);
@@ -109,7 +124,7 @@ const Feestructure = () => {
       setPublishForm({
         department: "", course: "", batch: "",
         academicFee: 0, transportFee: 0,
-        examinationFee: 0, uniformFee: 0, otherFee: 0
+        examinationFee: 0, uniformFee: 0, otherFee: 0, hostelFee: 0
       });
       fetchData();
     } catch (err) {
@@ -130,6 +145,16 @@ const Feestructure = () => {
       toast.error("Purge Failed", toststyle);
     } finally {
       setLoading(false);
+    }
+  };
+
+  /* ================= RECENT COLLECTIONS ================= */
+  const fetchRecentCollections = async () => {
+    try {
+      const payRes = await axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true });
+      if (payRes.data.payments) setRecentPayments(payRes.data.payments.slice(0, 15)); // Show last 15
+    } catch (e) {
+      console.error("Payment History Load Failed", e);
     }
   };
 
@@ -161,7 +186,7 @@ const Feestructure = () => {
       {/* 🏛️ Professional Header Bar */}
       <div className="py-6 px-4 md:px-0">
         <div className="w-full mx-auto flex justify-start">
-          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-gray-100 p-3 md:p-4 w-[98%] mx-auto md:w-[90%] lg:w-[80%] flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
+          <div className="bg-white rounded-lg shadow-xl shadow-gray-200/40 border border-slate-100 p-3 md:p-4 w-[98%] mx-auto md:w-[90%] lg:w-[80%] flex flex-row items-center justify-between gap-3 md:gap-6 transition-all">
             
             <div className="hidden sm:block space-y-1">
               <h2 className="text-lg md:text-2xl font-black text-gray-900 uppercase italic tracking-tighter leading-none">
@@ -175,13 +200,15 @@ const Feestructure = () => {
 
             <div className="flex items-center gap-2 md:gap-3 flex-1 justify-end">
               <button
-                onClick={() => setShowPublishModal(true)}
-                className="p-3 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-all flex items-center gap-2 border border-emerald-100 shadow-sm shadow-emerald-100"
-                title="Publish Fee Structure"
+                onClick={() => navigate("/fee-payments")}
+                className="p-3 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all flex items-center gap-2 border border-indigo-100 shadow-sm shadow-indigo-100"
+                title="Go to Fee Submission"
               >
-                <FiPlus size={18} />
-                <span className="hidden lg:inline text-[10px] font-black uppercase tracking-widest">Publish Fee</span>
+                <FiCreditCard size={18} />
+                <span className="hidden lg:inline text-[10px] font-black uppercase tracking-widest">Fee Submission</span>
               </button>
+
+
 
               <div className="relative group flex-1 max-w-[280px] min-w-[120px]">
                 <FiSearch className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors text-xs md:text-base" />
@@ -330,48 +357,96 @@ const Feestructure = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-[65vh] flex flex-col items-center justify-center text-center relative">
+        <div className="min-h-[60vh] py-12 flex flex-col items-center justify-center text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 z-0"></div>
-          <div className="relative z-10 space-y-8 max-w-lg mx-auto">
-            <div className="relative mx-auto w-32 h-32 flex items-center justify-center">
-              <div className="absolute inset-0 bg-slate-900/5 rounded-full animate-pulse"></div>
-              <div className="absolute inset-2 bg-white rounded-full shadow-2xl flex items-center justify-center border border-slate-100">
-                <FiDollarSign className="text-slate-900" size={40} />
-              </div>
-            </div>
-            <div className="space-y-3">
-              <h3 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">Fee Audit Portal</h3>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] italic">Search ID or Access Master Registry below</p>
-            </div>
+          <div className="relative z-10 w-full max-w-4xl mx-auto px-4">
+            {/* Recent Submissions Section */}
+            <div className="w-full max-w-[98%] mx-auto">
+              <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/40">
+                <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FiActivity size={14} className="text-indigo-500" />
+                    Filtered Fee Collections
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        fetchRecentCollections();
+                        toast.info("Registry Synced", { ...toststyle, autoClose: 1000 });
+                      }}
+                      className="p-1.5 hover:bg-indigo-50 text-indigo-400 hover:text-indigo-600 rounded-lg transition-all"
+                      title="Sync Latest Submissions"
+                    >
+                      <FiActivity className="animate-spin-slow" size={14} />
+                    </button>
+                    <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded italic">Live Registry</span>
+                  </div>
+                </h4>
 
-            {/* Master List Section */}
-            <div className="mt-12 bg-white p-6 rounded-xl border border-gray-100 shadow-xl shadow-gray-200/40">
-              <h4 className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <FiActivity size={14} className="text-emerald-500" />
-                Active Fee Structures
-              </h4>
-              <div className="space-y-3">
-                {feeStructures.length === 0 ? (
-                  <p className="text-gray-300 text-[10px] font-bold uppercase py-4">No published structures</p>
-                ) : (
-                  feeStructures.map((f) => (
-                    <div key={f._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-emerald-200 transition-all group">
-                      <div className="text-left">
-                        <p className="text-[11px] font-black text-gray-900 uppercase italic leading-none">{f.course}</p>
-                        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">{f.department} | Batch: {f.batch}</p>
+                {/* Filter Controls */}
+                <div className="grid grid-cols-3 gap-2 mb-6 p-2 bg-slate-50 rounded-xl border border-slate-100">
+                  <select 
+                    value={activeFilters.course}
+                    onChange={(e) => setActiveFilters({...activeFilters, course: e.target.value})}
+                    className="bg-white px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-tight outline-none focus:ring-1 focus:ring-indigo-500 border-none cursor-pointer"
+                  >
+                    <option value="">All Courses</option>
+                    {registry.courses.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
+                  </select>
+                  <select 
+                    value={activeFilters.semester}
+                    onChange={(e) => setActiveFilters({...activeFilters, semester: e.target.value})}
+                    className="bg-white px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-tight outline-none focus:ring-1 focus:ring-indigo-500 border-none cursor-pointer"
+                  >
+                    <option value="">All Semesters</option>
+                    {registry.semesters.map(s => <option key={s._id} value={s.name}>{s.name}</option>)}
+                  </select>
+                  <select 
+                    value={activeFilters.batch}
+                    onChange={(e) => setActiveFilters({...activeFilters, batch: e.target.value})}
+                    className="bg-white px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-tight outline-none focus:ring-1 focus:ring-indigo-500 border-none cursor-pointer"
+                  >
+                    <option value="">All Batches</option>
+                    {registry.batches.map(b => <option key={b._id} value={b.name}>{b.name}</option>)}
+                  </select>
+                </div>
+                
+                <div className="space-y-3">
+                  {recentPayments
+                    .filter(p => {
+                      const courseMatch = !activeFilters.course || p.course?.toLowerCase() === activeFilters.course.toLowerCase();
+                      const semMatch = !activeFilters.semester || p.semester?.toString().includes(activeFilters.semester.toString());
+                      const batchMatch = !activeFilters.batch || p.academicYear?.toLowerCase() === activeFilters.batch.toLowerCase();
+                      return courseMatch && semMatch && batchMatch;
+                    })
+                    .length === 0 ? (
+                    <div className="py-10 text-center space-y-2">
+                      <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
+                        <FiFileText className="text-slate-200" />
                       </div>
-                      <div className="flex items-center gap-4">
-                        <p className="text-xs font-black text-emerald-600 italic">₹{f.totalFee.toLocaleString()}</p>
-                        <button 
-                          onClick={() => handleDeleteStructure(f._id)}
-                          className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
-                        >
-                          <FiTrash2 size={14} />
-                        </button>
-                      </div>
+                      <p className="text-slate-300 text-[10px] font-black uppercase tracking-widest italic">No transactions indexed yet</p>
                     </div>
-                  ))
-                )}
+                  ) : (
+                    recentPayments.map((p) => (
+                      <div key={p._id} className="flex items-center justify-between p-4 bg-slate-50/50 rounded-xl border border-transparent hover:border-indigo-100 hover:bg-white transition-all group cursor-default">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-indigo-600 font-black italic shadow-sm group-hover:scale-110 transition-transform">
+                            {p.studentName?.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="text-left">
+                            <p className="text-[11px] font-black text-slate-900 uppercase italic leading-none">{p.studentName}</p>
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">{p.studentId} • {p.paymentType}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs font-black text-indigo-600 italic">₹{p.amount.toLocaleString()}</p>
+                          <p className="text-[8px] font-bold text-slate-300 uppercase mt-1">{new Date(p.createdAt).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -383,7 +458,7 @@ const Feestructure = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 overflow-y-auto">
           <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
             <form onSubmit={handlePublish}>
-              <div className="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-gray-50/50">
                 <div>
                   <h2 className="text-2xl font-black text-gray-900 uppercase italic tracking-tighter">Publish Fee Structure</h2>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Registry Configuration Portal</p>
@@ -454,7 +529,7 @@ const Feestructure = () => {
                 </div>
               </div>
 
-              <div className="p-8 bg-gray-50 border-t border-gray-100 flex justify-end">
+              <div className="p-8 bg-gray-50 border-t border-slate-100 flex justify-end">
                 <button 
                   type="submit"
                   className="px-12 py-4 bg-emerald-600 text-white rounded-lg font-black uppercase tracking-widest text-[11px] italic shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all active:scale-95"

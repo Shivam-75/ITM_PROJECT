@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
-import axios from "axios";
-import { authAPI, ReportAPI } from "../../api/apis";
+import { authAPI, ReportAPI, AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import useAuth from "../../../store/FacultyStore";
 import BigLoader from "../../common/BigLoader";
@@ -34,7 +33,7 @@ export default function AttendancePage() {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", { withCredentials: true });
+        const res = await AcademicAPI.get("/subjects");
         if (res.data.subjects) setSubjectsList(res.data.subjects);
       } catch (err) {
         console.error("Subject fetch failed", err);
@@ -162,7 +161,7 @@ export default function AttendancePage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#f8fafc] pt-6 px-4 md:px-8 pb-32">
+    <div className="min-h-[100dvh] bg-pink-50 pt-6 px-4 md:px-8 pb-32">
       {(loading || registryLoading) && <BigLoader />}
 
       {/* ===== REGISTRY HEADER ===== */}
@@ -172,28 +171,28 @@ export default function AttendancePage() {
               <h1 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">Attendance Registry</h1>
           </div>
 
-          <div className="flex bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm w-full md:w-auto">
-                <button onClick={() => setActiveView("registry")} className={`flex-1 md:px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'registry' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}>Registry</button>
-                <button onClick={() => setActiveView("analytics")} className={`flex-1 md:px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'analytics' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}>Analytics</button>
+          <div className="flex bg-white p-1.5 rounded-[10px] border border-slate-100 shadow-sm w-full md:w-auto">
+                <button onClick={() => setActiveView("registry")} className={`flex-1 md:px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'registry' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}>Registry</button>
+                <button onClick={() => setActiveView("analytics")} className={`flex-1 md:px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all ${activeView === 'analytics' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}>Analytics</button>
           </div>
       </div>
 
       <div className="w-full space-y-6">
         
         {/* ===== FILTER MATRIX ===== */}
-        <div className="bg-white p-6 md:p-8 rounded-lg border border-slate-100 shadow-xl shadow-slate-100/30">
+        <div className="bg-white p-6 md:p-8 rounded-[10px] border border-slate-100 shadow-xl shadow-slate-100/30">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic mb-6 flex items-center gap-2">
                 <FiFilter className="text-indigo-600" /> Class Selection Matrix
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
                 <div className="relative group">
                     <FiCalendar className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <input type="date" className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-inner" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                    <input type="date" className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-sm" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
                 </div>
 
                 <div className="relative group">
                     <FiLayers className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
                         <option value="">DEPARTMENT</option>
                         {courses.map(c => <option key={c.id} value={c.name}>{c.name.toUpperCase()}</option>)}
                     </select>
@@ -201,7 +200,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiAward className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
                         <option value="">ACADEMIC YEAR</option>
                         {years.map(y => <option key={y.id} value={y.name}>{y.name.toUpperCase()}</option>)}
                     </select>
@@ -209,7 +208,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiActivity className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedBatch} onChange={(e) => setSelectedBatch(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedBatch} onChange={(e) => setSelectedBatch(e.target.value)}>
                         <option value="">ACADEMIC BATCH</option>
                         {batches.map(b => <option key={b._id} value={b.name}>{b.name.toUpperCase()}</option>)}
                     </select>
@@ -217,7 +216,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiBookOpen className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)}>
                         <option value="">SEMESTER</option>
                         {semesters.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
                     </select>
@@ -225,7 +224,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiCheckCircle className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)}>
                         <option value="">SECTION</option>
                         {sections.map(s => <option key={s.id} value={s.name}>{s.name.toUpperCase()}</option>)}
                     </select>
@@ -233,7 +232,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiBookOpen className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
                         <option value="">SUBJECT NAME</option>
                         {filteredSubjects.map(sub => <option key={sub._id} value={sub.name}>{sub.name.toUpperCase()}</option>)}
                     </select>
@@ -241,7 +240,7 @@ export default function AttendancePage() {
 
                 <div className="relative group">
                     <FiClock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                    <select className="w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-inner" value={selectedPeriod} onChange={(e) => setSelectedPeriod(e.target.value)}>
+                    <select className="w-full pl-14 pr-4 py-4 bg-white border border-slate-100 rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer transition-all shadow-sm" value={selectedPeriod} onChange={(e) => setSelectedPeriod(e.target.value)}>
                         <option value="">SELECT PERIOD</option>
                         {periods.map(p => <option key={p._id} value={p.name}>{p.name.toUpperCase()} ({p.startTime}-{p.endTime})</option>)}
                     </select>
@@ -253,37 +252,37 @@ export default function AttendancePage() {
             <div className="space-y-6 animate-in fade-in duration-700">
                 {/* Statistics Pods */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-white p-6 rounded-lg text-slate-900 border border-slate-100 shadow-sm">
+                    <div className="bg-white p-6 rounded-[10px] text-slate-900 border border-slate-100 shadow-sm">
                         <p className="text-[9px] font-black text-slate-400 uppercase italic mb-1">Total Strength</p>
                         <p className="text-3xl font-black italic tracking-tighter">{stats.total}</p>
                     </div>
-                    <div className="bg-emerald-50 p-6 rounded-lg border border-emerald-100 shadow-sm shadow-emerald-50">
+                    <div className="bg-emerald-50 p-6 rounded-[10px] border border-emerald-100 shadow-sm shadow-emerald-50">
                         <p className="text-[9px] font-black text-emerald-600/60 uppercase italic mb-1">Present Intake</p>
                         <p className="text-3xl font-black text-emerald-600 italic tracking-tighter">{stats.present}</p>
                     </div>
-                    <div className="bg-rose-50 p-6 rounded-lg border border-rose-100 shadow-sm shadow-rose-50">
+                    <div className="bg-rose-50 p-6 rounded-[10px] border border-rose-100 shadow-sm shadow-rose-50">
                         <p className="text-[9px] font-black text-rose-600/60 uppercase italic mb-1">Absentee Yield</p>
                         <p className="text-3xl font-black text-rose-600 italic tracking-tighter">{stats.absent}</p>
                     </div>
-                    <div className="bg-white p-6 rounded-lg border border-slate-100 flex items-center justify-center gap-6 shadow-sm">
+                    <div className="bg-white p-6 rounded-[10px] border border-slate-100 flex items-center justify-center gap-6 shadow-sm">
                         <button onClick={() => handleMarkAll(true)} className="flex flex-col items-center gap-1 group">
-                             <div className="p-3 bg-emerald-50 text-emerald-600 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm"><FiCheckCircle size={18} /></div>
+                             <div className="p-3 bg-emerald-50 text-emerald-600 rounded-[10px] group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm"><FiCheckCircle size={18} /></div>
                              <span className="text-[8px] font-black uppercase italic mt-1">All P</span>
                         </button>
                         <button onClick={() => handleMarkAll(false)} className="flex flex-col items-center gap-1 group">
-                             <div className="p-3 bg-rose-50 text-rose-600 rounded-lg group-hover:bg-rose-600 group-hover:text-white transition-all shadow-sm"><FiXCircle size={18} /></div>
+                             <div className="p-3 bg-rose-50 text-rose-600 rounded-[10px] group-hover:bg-rose-600 group-hover:text-white transition-all shadow-sm"><FiXCircle size={18} /></div>
                              <span className="text-[8px] font-black uppercase italic mt-1">All A</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Registry Ledger */}
-                <div className="bg-white p-8 md:p-10 rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50">
+                <div className="bg-white p-8 md:p-10 rounded-[10px] border border-slate-100 shadow-xl shadow-slate-100/50">
                     <div className="flex flex-col md:flex-row justify-between items-center mb-8 pb-6 border-b border-slate-50 gap-4">
                         <h2 className="text-[11px] font-black text-slate-900 uppercase tracking-widest italic flex items-center gap-2">
                             <FiUsers className="text-indigo-600" /> Active Registry Ledger
                         </h2>
-                        <span className="text-[10px] font-black text-slate-400 uppercase italic bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
+                        <span className="text-[10px] font-black text-slate-400 uppercase italic bg-white border border-slate-100 px-4 py-2 rounded-full border border-slate-100">
                            {selectedDate} • {selectedSubject || 'No Subject Defined'} • {selectedPeriod}
                         </span>
                     </div>
@@ -292,9 +291,9 @@ export default function AttendancePage() {
                         {filteredStudents.map((s) => {
                             const isPresent = attendance[selectedDate]?.[s.id] !== false;
                             return (
-                                <div key={s.id} className="flex justify-between items-center bg-slate-50/50 p-4 md:p-5 rounded-lg border border-transparent hover:border-slate-200 hover:bg-white hover:shadow-lg transition-all group">
+                                <div key={s.id} className="flex justify-between items-center bg-white p-4 md:p-5 rounded-[10px] border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all group">
                                     <div className="flex items-center gap-6">
-                                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-[10px] font-black text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all border border-slate-100">
+                                        <div className="w-10 h-10 bg-white rounded-[10px] flex items-center justify-center text-[10px] font-black text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all border border-slate-100">
                                             {s.rollNo.slice(-2)}
                                         </div>
                                         <div>
@@ -304,7 +303,7 @@ export default function AttendancePage() {
                                     </div>
                                     <button 
                                         onClick={() => handleToggle(s.id)}
-                                        className={`px-8 py-3 rounded-lg text-[10px] font-black uppercase italic tracking-widest transition-all shadow-md ${isPresent ? 'bg-emerald-500 text-white shadow-emerald-100/50' : 'bg-rose-500 text-white shadow-rose-100/50'}`}
+                                        className={`px-8 py-3 rounded-[10px] text-[10px] font-black uppercase italic tracking-widest transition-all shadow-md ${isPresent ? 'bg-emerald-500 text-white shadow-emerald-100/50' : 'bg-rose-500 text-white shadow-rose-100/50'}`}
                                     >
                                         {isPresent ? 'PRESENT' : 'ABSENT'}
                                     </button>
@@ -317,7 +316,7 @@ export default function AttendancePage() {
                          <button 
                             disabled={loading}
                             onClick={handleSaveAttendance}
-                            className="px-16 py-5 bg-slate-900 text-white rounded-lg text-[12px] font-black uppercase tracking-[0.4em] italic shadow-2xl hover:bg-indigo-600 transition-all disabled:opacity-50 flex items-center gap-4"
+                            className="px-16 py-5 bg-slate-900 text-white rounded-[10px] text-[12px] font-black uppercase tracking-[0.4em] italic shadow-2xl hover:bg-indigo-600 transition-all disabled:opacity-50 flex items-center gap-4"
                          >
                             <FiSave size={20} /> SYNC REGISTRY
                          </button>
@@ -327,8 +326,8 @@ export default function AttendancePage() {
         )}
 
         {(filteredStudents.length === 0 || !selectedYear || !selectedBatch || !selectedPeriod) && activeView === "registry" && (
-            <div className="bg-white py-32 rounded-lg border-4 border-dashed border-slate-50 flex flex-col items-center justify-center text-center px-10">
-                 <div className="p-8 bg-white text-slate-200 rounded-lg mb-6 shadow-sm">
+            <div className="bg-white py-32 rounded-[10px] border border-dashed border-slate-100 flex flex-col items-center justify-center text-center px-10">
+                 <div className="p-8 bg-white text-slate-200 rounded-[10px] mb-6 shadow-sm">
                     <FiUsers size={60} />
                  </div>
                  <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-2">Awaiting Archive Load</h2>

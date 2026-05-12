@@ -43,7 +43,7 @@ export default function LectureList() {
   }, [toststyle]);
 
   return (
-    <div className="flex-1 space-y-10 bg-white animate-in fade-in duration-700 pb-20">
+    <div className="flex-1 space-y-10 bg-transparent animate-in fade-in duration-700 pb-20">
         {/* Simplified Header */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-4">
@@ -53,16 +53,16 @@ export default function LectureList() {
                 </h1>
             </div>
 
-            <div className="flex bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm">
+            <div className="flex bg-white p-1.5 rounded-[10px] border border-slate-100 shadow-sm">
                   <button 
                     onClick={() => setActiveTab("conduct")}
-                    className={`px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'conduct' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-900 hover:bg-white'}`}
+                    className={`px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'conduct' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-900 hover:bg-white'}`}
                   >
                     Conduct
                   </button>
                   <button 
                     onClick={() => setActiveTab("archive")}
-                    className={`px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'archive' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-900 hover:bg-white'}`}
+                    className={`px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'archive' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-900 hover:bg-white'}`}
                   >
                     Archive
                   </button>

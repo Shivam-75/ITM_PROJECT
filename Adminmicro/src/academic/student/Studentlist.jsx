@@ -34,6 +34,8 @@ const Studentlist = () => {
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 30;
@@ -183,15 +185,19 @@ const Studentlist = () => {
     navigate("/students/add", { state: { editMode: true, studentData: student } });
   };
 
-  const handleDelete = async (dbId) => {
-    if (window.confirm("CRITICAL: Permanent Deletion? This record will be erased from the Report database.")) {
-      try {
-        await ReportService.deleteProfile(dbId);
-        toast.success("Profile Removed");
+  const handleDelete = async () => {
+    if (!deletingId) return;
+    try {
+        setLoading(true);
+        await ReportService.deleteProfile(deletingId);
+        toast.success("Profile Removed Successfully");
+        setShowDeleteModal(false);
+        setDeletingId(null);
         fetchStudents();
-      } catch (error) {
-        toast.error("Deletion Failed");
-      }
+    } catch (error) {
+        toast.error("Profile Deletion Failed");
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -221,7 +227,7 @@ const Studentlist = () => {
             className={`flex items-center gap-3 px-6 py-3 rounded-lg font-black uppercase tracking-widest text-[10px] italic transition-all shadow-lg active:scale-95 border ${
               activeTab === 'migration' 
                 ? 'bg-red-600 text-white border-red-700 shadow-red-600/20' 
-                : 'bg-white text-gray-900 border-gray-200 hover:bg-white'
+                : 'bg-white text-gray-900 border-slate-100 hover:bg-white'
             }`}
           >
             {activeTab === 'registry' ? <FiLayers size={16} /> : <FiUsers size={16} />}
@@ -242,9 +248,9 @@ const Studentlist = () => {
 
       {activeTab === 'registry' ? (
         /* 🔹 Registry View */
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden print:hidden w-[98%] mx-auto md:w-full">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden print:hidden w-[98%] mx-auto md:w-full">
           {/* Table Toolbar */}
-          <div className="p-6 border-b border-gray-50 flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/30">
+          <div className="p-6 border-b border-slate-50 flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/30">
              <div className="relative w-full sm:w-80">
                 <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input 
@@ -255,13 +261,13 @@ const Studentlist = () => {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
+                  className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-100 rounded-lg text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
                 />
              </div>
              <div className="flex items-center gap-2">
                 <button 
                   onClick={fetchStudents}
-                  className="p-2.5 bg-white border border-gray-200 text-gray-500 rounded-lg hover:bg-white hover:text-red-600 transition-all group"
+                  className="p-2.5 bg-white border border-slate-100 text-gray-500 rounded-lg hover:bg-white hover:text-red-600 transition-all group"
                   title="Refresh Registry"
                 >
                   <FiRefreshCw size={18} className={loading ? "animate-spin" : "group-active:rotate-180 transition-transform"} />
@@ -283,12 +289,12 @@ const Studentlist = () => {
               <table className="w-full text-left border-collapse">
                 <thead className="bg-white">
                   <tr className="bg-white/50">
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100">Identity ID</th>
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100">Full Name</th>
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100">Course</th>
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100">Semester</th>
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 text-center">Status</th>
-                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 text-right">Actions</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100">Identity ID</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100">Full Name</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100">Course</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100">Semester</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 text-center">Status</th>
+                    <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -296,7 +302,7 @@ const Studentlist = () => {
                     currentStudents.map((student, index) => (
                       <tr key={index} className="group hover:bg-white/80 transition-all">
                         <td className="px-6 py-4">
-                          <span className="text-[10px] font-black text-[#111111] bg-white px-3 py-1.5 rounded-lg border border-gray-200 italic shadow-sm">
+                          <span className="text-[10px] font-black text-[#111111] bg-white px-3 py-1.5 rounded-lg border border-slate-100 italic shadow-sm">
                             {student.studentId}
                           </span>
                         </td>
@@ -325,7 +331,7 @@ const Studentlist = () => {
                           <div className="flex items-center justify-end gap-2">
                             <button 
                               onClick={() => handleViewDetails(student)}
-                              className="flex items-center gap-2 px-3 py-1.5 bg-white text-gray-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-gray-100 hover:border-red-600 shadow-sm"
+                              className="flex items-center gap-2 px-3 py-1.5 bg-white text-gray-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-slate-100 hover:border-red-600 shadow-sm"
                             >
                               <FiEye size={14} />
                               <span className="text-[9px] font-black uppercase italic">Show</span>
@@ -337,11 +343,11 @@ const Studentlist = () => {
                               <FiEdit2 size={16} />
                             </button>
                             <button 
-                              onClick={() => handleDelete(student._id)}
-                              className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                            >
-                              <FiTrash2 size={16} />
-                            </button>
+                                onClick={() => { setDeletingId(student._id); setShowDeleteModal(true); }}
+                                className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                              >
+                                <FiTrash2 size={16} />
+                              </button>
                           </div>
                         </td>
                       </tr>
@@ -357,23 +363,23 @@ const Studentlist = () => {
           </div>
 
           {/* Pagination Footer */}
-          <div className="p-6 border-t border-gray-50 bg-white/30 flex items-center justify-between">
+          <div className="p-6 border-t border-slate-50 bg-white/30 flex items-center justify-between">
              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 italic">
                 Showing {filteredStudents.length > 0 ? indexOfFirstItem + 1 : 0} to {Math.min(indexOfLastItem, filteredStudents.length)} of {filteredStudents.length}
              </p>
              <div className="flex items-center gap-1.5">
-                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-2 bg-white border border-gray-200 text-gray-400 rounded-lg disabled:opacity-30"><FiChevronLeft size={16} /></button>
+                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-2 bg-white border border-slate-100 text-gray-400 rounded-lg disabled:opacity-30"><FiChevronLeft size={16} /></button>
                 {[...Array(totalPages)].map((_, i) => (
-                  <button key={i} onClick={() => paginate(i+1)} className={`w-8 h-8 rounded-lg text-[10px] font-black italic shadow-md ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-gray-200 text-gray-400'}`}>{i+1}</button>
+                  <button key={i} onClick={() => paginate(i+1)} className={`w-8 h-8 rounded-lg text-[10px] font-black italic shadow-md ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-slate-100 text-gray-400'}`}>{i+1}</button>
                 ))}
-                <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 bg-white border border-gray-200 text-gray-400 rounded-lg disabled:opacity-30"><FiChevronRight size={16} /></button>
+                <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 bg-white border border-slate-100 text-gray-400 rounded-lg disabled:opacity-30"><FiChevronRight size={16} /></button>
              </div>
           </div>
         </div>
       ) : (
         /* 🔹 Migration View */
         <div className="space-y-6 pb-20">
-          <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100">
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-slate-100">
             <h2 className="text-sm font-black text-gray-900 uppercase tracking-widest italic mb-6 flex items-center gap-2">
               <FiFilter className="text-red-600" /> Select Source Criteria
             </h2>
@@ -412,8 +418,8 @@ const Studentlist = () => {
           </div>
 
           {migratingStudents.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 bg-white/50 border-b border-gray-100 flex justify-between items-center">
+            <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
+              <div className="p-6 bg-white/50 border-b border-slate-100 flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <input 
                     type="checkbox" 
@@ -475,7 +481,7 @@ const Studentlist = () => {
                           />
                         </td>
                         <td className="px-6 py-4">
-                          <span className="text-[10px] font-black text-gray-900 bg-white px-2 py-1 rounded border border-gray-200 italic">{student.studentId}</span>
+                          <span className="text-[10px] font-black text-gray-900 bg-white px-2 py-1 rounded border border-slate-100 italic">{student.studentId}</span>
                         </td>
                         <td className="px-6 py-4 text-[10px] font-black uppercase text-gray-700 italic">{student.name}</td>
                         <td className="px-6 py-4">
@@ -518,7 +524,7 @@ const Studentlist = () => {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:grid-cols-2">
                     {/* Personal Info */}
                     <div className="space-y-6">
-                       <h4 className="text-[10px] font-black text-red-600 uppercase tracking-widest italic border-b border-gray-50 pb-2 print:text-black">Personal Information</h4>
+                       <h4 className="text-[10px] font-black text-red-600 uppercase tracking-widest italic border-b border-slate-50 pb-2 print:text-black">Personal Information</h4>
                        <div className="space-y-4">
                           <div className="flex items-center gap-3">
                              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-400 print:hidden"><FiUser /></div>
@@ -546,7 +552,7 @@ const Studentlist = () => {
 
                     {/* Guardian Info */}
                     <div className="space-y-6">
-                       <h4 className="text-[10px] font-black text-red-600 uppercase tracking-widest italic border-b border-gray-50 pb-2 print:text-black">Guardian Details</h4>
+                       <h4 className="text-[10px] font-black text-red-600 uppercase tracking-widest italic border-b border-slate-50 pb-2 print:text-black">Guardian Details</h4>
                        <div className="space-y-4">
                           <div className="grid grid-cols-2 gap-4">
                              <div>
@@ -567,8 +573,8 @@ const Studentlist = () => {
                  </div>
 
                  {/* Modal Footer */}
-                 <div className="mt-12 pt-8 border-t border-gray-50 flex justify-end gap-3 print:hidden">
-                    <button onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 bg-white text-gray-600 rounded-lg text-[10px] font-black uppercase italic tracking-widest border border-gray-200">Cancel</button>
+                 <div className="mt-12 pt-8 border-t border-slate-50 flex justify-end gap-3 print:hidden">
+                    <button onClick={() => setIsModalOpen(false)} className="px-6 py-2.5 bg-white text-gray-600 rounded-lg text-[10px] font-black uppercase italic tracking-widest border border-slate-100">Cancel</button>
                     <button 
                       onClick={() => window.print()}
                       className="px-6 py-2.5 bg-red-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest italic flex items-center gap-2 shadow-lg shadow-red-600/20 active:scale-95"
@@ -577,8 +583,46 @@ const Studentlist = () => {
                     </button>
                  </div>
               </div>
-           </div>
-        </div>
+            </div>
+         </div>
+       )}
+      {/* Global Processing Loader */}
+      {loading && (
+          <div className="fixed inset-0 bg-white/60 backdrop-blur-md z-[2000] flex flex-col items-center justify-center animate-in fade-in duration-300">
+              <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-6"></div>
+              <p className="text-[11px] font-black text-slate-900 uppercase tracking-[0.4em] italic animate-pulse text-red-600">Executing Registry Protocol...</p>
+          </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+          <div className="fixed inset-0 z-[2100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+              <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                  <div className="p-8 text-center">
+                      <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                          <FiTrash2 size={32} />
+                      </div>
+                      <h3 className="text-2xl font-black text-slate-900 italic tracking-tighter mb-2">Purge Student?</h3>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                          This student profile will be permanently erased from the academic registry. This action cannot be revoked.
+                      </p>
+                  </div>
+                  <div className="grid grid-cols-2 border-t border-slate-50">
+                      <button 
+                        onClick={() => { setShowDeleteModal(false); setDeletingId(null); }}
+                        className="py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all border-r border-slate-50"
+                      >
+                          Abort
+                      </button>
+                      <button 
+                        onClick={handleDelete}
+                        className="py-6 text-[10px] font-black uppercase tracking-widest text-red-600 hover:bg-red-50 transition-all"
+                      >
+                          Confirm Purge
+                      </button>
+                  </div>
+              </div>
+          </div>
       )}
     </div>
   );

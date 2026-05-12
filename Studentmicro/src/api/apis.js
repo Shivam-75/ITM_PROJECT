@@ -25,6 +25,11 @@ const createAxiosInstance = (baseURL) => {
         async (error) => {
             const originalRequest = error.config;
 
+            // 🛑 CRITICAL: If we are already redirecting due to a session failure, block everything
+            if (window._isAuthRedirecting) {
+                return new Promise(() => {}); 
+            }
+
             if (
                 (error.response?.status === 401 || error.response?.status === 403) &&
                 !originalRequest._retry
@@ -34,6 +39,7 @@ const createAxiosInstance = (baseURL) => {
                         failedQueue.push({ resolve, reject });
                     })
                         .then(() => {
+                            originalRequest._retry = true;
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
@@ -53,12 +59,17 @@ const createAxiosInstance = (baseURL) => {
                     isRefreshing = false;
                     return axiosInstance(originalRequest);
                 } catch (refreshError) {
+                    window._isAuthRedirecting = true; // Block all future interceptor logic
                     processQueue(refreshError, null);
-                    isRefreshing = false;
-                    console.error("Refresh token expired, logging out...");
-                    localStorage.removeItem("stLogged");
+                    
+                    console.error("Session Expired: Redirecting to login...");
+                    
+                    // Clear storage to prevent loops in components
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
                     window.location.href = "/";
-                    return Promise.reject(refreshError);
+                    return new Promise(() => {}); // Swallow the error to prevent component-level retries
                 }
             }
 

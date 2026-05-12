@@ -168,7 +168,7 @@ const Hostelfee = () => {
       {showUploadModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
           <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-            <div className="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-gray-50/50">
               <div>
                 <h2 className="text-2xl font-black text-gray-900 uppercase italic tracking-tighter">Hostel Publication</h2>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fee Structure & Room Rates Registry</p>
@@ -180,7 +180,7 @@ const Hostelfee = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Form Side */}
-              <div className="p-8 space-y-6 border-r border-gray-100">
+              <div className="p-8 space-y-6 border-r border-slate-100">
                 <div className="space-y-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 italic">Document Heading</label>
@@ -240,7 +240,7 @@ const Hostelfee = () => {
                     <p className="text-center py-10 text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em] italic">No active documents found</p>
                   ) : (
                     documents.map((doc) => (
-                      <div key={doc._id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group">
+                      <div key={doc._id} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between group">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
                             <FiFileText size={20} />

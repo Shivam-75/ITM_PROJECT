@@ -78,7 +78,7 @@ const HostelFeeRegistry = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       {loading && <Loader />}
       
-      <div className="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div className="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
         <div>
           <h1 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter">Hostel Fee Registry</h1>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Master Configuration for Residentials</p>
@@ -100,7 +100,7 @@ const HostelFeeRegistry = () => {
           </div>
         ) : (
           feeStructures.map((f) => (
-            <div key={f._id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all relative group">
+            <div key={f._id} className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all relative group">
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all">
                 <button onClick={() => handleDelete(f._id)} className="text-gray-300 hover:text-red-500 p-2">
                   <FiTrash2 size={16} />
@@ -118,11 +118,11 @@ const HostelFeeRegistry = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                <div className="flex justify-between items-center border-b border-slate-50 pb-2">
                    <span className="text-[9px] font-bold text-gray-400 uppercase italic">Financial Batch</span>
                    <span className="text-xs font-black text-gray-700">{f.academicYear}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                <div className="flex justify-between items-center border-b border-slate-50 pb-2">
                    <span className="text-[9px] font-bold text-gray-400 uppercase italic">Annual Commitment</span>
                    <span className="text-lg font-black text-emerald-600 italic">₹{f.amount.toLocaleString()}</span>
                 </div>
@@ -143,7 +143,7 @@ const HostelFeeRegistry = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
           <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             <form onSubmit={handleSubmit}>
-              <div className="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-gray-50/50">
                 <div>
                   <h2 className="text-2xl font-black text-gray-900 uppercase italic tracking-tighter">Publish Hostel Fee</h2>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Master Residential Rate Card</p>
@@ -217,7 +217,7 @@ const HostelFeeRegistry = () => {
                 </div>
               </div>
 
-              <div className="p-8 bg-gray-50 border-t border-gray-100 flex justify-end">
+              <div className="p-8 bg-gray-50 border-t border-slate-100 flex justify-end">
                 <button 
                   type="submit"
                   className="px-12 py-4 bg-slate-900 text-white rounded-lg font-black uppercase tracking-widest text-[11px] italic shadow-xl shadow-gray-200 hover:bg-slate-800 transition-all active:scale-95"

@@ -21,7 +21,7 @@ class StudentController {
                 return res.status(400).json({ message: "Course and Year required" });
             }
 
-            const yearSuffix = year.toString().slice(-2) || "26";
+            const yearSuffix = year.toString().split('-')[0].slice(-2) || "26";
             const courseCode = course.split(" ")[0].toUpperCase();
             
             const count = await Student.countDocuments({ course, year });
@@ -40,7 +40,7 @@ class StudentController {
                 name, course, year, moNumber, stream,
                 passingYear, caste, gender, board, parentName,
                 parentMobile, motherName, address, id, semester, section,
-                batch, image, totalFee
+                batch, image, academicFee, isHostel, hostelFee, totalFee
             } = req.body;
 
             if (!name || !course || !year || !moNumber || !semester || !section) {
@@ -58,7 +58,7 @@ class StudentController {
             // 🔹 Automatic ID Generation: ITM/YEAR/COURSE/SERIAL
             let finalStudentId = id;
             if (!finalStudentId) {
-                const yearSuffix = year.toString().slice(-2) || "26";
+                const yearSuffix = year.toString().split('-')[0].slice(-2) || "26";
                 const courseCode = course.split(" ")[0].toUpperCase();
                 
                 // Count existing students in this course & year to determine serial
@@ -88,6 +88,9 @@ class StudentController {
                 section,
                 batch,
                 image,
+                academicFee,
+                isHostel,
+                hostelFee,
                 totalFee
             });
 

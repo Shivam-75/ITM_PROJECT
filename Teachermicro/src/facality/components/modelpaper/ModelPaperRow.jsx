@@ -3,7 +3,7 @@ import { FiTrash2, FiEdit2, FiExternalLink, FiDownloadCloud } from "react-icons/
 
 const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
   return (
-    <tr className="hover:bg-slate-50/50 transition-all group">
+    <tr className="hover:bg-white border border-slate-100/50 transition-all group">
       <td className="px-6 py-4">
         <div className="flex flex-col">
           <span className="text-[11px] font-black text-slate-900 uppercase italic tracking-tight">{item.subject}</span>
@@ -15,7 +15,7 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
-           <span className="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[8px] font-black uppercase rounded-full">{item.semester}</span>
+           <span className="px-2 py-0.5 bg-white border border-slate-100 text-indigo-600 text-[8px] font-black uppercase rounded-full">{item.semester}</span>
            <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[8px] font-black uppercase rounded-full">{item.section}</span>
         </div>
       </td>
@@ -25,7 +25,7 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
             href={`http://localhost:5002${item.paperImage}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white border border-slate-100 rounded-[10px] transition-all"
             title="View Paper"
           >
             <FiExternalLink size={14} />
@@ -33,7 +33,7 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
           <a
             href={`http://localhost:5002${item.paperImage}`}
             download
-            className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
+            className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-[10px] transition-all"
             title="Download"
           >
             <FiDownloadCloud size={14} />
@@ -44,13 +44,13 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
         <div className="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
           <button
             onClick={() => onEdit(item)}
-            className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
+            className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-[10px] transition-all"
           >
             <FiEdit2 size={14} />
           </button>
           <button
             onClick={() => onDelete(item._id)}
-            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[10px] transition-all"
           >
             <FiTrash2 size={14} />
           </button>

@@ -11,7 +11,7 @@ export default function UpcomingSchedule() {
   );
 
   return (
-    <section className="bg-white border rounded-lg overflow-hidden">
+    <section className="bg-white border rounded-[10px] overflow-hidden">
       <header className="p-4 border-b font-bold">Upcoming Schedule</header>
 
       {schedule.map((item, idx) => (

@@ -17,8 +17,6 @@ import Examdashboard from "./components/navbar/Exam/Examdashboard";
 import Hosteldeshboard from "./components/navbar/Hostel/Hosteldeshboard";
 import Roomallocation from "./components/navbar/Hostel/Roomallocation";
 import Hostelstudent from "./components/navbar/Hostel/Hostelstudent";
-import Hostelfee from "./components/navbar/Hostel/Hostelfee";
-import HostelFeeRegistry from "./components/navbar/Hostel/HostelFeeRegistry";
 import Settings from "./page/Settings";
 import SectionRegistry from "./academic/section/SectionRegistry";
 import SemesterRegistry from "./academic/semester/SemesterRegistry";
@@ -26,6 +24,9 @@ import YearRegistry from "./academic/year/YearRegistry";
 import BatchRegistry from "./academic/batch/BatchRegistry";
 import AdministratorRegistration from "./page/AdministratorRegistration";
 import PlacementDashboard from "./components/navbar/Placement/PlacementDashboard";
+import BulkResults from "./components/navbar/Exam/BulkResults";
+
+import Feepayment from "./Fee/Feepayment";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -44,6 +45,10 @@ const App = () => {
         {
           path: "fee-structure",
           element: <Feestructure />,
+        },
+        {
+          path: "fee-payments",
+          element: <Feepayment />,
         },
 
         {
@@ -84,14 +89,6 @@ const App = () => {
           element:<Hostelstudent />
         },
         {
-          path:"/hostel/fees",
-          element:<Hostelfee />
-        },
-        {
-          path:"/hostel/fee-registry",
-          element:<HostelFeeRegistry />
-        },
-        {
           path:"exams",
           element:<Examdashboard />
         },
@@ -102,6 +99,10 @@ const App = () => {
         {
           path:"exam-schedule",
           element:<Exams />
+        },
+        {
+          path:"sessional-results",
+          element:<BulkResults />
         },
         {
           path:"placements",

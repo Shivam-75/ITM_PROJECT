@@ -11,7 +11,6 @@ import StudentListPage from "./facality/page/classes/students/StudentListPage";
 import StudentProfilePage from "./facality/page/classes/students/StudentProfilePage";
 import AddLecture from "./facality/page/lectures/AddLecture";
 import LectureList from "./facality/page/lectures/LectureList";
-import Messaging from "./facality/page/messaging/Messaging";
 import Fontpage from "./facality/ui/Fontpage";
 import Timetable from "./facality/page/TimeTable/Timetable";
 import RoomAllocation from "./facality/components/Hostelwarden/RoomAllocation";
@@ -28,6 +27,8 @@ import AssignmentForm from "./facality/components/assignment/AssignmentForm";
 
 
 // import StudentDetails from "./facality/components/studentComponents/StudentDetails";
+
+import FeeSubmission from "./facality/page/Fees/FeeSubmission";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -65,6 +66,10 @@ const App = () => {
           element: <Attendance />,
         },
         {
+          path: "fee-submission",
+          element: <FeeSubmission />,
+        },
+        {
           path: "studentsList",
           element: <StudentListPage />,
         },
@@ -93,10 +98,6 @@ const App = () => {
         {
           path: "online/edit/:id",
           element: <AddLecture />,
-        },
-        {
-          path: "message",
-          element: <Messaging />,
         },
         {
           path: "room-allocation",

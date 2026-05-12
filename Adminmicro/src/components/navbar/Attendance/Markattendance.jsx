@@ -149,7 +149,7 @@ export default function Markattendance() {
 
       <div className="space-y-8">
         {/* ===== FILTER MATRIX ===== */}
-        <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm">
+        <div className="bg-white p-8 rounded-lg border border-slate-100 shadow-sm">
             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic mb-6 flex items-center gap-2">
                 <FiFilter className="text-red-600" /> Class Selection Matrix
             </h3>
@@ -192,7 +192,7 @@ export default function Markattendance() {
             <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-700">
                 {/* Statistics Pods */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white p-8 rounded-lg text-gray-900 border border-gray-200 shadow-sm shadow-xl shadow-black/10">
+                    <div className="bg-white p-8 rounded-lg text-gray-900 border border-slate-100 shadow-sm shadow-xl shadow-black/10">
                         <p className="text-[10px] font-black text-gray-500 uppercase italic mb-1">Total Strength</p>
                         <p className="text-4xl font-black italic tracking-tighter">{stats.total}</p>
                     </div>
@@ -204,7 +204,7 @@ export default function Markattendance() {
                         <p className="text-[10px] font-black text-red-600/60 uppercase italic mb-1">Absentee Yield</p>
                         <p className="text-4xl font-black text-red-600 italic tracking-tighter">{stats.absent}</p>
                     </div>
-                    <div className="bg-white p-8 rounded-lg border border-gray-100 flex items-center justify-center gap-8 shadow-sm">
+                    <div className="bg-white p-8 rounded-lg border border-slate-100 flex items-center justify-center gap-8 shadow-sm">
                         <button onClick={() => handleMarkAll(true)} className="flex flex-col items-center gap-2 group">
                              <div className="p-4 bg-emerald-50 text-emerald-600 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm"><FiCheckCircle size={20} /></div>
                              <span className="text-[9px] font-black uppercase italic">Mark All P</span>
@@ -217,8 +217,8 @@ export default function Markattendance() {
                 </div>
 
                 {/* Registry Ledger */}
-                <div className="bg-white p-10 rounded-lg border border-gray-100 shadow-sm">
-                    <div className="flex justify-between items-center mb-10 pb-6 border-b border-gray-50">
+                <div className="bg-white p-10 rounded-lg border border-slate-100 shadow-sm">
+                    <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-50">
                         <h2 className="text-xs font-black text-gray-900 uppercase tracking-widest italic flex items-center gap-3">
                             <FiUsers className="text-red-600" /> Active Registry Ledger
                         </h2>
@@ -231,9 +231,9 @@ export default function Markattendance() {
                         {filteredStudents.map((s) => {
                             const isPresent = attendance[selectedDate]?.[s.id] !== false;
                             return (
-                                <div key={s.id} className="flex justify-between items-center bg-white/50 p-6 rounded-lg border border-transparent hover:border-gray-100 hover:bg-white hover:shadow-xl transition-all group">
+                                <div key={s.id} className="flex justify-between items-center bg-white/50 p-6 rounded-lg border border-transparent hover:border-slate-100 hover:bg-white hover:shadow-xl transition-all group">
                                     <div className="flex items-center gap-5">
-                                        <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-[10px] font-black text-gray-400 group-hover:bg-red-600 group-hover:text-white transition-all shadow-sm border border-gray-100">
+                                        <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-[10px] font-black text-gray-400 group-hover:bg-red-600 group-hover:text-white transition-all shadow-sm border border-slate-100">
                                             ID
                                         </div>
                                         <div>
@@ -264,7 +264,7 @@ export default function Markattendance() {
                 </div>
             </div>
         ) : (
-            <div className="bg-white py-40 rounded-lg border border-gray-100 flex flex-col items-center justify-center text-center px-10 shadow-sm border-dashed">
+            <div className="bg-white py-40 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center px-10 shadow-sm border-dashed">
                  <div className="p-10 bg-white text-gray-200 rounded-lg mb-8">
                     <FiUsers size={64} />
                  </div>

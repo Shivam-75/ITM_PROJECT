@@ -12,14 +12,14 @@ const Layout = () => {
   }
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-white overflow-hidden">
+    <div className="flex flex-col h-[100dvh] bg-pink-50 overflow-hidden">
       {/* Top Navbar */}
       <div className="sticky top-0 z-50">
         <TopNavbar />
       </div>
       
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 lg:p-10 bg-white">
+      <main className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 lg:p-10 bg-pink-50">
         <div className="w-full">
            <Outlet />
         </div>

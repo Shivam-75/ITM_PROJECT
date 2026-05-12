@@ -14,7 +14,7 @@ function AttendanceTable({
   };
 
   return (
-    <table className="min-w-full bg-white border rounded-lg">
+    <table className="min-w-full bg-white border rounded-[10px]">
       <thead className="bg-white">
         <tr>
            <th className="p-3 text-left">Roll Number</th>
@@ -35,7 +35,7 @@ function AttendanceTable({
               <td className="p-3 text-center">
                <button
   onClick={() => handleToggle(student.id)}
-  className={`px-4 py-1 rounded-lg text-sm font-medium
+  className={`px-4 py-1 rounded-[10px] text-sm font-medium
     ${
       isAbsent
         ? "bg-red-500 text-white"

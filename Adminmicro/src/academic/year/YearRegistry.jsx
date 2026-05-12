@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { 
   FiTrash2, 
@@ -27,7 +27,7 @@ const YearRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true });
+      const res = await AcademicAPI.get("/years");
       if (res.data.data) setYears(res.data.data);
     } catch (err) {
       console.error(err);
@@ -60,9 +60,9 @@ const YearRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/years/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/years/${editId}`);
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/years", yearForm, { withCredentials: true });
+      const res = await AcademicAPI.post("/years", yearForm);
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
@@ -89,7 +89,7 @@ const YearRegistry = () => {
     if (!window.confirm("Purge this academic year window?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/years/${id}`, { withCredentials: true });
+      await AcademicAPI.delete(`/years/${id}`);
       toast.success("Year Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -105,8 +105,8 @@ const YearRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
                 <FiAward size={20} />
              </div>
@@ -165,13 +165,13 @@ const YearRegistry = () => {
               ) : (
                 years.map((y) => (
                   <tr key={y._id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200 text-center">{y.name}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-gray-200 text-center">{y.startingYear}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-gray-200 text-center">{y.endingYear}</td>
-                    <td className="px-6 py-4 text-center border-r border-gray-200">
+                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-slate-100 text-center">{y.name}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-slate-100 text-center">{y.startingYear}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-500 italic uppercase border-r border-slate-100 text-center">{y.endingYear}</td>
+                    <td className="px-6 py-4 text-center border-r border-slate-100">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             y.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
-                            y.status === 'Upcoming' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-white text-gray-600 border border-gray-200'
+                            y.status === 'Upcoming' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-white text-gray-600 border border-slate-100'
                         }`}>
                             {y.status}
                         </span>

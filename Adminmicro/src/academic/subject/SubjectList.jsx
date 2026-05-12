@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { FiBookOpen } from "react-icons/fi";
 import useAuth from "../../store/AdminStore";
@@ -27,9 +27,9 @@ const SubjectList = () => {
     try {
       setLoading(true);
       const [subRes, courseRes, semRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+        AcademicAPI.get("/subjects"),
+        AcademicAPI.get("/courses"),
+        AcademicAPI.get("/semesters")
       ]);
       if (subRes.data.subjects) setSubjects(subRes.data.subjects);
       if (courseRes.data.data) setCourses(courseRes.data.data);
@@ -58,10 +58,10 @@ const SubjectList = () => {
     try {
       setLoading(true);
       if (editId !== null) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/subjects/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/subjects/${editId}`);
       }
       
-      await axios.post("http://localhost:5002/api/v3/Admin/Academic/subjects", form, { withCredentials: true });
+      await AcademicAPI.post("/subjects", form);
       toast.success(editId ? "Subject Updated" : "Subject Added", toststyle);
       
       fetchData();
@@ -89,7 +89,7 @@ const SubjectList = () => {
     if (window.confirm("Delete this subject from the registry?")) {
       try {
         setLoading(true);
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/subjects/${id}`, { withCredentials: true });
+        await AcademicAPI.delete(`/subjects/${id}`);
         toast.success("Subject Deleted", toststyle);
         fetchData();
       } catch (err) {
@@ -105,8 +105,8 @@ const SubjectList = () => {
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
         {/* ADD / EDIT FORM */}
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm w-full overflow-hidden">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm w-full overflow-hidden">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
                 <FiBookOpen size={20} />
              </div>
@@ -177,11 +177,11 @@ const SubjectList = () => {
               ) : (
                  subjects.map((sub) => (
                   <tr key={sub.id || sub._id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-gray-200">{sub.name}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-indigo-600 text-center italic border-r border-gray-200 uppercase">{sub.code}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{sub.department}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{sub.semester}</td>
-                    <td className="px-4 py-4 text-center border-r border-gray-200">
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-slate-100">{sub.name}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-indigo-600 text-center italic border-r border-slate-100 uppercase">{sub.code}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{sub.department}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{sub.semester}</td>
+                    <td className="px-4 py-4 text-center border-r border-slate-100">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             sub.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
                             'bg-red-100 text-red-600 border border-red-200'

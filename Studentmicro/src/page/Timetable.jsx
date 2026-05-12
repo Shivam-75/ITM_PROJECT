@@ -100,9 +100,9 @@ const Timetable = () => {
                                     {days.map((day) => {
                                         const entry = grid[slot.id]?.[day];
                                         return (
-                                            <td key={day} className="p-3 border-l border-gray-100 align-top h-28">
+                                            <td key={day} className="p-3 border-l border-slate-100 align-top h-28">
                                                 {entry ? (
-                                                    <div className="h-full p-5 rounded-lg bg-white/50 border border-gray-100 flex flex-col justify-center group hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all duration-300">
+                                                    <div className="h-full p-5 rounded-lg bg-white/50 border border-slate-100 flex flex-col justify-center group hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all duration-300">
                                                         <h4 className="text-[11px] font-black text-gray-900 leading-tight uppercase tracking-widest mb-2 italic group-hover:text-red-600 transition-colors">
                                                             {entry.subject}
                                                         </h4>

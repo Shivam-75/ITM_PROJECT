@@ -54,6 +54,25 @@ class adminSesonalMarkController {
         }
     }
 
+    static async bulkMarksView(req, res) {
+        try {
+            const { course, semester, section, year } = req.query;
+            const filter = {};
+            if (course) filter.course = course;
+            if (semester) filter.semester = semester;
+            if (section) filter.section = section;
+            if (year) filter.year = year;
 
+            const marksData = await Marks.find(filter).sort({ createdAt: -1 });
+
+            if (!marksData || marksData.length === 0) {
+                return res.status(404).json({ message: "No Marks Found !!", status: 404 });
+            }
+
+            return res.status(200).json({ message: "Successfully Fetched Bulk Marks !!", status: 200, data: marksData });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
 }
 export default adminSesonalMarkController;

@@ -20,20 +20,43 @@ const createAxiosInstance = (baseURL) => {
         withCredentials: true,
     });
 
+    // 🛡️ Request Interceptor: Stop requests before they leave if session is dead
+    axiosInstance.interceptors.request.use(
+        (config) => {
+            if (window._isAuthRedirecting) {
+                // Return a non-resolving promise to effectively "cancel" the request
+                return new Promise(() => {});
+            }
+            return config;
+        },
+        (error) => Promise.reject(error)
+    );
+
     axiosInstance.interceptors.response.use(
         (response) => response,
         async (error) => {
             const originalRequest = error.config;
 
+            // 🛑 CRITICAL: If we are already redirecting, block everything
+            if (window._isAuthRedirecting) {
+                return new Promise(() => {}); 
+            }
+
             if (
                 (error.response?.status === 401 || error.response?.status === 403) &&
                 !originalRequest._retry
             ) {
+                // Prevent infinite loops if the error is from the refresh token itself
+                if (originalRequest.url?.includes("refreshToken")) {
+                    return Promise.reject(error);
+                }
+
                 if (isRefreshing) {
                     return new Promise((resolve, reject) => {
                         failedQueue.push({ resolve, reject });
                     })
                         .then(() => {
+                            originalRequest._retry = true;
                             return axiosInstance(originalRequest);
                         })
                         .catch((err) => {
@@ -49,15 +72,24 @@ const createAxiosInstance = (baseURL) => {
                     const authBase = import.meta.env.VITE_BASE_Auth;
                     await axios.post(`${authBase}/refreshToken`, {}, { withCredentials: true });
                     
-                    processQueue(null);
                     isRefreshing = false;
+                    processQueue(null);
                     return axiosInstance(originalRequest);
                 } catch (refreshError) {
-                    processQueue(refreshError, null);
+                    // FATAL SESSION FAILURE
+                    window._isAuthRedirecting = true;
                     isRefreshing = false;
-                    console.error("Refresh token expired, logging out...");
+                    processQueue(refreshError, null);
+                    
+                    console.error("Session Expired: Redirecting to login...");
+                    
+                    // Clear storage to prevent loops in components
+                    localStorage.removeItem("tecLogged");
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
                     window.location.href = "/";
-                    return Promise.reject(refreshError);
+                    return new Promise(() => {}); 
                 }
             }
 

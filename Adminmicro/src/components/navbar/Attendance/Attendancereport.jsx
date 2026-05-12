@@ -129,10 +129,10 @@ const Attendancereport = () => {
       </div>
 
       {/* Main Registry Container */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
         
         {/* Advanced Filter Toolbar */}
-        <div className="p-8 border-b border-gray-50 space-y-6 bg-white/20">
+        <div className="p-8 border-b border-slate-50 space-y-6 bg-white/20">
            <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
               {/* Search Box */}
               <div className="relative w-full xl:w-96">
@@ -145,7 +145,7 @@ const Attendancereport = () => {
                       setSearchTerm(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-slate-100 rounded-lg text-xs font-bold uppercase tracking-wide italic outline-none focus:border-red-600 transition-all shadow-sm"
                   />
               </div>
 
@@ -157,7 +157,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.course}
                       onChange={(e) => setFilters(prev => ({ ...prev, course: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-slate-100 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Courses</option>
                       {courses.map(c => (
@@ -172,7 +172,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.section}
                       onChange={(e) => setFilters(prev => ({ ...prev, section: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-slate-100 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Sections</option>
                       {sections.map(s => (
@@ -187,7 +187,7 @@ const Attendancereport = () => {
                     <select 
                       value={filters.semester}
                       onChange={(e) => setFilters(prev => ({ ...prev, semester: e.target.value }))}
-                      className="bg-white border border-gray-200 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
+                      className="bg-white border border-slate-100 p-3 rounded-lg text-[10px] font-black uppercase italic outline-none focus:border-red-600 transition-all cursor-pointer shadow-sm"
                     >
                       <option value="All">All Semesters</option>
                       {semesters.map(s => (
@@ -217,11 +217,11 @@ const Attendancereport = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-white/50">
-                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Timestamp</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Academic Unit</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Subject / Topic</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 font-sans">Engagement Metrics</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-gray-100 text-right font-sans">Verification</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 font-sans">Timestamp</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 font-sans">Academic Unit</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 font-sans">Subject / Topic</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 font-sans">Engagement Metrics</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 italic border-b border-slate-100 text-right font-sans">Verification</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -245,7 +245,7 @@ const Attendancereport = () => {
                         </td>
                         <td className="px-8 py-6">
                            <div className="flex flex-wrap gap-2">
-                              <span className="px-2.5 py-1.5 rounded-lg bg-white text-[#111111] text-[9px] font-black uppercase italic border border-gray-200">
+                              <span className="px-2.5 py-1.5 rounded-lg bg-white text-[#111111] text-[9px] font-black uppercase italic border border-slate-100">
                                 DEPT: {item.course}
                               </span>
                               <span className="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 text-[9px] font-black uppercase italic border border-red-100">
@@ -296,16 +296,16 @@ const Attendancereport = () => {
         </div>
 
         {/* Footer Pagination */}
-        <div className="p-8 border-t border-gray-50 bg-white/30 flex items-center justify-between">
+        <div className="p-8 border-t border-slate-50 bg-white/30 flex items-center justify-between">
            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 italic">
               Registry Page {currentPage} of {Math.max(1, totalPages)}
            </p>
            <div className="flex items-center gap-2">
-              <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronLeft size={16} /></button>
+              <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-3 bg-white border border-slate-100 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronLeft size={16} /></button>
               {[...Array(totalPages)].map((_, i) => (
-                <button key={i} onClick={() => paginate(i+1)} className={`w-10 h-10 rounded-lg text-[10px] font-black italic shadow-md transition-all ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-gray-200 text-gray-400 hover:bg-white'}`}>{i+1}</button>
+                <button key={i} onClick={() => paginate(i+1)} className={`w-10 h-10 rounded-lg text-[10px] font-black italic shadow-md transition-all ${currentPage === i+1 ? 'bg-red-600 text-white' : 'bg-white border border-slate-100 text-gray-400 hover:bg-white'}`}>{i+1}</button>
               ))}
-              <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0} className="p-3 bg-white border border-gray-200 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronRight size={16} /></button>
+              <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0} className="p-3 bg-white border border-slate-100 text-gray-400 rounded-lg shadow-sm disabled:opacity-30 hover:text-red-600 transition-all"><FiChevronRight size={16} /></button>
            </div>
         </div>
       </div>

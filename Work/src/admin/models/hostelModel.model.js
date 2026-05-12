@@ -39,15 +39,6 @@ const hostelBlockSchema = new mongoose.Schema({
     status: { type: String, enum: ["Active", "Full", "Maintenance"], default: "Active" }
 }, { timestamps: true });
 
-const hostelFeeSchema = new mongoose.Schema({
-    roomType: { type: String, required: true },
-    hostelType: { type: String, enum: ["Boys", "Girls"], required: true },
-    amount: { type: Number, required: true },
-    academicYear: { type: String, required: true },
-    description: { type: String, default: "" }
-}, { timestamps: true });
-
-export const HostelFee = mongoose.models.HostelFee || mongoose.model("HostelFee", hostelFeeSchema, "hostelfees");
 export const HostelBlock = mongoose.models.HostelBlock || mongoose.model("HostelBlock", hostelBlockSchema, "hostelblocks");
 export const HostelRoom = mongoose.models.HostelRoom || mongoose.model("HostelRoom", hostelRoomSchema, "hostelrooms");
 export const HostelAllocation = mongoose.models.HostelAllocation || mongoose.model("HostelAllocation", hostelAllocationSchema, "hostelallotments");

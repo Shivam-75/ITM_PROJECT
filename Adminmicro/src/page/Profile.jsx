@@ -30,11 +30,11 @@ const Profile = () => {
   return (
     <div className="w-full space-y-6">
       {/* Header Profile Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden w-[98%] mx-auto md:w-full">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden w-[98%] mx-auto md:w-full">
         <div className="h-32 bg-gradient-to-r from-[#111111] to-red-900 relative">
           <div className="absolute -bottom-12 left-10">
             <div className="w-24 h-24 bg-white rounded-lg p-1.5 shadow-xl">
-               <div className="w-full h-full bg-[#111111] rounded-lg flex items-center justify-center text-white text-3xl font-black italic border-4 border-gray-50">
+               <div className="w-full h-full bg-[#111111] rounded-lg flex items-center justify-center text-white text-3xl font-black italic border-4 border-slate-50">
                   {profile?.name?.[0] || "A"}
                </div>
             </div>
@@ -61,7 +61,7 @@ const Profile = () => {
       {/* Profile Details Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Contact Info */}
-        <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100 space-y-6 md:col-span-2 w-[98%] mx-auto md:w-full">
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-slate-100 space-y-6 md:col-span-2 w-[98%] mx-auto md:w-full">
           <h2 className="text-sm font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
             <div className="w-8 h-8 bg-red-50 text-red-600 rounded-lg flex items-center justify-center italic font-black text-sm">C</div>
             Account Information
