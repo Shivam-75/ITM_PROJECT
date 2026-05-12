@@ -6,6 +6,8 @@ import AdminVerifation from "../middleware/adminVerication.js";
 export const AdminRoutes = Router();
 
 AdminRoutes.route("/registration").post(AdminController.AdminRegistration);
+AdminRoutes.route("/registration/next-id").get(AdminController.GetNextAdminId);
+AdminRoutes.route("/verify-contact").post(AdminController.verifyContact);
 AdminRoutes.route("/login").post(AdminController.adminLogin).get(AdminVerifation.TokenVerification, AdminVerifation.RoleVerifation, AdminController.adminProfile);
 AdminRoutes.route("/logout").patch(AdminVerifation.TokenVerification, AdminVerifation.RoleVerifation, AdminController.adminLogout);
 AdminRoutes.route("/refreshToken").post(AdminVerifation.TokenVerification, AdminController.adminRefreshToken);

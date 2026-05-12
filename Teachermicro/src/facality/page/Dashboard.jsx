@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
 import { authAPI, ReportAPI, WorkAPI } from "../api/apis";
 import { 
   FiUsers, FiBookOpen, FiClock, FiCheckSquare, 
-  FiCalendar, FiMessageCircle, FiTrendingUp, FiArrowRight, FiShield, FiZap 
+  FiCalendar, FiMessageCircle, FiTrendingUp, FiArrowRight, FiShield, FiZap, FiActivity
 } from "react-icons/fi";
 import Loader from "../common/Loader";
 import { NavLink } from "react-router-dom";
@@ -75,6 +75,7 @@ const Dashboard = () => {
     students: 0,
     homework: 0,
     assignments: 0,
+    onlineClasses: 0,
     timeTable: []
   });
   const [loading, setLoading] = useState(false);
@@ -85,17 +86,19 @@ const Dashboard = () => {
       const profileRes = await authAPI.get("/userProfile");
       setProfile(profileRes.data?.userData);
 
-      const [studentsRes, hwRes, assRes, ttRes] = await Promise.all([
+      const [studentsRes, hwRes, assRes, ttRes, linkRes] = await Promise.all([
         authAPI.get("/StudentList"),
         WorkAPI.get("/Homework/uploader"),
         WorkAPI.get("/Assignment/uploader"),
-        ReportAPI.get("/TimeTable/uploader")
+        ReportAPI.get("/TimeTable/uploader"),
+        WorkAPI.get("/Link/Uploader")
       ]);
 
       setStats({
         students: studentsRes.data?.studentList?.length || 0,
-        homework: hwRes.data?.data?.length || 0,
-        assignments: assRes.data?.data?.length || 0,
+        homework: hwRes.data?.HomeworkData?.length || 0,
+        assignments: assRes.data?.AssignmnetData?.length || 0,
+        onlineClasses: linkRes.data?.findUserLinks?.length || 0,
         timeTable: ttRes.data?.data || []
       });
     } catch (err) {
@@ -150,7 +153,7 @@ const Dashboard = () => {
             Welcome, {profile?.name?.split(' ')[0] || "Professor"}
           </h1>
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] leading-relaxed max-w-xl">
-            You are currently managing the <span className="text-black font-black">{profile?.course || "Academic"}</span> tools below.
+            You are currently managing the <span className="text-black font-black">{profile?.department?.join(", ") || "Academic"}</span> tools below.
           </p>
         </div>
 
@@ -164,8 +167,8 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <StatCard title="Total Students" value={stats.students} icon={FiUsers} colorClass="bg-indigo-600" trend="+4%" />
         <StatCard title="Assignments" value={stats.assignments} icon={FiCheckSquare} colorClass="bg-rose-600" trend="+2%" />
-        <StatCard title="Classes Today" value={todayClasses.length} icon={FiClock} colorClass="bg-emerald-600" />
         <StatCard title="Homework Sets" value={stats.homework} icon={FiBookOpen} colorClass="bg-slate-900" />
+        <StatCard title="Virtual Hub" value={stats.onlineClasses} icon={FiActivity} colorClass="bg-blue-600" />
       </div>
 
       {/* Analysis Grid */}

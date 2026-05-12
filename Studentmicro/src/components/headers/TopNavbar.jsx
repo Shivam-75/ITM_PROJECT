@@ -8,7 +8,7 @@ import {
 import { useAuth } from "../../store/AuthStore";
 
 const TopNavbar = () => {
-    const { student, setuserLogin } = useAuth();
+    const { student, userLogoutData } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [activeMenu, setActiveMenu] = useState(null);
@@ -76,8 +76,7 @@ const TopNavbar = () => {
     ];
 
     const handleLogout = () => {
-        localStorage.removeItem("stLogged");
-        setuserLogin(false);
+        userLogoutData();
         navigate("/");
     };
 
