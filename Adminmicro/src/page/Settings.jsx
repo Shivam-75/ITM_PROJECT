@@ -111,8 +111,8 @@ const Settings = () => {
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
         {/* 📋 Form Section */}
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
                 <FiBookOpen size={20} />
              </div>
@@ -187,15 +187,15 @@ const Settings = () => {
               ) : (
                 fileCourses.map((c) => (
                   <tr key={c._id || c.id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{c.name}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{c.department}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-gray-200 uppercase">{c.deptCode || "-"}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-700 text-center italic border-r border-gray-200">{c.hod || "-"}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{c.duration}</td>
-                    <td className="px-6 py-4 text-center border-r border-gray-200">
+                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-slate-100">{c.name}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{c.department}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-blue-600 text-center border-r border-slate-100 uppercase">{c.deptCode || "-"}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-700 text-center italic border-r border-slate-100">{c.hod || "-"}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-slate-100">{c.duration}</td>
+                    <td className="px-6 py-4 text-center border-r border-slate-100">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             c.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
-                            c.status === 'Inactive' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-white text-gray-600 border border-gray-200'
+                            c.status === 'Inactive' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-white text-gray-600 border border-slate-100'
                         }`}>
                             {c.status || "Active"}
                         </span>

@@ -5,10 +5,10 @@ const NoticeItem = React.memo(({ notice, onDelete }) => {
   const formattedDate = changeDate(notice);
 
   return (
-    <div className="bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300 animate-in fade-in zoom-in-95">
+    <div className="bg-white rounded-[10px] border border-slate-100 shadow-xl shadow-slate-100/40 p-6 md:p-8 flex flex-col group transition-all duration-300 animate-in fade-in zoom-in-95">
         <div className="flex justify-between items-start mb-2">
             <div className="space-y-1">
-                <span className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-widest italic flex items-center gap-2 w-fit">
+                <span className="text-[9px] font-black text-indigo-600 bg-white border border-slate-100 px-3 py-1 rounded-full uppercase tracking-widest italic flex items-center gap-2 w-fit">
                     <FiLayers size={10} /> {notice.department || "GENERAL ARCHIVE"}
                 </span>
                 <h2 className="text-xl font-[900] text-[#1e293b] uppercase tracking-tight leading-tight mt-2 min-h-[1.2em]">
@@ -18,7 +18,7 @@ const NoticeItem = React.memo(({ notice, onDelete }) => {
             
             <button 
                 onClick={() => onDelete(notice?._id || notice.id)} 
-                className="p-2.5 bg-rose-50 text-rose-500 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
+                className="p-2.5 bg-rose-50 text-rose-500 rounded-[10px] opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-500 hover:text-white"
             >
                 <FiTrash2 size={14} />
             </button>

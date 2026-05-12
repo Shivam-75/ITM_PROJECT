@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { 
   FiTrash2, 
@@ -27,7 +27,7 @@ const SemesterRegistry = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true });
+      const res = await AcademicAPI.get("/semesters");
       if (res.data.data) setSemesters(res.data.data);
     } catch (err) {
       console.error(err);
@@ -47,9 +47,9 @@ const SemesterRegistry = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/semesters/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/semesters/${editId}`);
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/semesters", semForm, { withCredentials: true });
+      const res = await AcademicAPI.post("/semesters", semForm);
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
@@ -76,7 +76,7 @@ const SemesterRegistry = () => {
     if (!window.confirm("Purge this semester from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/semesters/${id}`, { withCredentials: true });
+      await AcademicAPI.delete(`/semesters/${id}`);
       toast.success("Semester Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -92,8 +92,8 @@ const SemesterRegistry = () => {
 
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
                 <FiCalendar size={20} />
              </div>
@@ -152,10 +152,10 @@ const SemesterRegistry = () => {
               ) : (
                 semesters.map((s) => (
                   <tr key={s.id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-gray-200">{s.name}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{s.startDate || "-"}</td>
-                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-gray-200">{s.endDate || "-"}</td>
-                    <td className="px-6 py-4 text-center border-r border-gray-200">
+                    <td className="px-6 py-4 text-xs font-bold text-gray-800 italic uppercase border-r border-slate-100">{s.name}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-slate-100">{s.startDate || "-"}</td>
+                    <td className="px-6 py-4 text-xs font-bold text-gray-600 text-center italic border-r border-slate-100">{s.endDate || "-"}</td>
+                    <td className="px-6 py-4 text-center border-r border-slate-100">
                         <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             s.status === 'Active' ? 'bg-green-100 text-green-600' : 
                             s.status === 'Upcoming' ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-600'

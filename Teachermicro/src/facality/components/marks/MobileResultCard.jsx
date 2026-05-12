@@ -2,7 +2,7 @@ import { memo } from "react";
 import GradeBadge from "./GradeBadge";
 
 const MobileResultCard = memo(({ result, index }) => (
-  <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-4">
+  <div className="bg-white p-4 rounded-[10px] shadow-md border border-slate-100 mb-4">
     <div className="flex justify-between items-start mb-3">
       <div>
         <p className="text-lg font-bold text-gray-800">{result.studentName}</p>

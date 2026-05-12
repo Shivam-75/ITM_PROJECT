@@ -80,7 +80,7 @@ function ExportAttendance({ attendance, students }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg border space-y-3">
+    <div className="bg-white p-4 rounded-[10px] border space-y-3">
       <h3 className="font-semibold text-gray-700">
         Export Summary
       </h3>
@@ -88,14 +88,14 @@ function ExportAttendance({ attendance, students }) {
       <div className="flex gap-3">
         <button
           onClick={exportCSV}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm"
+          className="px-4 py-2 bg-blue-600 text-white rounded-[10px] text-sm"
         >
           Export CSV
         </button>
 
         <button
           onClick={exportPDF}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm"
+          className="px-4 py-2 bg-red-600 text-white rounded-[10px] text-sm"
         >
           Export PDF
         </button>

@@ -13,3 +13,4 @@ teacherRoutes.route("/userProfile").get(authorizeAccessChecker.userVerification,
 teacherRoutes.route("/Logout").patch(authorizeAccessChecker.userVerification, TeacherController.Logout);
 teacherRoutes.route("/refreshToken").post(TeacherController.RefreshTokenApie);
 teacherRoutes.route("/StudentList").get(authorizeAccessChecker.userVerification, TeacherController.StudentList);
+teacherRoutes.route("/student-list").get(authorizeAccessChecker.userVerification, TeacherController.StudentList);

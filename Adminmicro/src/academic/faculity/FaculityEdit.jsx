@@ -120,7 +120,7 @@ const FaculityEdit = () => {
       </label>
       <input
         {...props}
-        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all placeholder:text-gray-300"
+        className="w-full bg-white border border-slate-100 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all placeholder:text-gray-300"
       />
     </div>
   );
@@ -133,7 +133,7 @@ const FaculityEdit = () => {
       </label>
       <select
         {...props}
-        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+        className="w-full bg-white border border-slate-100 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
       >
         <option value="">Select {label}</option>
         {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -145,7 +145,7 @@ const FaculityEdit = () => {
     <div className="w-full space-y-6 pb-12 relative">
       {loading && <Loader />}
       {/* Header */}
-      <div className="flex items-center justify-between bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between bg-white p-6 rounded-lg shadow-sm border border-slate-100">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate("/faculty")}
@@ -162,12 +162,12 @@ const FaculityEdit = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Main Info Card */}
-        <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile Upload */}
-          <div className="md:col-span-1 border-r border-gray-50 pr-8">
+          <div className="md:col-span-1 border-r border-slate-50 pr-8">
             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-4 block">Profile Photo</label>
             <div className="relative group">
-              <div className="aspect-square rounded-lg bg-white border-2 border-dashed border-gray-200 flex flex-col items-center justify-center overflow-hidden transition-all group-hover:border-red-500/30">
+              <div className="aspect-square rounded-lg bg-white border-2 border-dashed border-slate-100 flex flex-col items-center justify-center overflow-hidden transition-all group-hover:border-red-500/30">
                 {preview ? (
                   <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
@@ -209,7 +209,7 @@ const FaculityEdit = () => {
         </div>
 
         {/* Additional Info Card */}
-        <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6">
           <SelectField label="Gender" options={["Male", "Female", "Other"]} name="gender" value={teacher.gender} onChange={handleChange} />
           <SelectField label="Marital Status" options={["Married", "Unmarried", "Divorced"]} name="maritalStatus" value={teacher.maritalStatus} onChange={handleChange} />
           <InputField label="Age" type="number" name="age" value={teacher.age} onChange={handleChange} />
@@ -227,7 +227,7 @@ const FaculityEdit = () => {
               name="address"
               value={teacher.address}
               rows="3"
-              className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+              className="w-full bg-white border border-slate-100 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
               onChange={handleChange}
             />
           </div>
@@ -237,7 +237,7 @@ const FaculityEdit = () => {
           <button
             type="button"
             onClick={() => navigate("/faculty")}
-            className="flex-1 bg-white border border-gray-200 text-gray-600 font-bold uppercase tracking-widest text-[11px] py-4 rounded-lg hover:bg-white transition-all"
+            className="flex-1 bg-white border border-slate-100 text-gray-600 font-bold uppercase tracking-widest text-[11px] py-4 rounded-lg hover:bg-white transition-all"
           >
             Discard Changes
           </button>

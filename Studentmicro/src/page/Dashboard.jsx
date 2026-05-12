@@ -13,7 +13,7 @@ const StatTile = ({ title, value, icon: Icon, colorClass, path }) => {
   return (
     <div 
       onClick={() => path && navigate(path)}
-      className="bg-white rounded-lg p-8 shadow-sm border border-gray-100 hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group cursor-pointer relative overflow-hidden active:scale-95"
+      className="bg-white rounded-lg p-8 shadow-sm border border-slate-100 hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group cursor-pointer relative overflow-hidden active:scale-95"
     >
       <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] transition-transform duration-700 group-hover:scale-150 ${colorClass}`}></div>
       <div className="flex justify-between items-start relative z-10">
@@ -41,7 +41,7 @@ const Dashboard = () => {
     <div className="space-y-10 animate-in fade-in duration-1000">
       
       {/* 🔹 Premium Hero Welcome */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white p-10 rounded-lg text-gray-900 border border-gray-200 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white p-10 rounded-lg text-gray-900 border border-slate-100 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-600 rounded-full -mr-20 -mt-20 blur-[100px] opacity-20"></div>
         <div className="space-y-4 relative z-10">
           <div className="flex items-center gap-3">
@@ -76,7 +76,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-2">
         
         {/* Recent Updates */}
-        <div className="lg:col-span-2 bg-white rounded-lg border border-gray-100 shadow-sm p-10 space-y-8 relative overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-lg border border-slate-100 shadow-sm p-10 space-y-8 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
           <div className="flex justify-between items-center">
              <h2 className="text-lg font-black text-gray-900 uppercase italic tracking-widest flex items-center gap-3">
@@ -87,8 +87,8 @@ const Dashboard = () => {
           </div>
           <div className="space-y-6">
              {[1, 2].map((i) => (
-                <div key={i} className="flex gap-6 p-6 rounded-lg border border-gray-50 bg-white/30 hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all group">
-                   <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center border border-gray-100 shadow-sm shrink-0 group-hover:scale-110 transition-transform">
+                <div key={i} className="flex gap-6 p-6 rounded-lg border border-slate-50 bg-white/30 hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all group">
+                   <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center border border-slate-100 shadow-sm shrink-0 group-hover:scale-110 transition-transform">
                       <FiBell className="text-red-600" />
                    </div>
                    <div>

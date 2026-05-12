@@ -173,13 +173,21 @@ class TeacherController {
 
     static async StudentList(req, res) {
         try {
-            const studentList = await Student.find().select("-password -refreshtkn ").sort({ createdAt: -1 });
+            const { course, semester, section, year } = req.query;
+            const filter = {};
+            
+            // Broad search for debugging
+            if (course) filter.course = { $regex: course.trim().split(" ")[0], $options: "i" };
+            // Temporarily ignore semester, section, year for debugging
+            
+            const studentList = await Student.find(filter).select("-password -refreshtkn ").sort({ createdAt: -1 });
 
-            if (!studentList) {
-                return res.status(400).json({ message: "Student Not Found !!", status: 400 });
-            }
-
-            return res.status(200).json({ message: "Successfully Student Fetched !!", status: 200, studentList });
+            return res.status(200).json({ 
+                message: "Successfully Student Fetched !!", 
+                status: 200, 
+                studentList,
+                debugFilter: filter 
+            });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }

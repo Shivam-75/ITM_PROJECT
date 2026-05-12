@@ -26,7 +26,12 @@ class AcademicController {
 
     static async getSubjects(req, res) {
         try {
-            const subjects = await Subject.find().sort({ createdAt: -1 });
+            const { department, semester } = req.query;
+            const filter = {};
+            if (department) filter.department = department;
+            if (semester) filter.semester = semester;
+
+            const subjects = await Subject.find(filter).sort({ createdAt: -1 });
             return res.status(200).json({ subjects, status: 200 });
         } catch (err) {
             return res.status(500).json({ message: err.message, status: 500 });

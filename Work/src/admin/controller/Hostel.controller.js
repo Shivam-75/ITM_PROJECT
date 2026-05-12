@@ -1,35 +1,6 @@
-import { HostelRoom, HostelAllocation, HostelBlock, HostelFee } from "../models/hostelModel.model.js";
+import { HostelRoom, HostelBlock, HostelAllocation, HostelComplaint } from "../models/hostelModel.model.js";
 
 class HostelController {
-    // Fees
-    static async addFeeStructure(req, res) {
-        try {
-            const fee = await HostelFee.create(req.body);
-            return res.status(201).json({ message: "Hostel fee structure added successfully", data: fee, status: 201 });
-        } catch (err) {
-            return res.status(500).json({ message: err.message, status: 500 });
-        }
-    }
-
-    static async getFeeStructures(req, res) {
-        try {
-            const fees = await HostelFee.find().sort({ createdAt: -1 });
-            return res.status(200).json({ fees, status: 200 });
-        } catch (err) {
-            return res.status(500).json({ message: err.message, status: 500 });
-        }
-    }
-
-    static async deleteFeeStructure(req, res) {
-        try {
-            const { id } = req.params;
-            await HostelFee.findByIdAndDelete(id);
-            return res.status(200).json({ message: "Hostel fee structure removed", status: 200 });
-        } catch (err) {
-            return res.status(500).json({ message: err.message, status: 500 });
-        }
-    }
-
     // Blocks
     static async addBlock(req, res) {
         try {

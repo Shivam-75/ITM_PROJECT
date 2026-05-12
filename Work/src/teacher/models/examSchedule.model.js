@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 const examSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: false
     },
     ct: {
-        type: Number,
+        type: String,
         required: true
     },
     Subject: {

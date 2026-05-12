@@ -14,15 +14,15 @@ export default function AddLecture() {
                 </h1>
             </div>
 
-            <div className="flex bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm">
+            <div className="flex bg-white p-1.5 rounded-[10px] border border-slate-100 shadow-sm">
                   <button 
-                    className="px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic bg-slate-900 text-white shadow-lg"
+                    className="px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic bg-slate-900 text-white shadow-lg"
                   >
                     Creation
                   </button>
                   <button 
                     onClick={() => navigate("/online")}
-                    className="px-8 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic text-slate-400 hover:text-slate-900 transition-all hover:bg-white"
+                    className="px-8 py-2.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic text-slate-400 hover:text-slate-900 transition-all hover:bg-white"
                   >
                     Go Back
                   </button>

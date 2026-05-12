@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { ReportAPI } from "../../api/apis";
+import { ReportAPI, AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../common/Loader";
 
@@ -29,8 +28,8 @@ const Exams = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, sRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+        AcademicAPI.get("/courses"),
+        AcademicAPI.get("/semesters")
       ]);
       if (cRes.data.courses) setCourses(cRes.data.courses);
       if (sRes.data.semesters) setSemestersList(sRes.data.semesters);
@@ -138,7 +137,7 @@ const Exams = () => {
         </div>
       )}
 
-      <div className="w-full bg-white rounded-lg border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden">
+      <div className="w-full bg-white rounded-[10px] border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden">
 
         {/* HEADER */}
         <div className="border-b border-slate-50 px-8 py-8 flex justify-between items-center bg-white">
@@ -149,7 +148,7 @@ const Exams = () => {
 
           <button
             onClick={() => setShowForm(!showForm)}
-            className={`px-8 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest italic transition-all shadow-lg active:scale-95 ${showForm ? 'bg-rose-500 text-white shadow-rose-100' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-indigo-600'}`}
+            className={`px-8 py-3 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic transition-all shadow-lg active:scale-95 ${showForm ? 'bg-rose-500 text-white shadow-rose-100' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-indigo-600'}`}
           >
             {showForm ? "DISCARD" : "REGISTER EXAM"}
           </button>
@@ -158,13 +157,13 @@ const Exams = () => {
         {/* Add Exam Form */}
         {showForm && (
           <form
-            className="px-8 py-8 border-b border-indigo-50 bg-indigo-50/20 grid grid-cols-1 sm:grid-cols-3 gap-6 animate-in slide-in-from-top duration-500"
+            className="px-8 py-8 border-b border-indigo-50 bg-white border border-slate-100/20 grid grid-cols-1 sm:grid-cols-3 gap-6 animate-in slide-in-from-top duration-500"
             onSubmit={handleAddExam}
           >
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Department</label>
                 <select
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.department}
                   onChange={(e) =>
                     setNewExam({ ...newExam, department: e.target.value })
@@ -178,7 +177,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Semester</label>
                 <select
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.semester}
                   onChange={(e) =>
                     setNewExam({ ...newExam, semester: e.target.value })
@@ -194,7 +193,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="E.G. DATA STRUCTURES"
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.subject}
                   onChange={(e) =>
                     setNewExam({ ...newExam, subject: e.target.value })
@@ -205,7 +204,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Exam Format</label>
                 <select
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.examType}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examType: e.target.value })
@@ -221,7 +220,7 @@ const Exams = () => {
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Target Date</label>
                 <input
                   type="date"
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.examDate}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examDate: e.target.value })
@@ -234,7 +233,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="10:00 AM - 01:00 PM"
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.examTime}
                   onChange={(e) =>
                     setNewExam({ ...newExam, examTime: e.target.value })
@@ -247,7 +246,7 @@ const Exams = () => {
                 <input
                   type="text"
                   placeholder="E.G. ROOM 204"
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
                   value={newExam.room}
                   onChange={(e) =>
                     setNewExam({ ...newExam, room: e.target.value })
@@ -258,7 +257,7 @@ const Exams = () => {
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Evaluation Cycle (CT)</label>
                 <select
-                  className="w-full bg-white border-none rounded-lg px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.ct}
                   onChange={(e) =>
                     setNewExam({ ...newExam, ct: e.target.value })
@@ -274,7 +273,7 @@ const Exams = () => {
             <div className="sm:col-span-1 flex items-end">
               <button
                 type="submit"
-                className="w-full bg-slate-900 border border-slate-800 text-white px-8 py-3.5 rounded-lg text-[10px] font-black uppercase tracking-widest italic shadow-xl shadow-slate-200 hover:bg-emerald-600 hover:border-emerald-700 transition-all active:scale-95"
+                className="w-full bg-slate-900 border border-slate-800 text-white px-8 py-3.5 rounded-[10px] text-[10px] font-black uppercase tracking-widest italic shadow-xl shadow-slate-200 hover:bg-emerald-600 hover:border-emerald-700 transition-all active:scale-95"
               >
                 COMMIT TO SCHEDULE
               </button>
@@ -286,7 +285,7 @@ const Exams = () => {
         <div className="px-8 py-6 border-b border-slate-50 bg-white/10">
           <div className="flex flex-col sm:flex-row gap-4">
             <select
-              className="bg-white border border-slate-200 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 cursor-pointer shadow-sm"
+              className="bg-white border border-slate-200 rounded-[10px] px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 cursor-pointer shadow-sm"
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
@@ -298,7 +297,7 @@ const Exams = () => {
             </select>
 
             <select
-              className="bg-white border border-slate-200 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
+              className="bg-white border border-slate-200 rounded-[10px] px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 outline-none focus:ring-4 focus:ring-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
               value={semester}
               disabled={!department}
               onChange={(e) => setSemester(e.target.value)}
@@ -333,7 +332,7 @@ const Exams = () => {
                         <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">{exam.Department} • {exam.Semester}</p>
                     </td>
                     <td className="px-6 py-6 text-center">
-                        <span className="px-3 py-1 bg-white text-slate-600 rounded-lg text-[9px] font-black uppercase tracking-widest">
+                        <span className="px-3 py-1 bg-white text-slate-600 rounded-[10px] text-[9px] font-black uppercase tracking-widest">
                             {exam.ExamType}
                         </span>
                     </td>
@@ -344,7 +343,7 @@ const Exams = () => {
                         {exam.time}
                     </td>
                     <td className="px-6 py-6 text-center">
-                         <p className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-[9px] font-black uppercase tracking-tighter inline-block italic border border-indigo-100">
+                         <p className="px-3 py-1 bg-white border border-slate-100 text-indigo-700 rounded-[10px] text-[9px] font-black uppercase tracking-tighter inline-block italic border border-slate-100">
                             {exam.RoomNo || exam.room}
                         </p>
                     </td>
@@ -356,7 +355,7 @@ const Exams = () => {
                     <td className="px-8 py-6 text-right">
                       <button
                         onClick={() => handleDelete(exam._id || exam.id)}
-                        className="bg-slate-900 text-white px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-600 shadow-xl shadow-slate-200"
+                        className="bg-slate-900 text-white px-5 py-2 rounded-[10px] text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-600 shadow-xl shadow-slate-200"
                       >
                         PURGE
                       </button>

@@ -77,7 +77,7 @@ const HostelStudent = () => {
       </h1>
 
       {/* 🔹 Summary Card */}
-      <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg mb-8 w-full md:w-1/3">
+      <div className="bg-blue-600 text-white p-6 rounded-[10px] shadow-lg mb-8 w-full md:w-1/3">
         <p className="text-sm uppercase opacity-80">
           Total Students in Hostel
         </p>
@@ -93,12 +93,12 @@ const HostelStudent = () => {
           placeholder="Search by name or room..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-lg px-4 py-2 w-full md:w-1/3 shadow-sm"
+          className="border rounded-[10px] px-4 py-2 w-full md:w-1/3 shadow-sm"
         />
       </div>
 
       {/* 🔹 Students Table */}
-      <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
+      <div className="bg-white rounded-[10px] shadow-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-800 text-white uppercase text-xs tracking-wider">
             <tr>

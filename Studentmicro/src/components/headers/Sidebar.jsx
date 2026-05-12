@@ -73,7 +73,7 @@ const Sidebar = () => {
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white text-black border border-gray-200 rounded-lg shadow-sm"
+          className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white text-black border border-slate-100 rounded-lg shadow-sm"
         >
           <FiMenu size={24} />
         </button>
@@ -87,11 +87,11 @@ const Sidebar = () => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-screen bg-white text-gray-900 z-40 transition-all duration-300 ease-in-out flex flex-col border-r border-gray-100
+        className={`fixed top-0 left-0 h-screen bg-white text-gray-900 z-40 transition-all duration-300 ease-in-out flex flex-col border-r border-slate-100
         ${isSidebarOpen ? "w-64 translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0 lg:w-64"}`}
       >
         {/* Branding Section */}
-        <div className="h-24 flex items-center px-8 border-b border-gray-50 bg-white/30">
+        <div className="h-24 flex items-center px-8 border-b border-slate-50 bg-white/30">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-[#111111] text-white flex items-center justify-center text-xs font-black italic tracking-tighter shadow-lg shadow-gray-200">
                 ITM
@@ -138,7 +138,7 @@ const Sidebar = () => {
           ))}
         </nav>
 
-        <div className="p-6 bg-white/50 border-t border-gray-50">
+        <div className="p-6 bg-white/50 border-t border-slate-50">
           <button
             onClick={LogoutUser}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-lg bg-[#111111] text-white hover:bg-red-600 transition-all duration-500 font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-gray-200 group italic active:scale-95"

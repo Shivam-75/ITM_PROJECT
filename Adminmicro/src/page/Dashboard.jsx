@@ -14,45 +14,43 @@ import {
   FiMoreHorizontal,
   FiRefreshCcw
 } from "react-icons/fi";
-import axios from "axios";
+import { authAPI } from "../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-
-// 🔹 Backend URLs (From Environment)
-const AUTH_BASE_URL = import.meta.env.VITE_BASE_Auth;
-const REPORT_BASE_URL = import.meta.env.VITE_BASE_REPORT.replace('/Admin', '/Profile');
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
         totalStudents: 0,
         totalTeachers: 0,
-        activeSchedules: 12,
+        hostelOccupancy: 0,
+        hostelFeesSubmitted: "₹2.8L",
+        hostelFeesPending: "₹0.9L",
         collection: "₹4.5L",
         outstanding: "₹1.2L",
-        realization: "70%",
-        attendance: "94%",
     });
     const [loading, setLoading] = useState(true);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            // 1. Fetch Student Count from Auth Service
-            const studentRes = await axios.get(`${AUTH_BASE_URL}/StudentList`, { withCredentials: true });
-            const sCount = studentRes.data.studentList?.length || 0;
+            // 1. Fetch Student Count & Hostel Occupancy from Auth Service
+            const studentRes = await authAPI.get("/StudentList");
+            const students = studentRes.data.studentList || [];
+            const sCount = students.length;
+            const hCount = students.filter(s => s.isHostel).length;
 
             // 2. Fetch Teacher Count from Auth Service
-            const teacherRes = await axios.get(`${AUTH_BASE_URL}/TeacherList`, { withCredentials: true });
+            const teacherRes = await authAPI.get("/TeacherList");
             const tCount = teacherRes.data.TeacherList?.length || 0;
 
             setStats(prev => ({
                 ...prev,
                 totalStudents: sCount,
-                totalTeachers: tCount
+                totalTeachers: tCount,
+                hostelOccupancy: hCount
             }));
         } catch (error) {
             console.error("Dashboard Fetch Error:", error);
-            // toast.error("Live metrics sync failed.");
         } finally {
             setLoading(false);
         }
@@ -72,27 +70,27 @@ const Dashboard = () => {
             up: true 
         },
         { 
-            label: "Academic Faculty", 
-            value: stats.totalTeachers, 
-            icon: FiZap, 
-            color: "red", 
-            trend: "+05%", 
+            label: "Hostel Occupancy", 
+            value: stats.hostelOccupancy, 
+            icon: FiShield, 
+            color: "emerald", 
+            trend: "Active", 
             up: true 
         },
         { 
-            label: "Term Collection", 
-            value: stats.collection, 
+            label: "Hostel Fee Paid", 
+            value: stats.hostelFeesSubmitted, 
             icon: FiDollarSign, 
             color: "amber", 
-            trend: "+8.2%", 
+            trend: "85%", 
             up: true 
         },
         { 
-            label: "Outstanding", 
-            value: stats.outstanding, 
+            label: "Hostel Pending", 
+            value: stats.hostelFeesPending, 
             icon: FiClock, 
             color: "rose", 
-            trend: "Critical", 
+            trend: "Due", 
             up: false 
         },
     ];
@@ -120,7 +118,7 @@ const Dashboard = () => {
                 <div className="flex items-center gap-2">
                     <button 
                         onClick={fetchData}
-                        className="p-3 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-red-600 hover:border-red-600 transition-all shadow-sm active:scale-95"
+                        className="p-3 bg-white border border-slate-100 rounded-lg text-gray-400 hover:text-red-600 hover:border-red-600 transition-all shadow-sm active:scale-95"
                     >
                         <FiRefreshCcw size={18} className={loading ? "animate-spin" : ""} />
                     </button>
@@ -136,7 +134,7 @@ const Dashboard = () => {
                 {kpiCards.map((card, idx) => (
                     <div 
                         key={idx} 
-                        className="group relative bg-white p-7 rounded-lg border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden w-[98%] mx-auto sm:w-full"
+                        className="group relative bg-white p-7 rounded-lg border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden w-[98%] mx-auto sm:w-full"
                     >
                         <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] transition-transform duration-700 group-hover:scale-150 bg-${card.color}-600`}></div>
                         
@@ -163,7 +161,7 @@ const Dashboard = () => {
             {/* Main Content Areas */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Academic Distribution */}
-                <div className="lg:col-span-2 bg-white rounded-lg p-8 md:p-10 border border-gray-100 shadow-sm relative overflow-hidden group w-[98%] mx-auto lg:w-full">
+                <div className="lg:col-span-2 bg-white rounded-lg p-8 md:p-10 border border-slate-100 shadow-sm relative overflow-hidden group w-[98%] mx-auto lg:w-full">
                     <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
                     <div className="flex items-center justify-between mb-8">
                         <div>
@@ -202,7 +200,7 @@ const Dashboard = () => {
                             ))}
                          </div>
 
-                         <div className="bg-white/50 rounded-lg p-8 flex flex-col justify-center border border-dashed border-gray-200">
+                         <div className="bg-white/50 rounded-lg p-8 flex flex-col justify-center border border-dashed border-slate-100">
                              <div className="flex items-center gap-4 mb-6">
                                 <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-red-600 shadow-sm">
                                     <FiBookOpen size={24} />
@@ -215,7 +213,7 @@ const Dashboard = () => {
                              <p className="text-[10px] text-gray-500 font-medium leading-relaxed uppercase italic">
                                 Enrollment has increased by <span className="text-red-600 font-black">12.4%</span> since last semester. The Computer Science department remains the most high-demand vertical.
                              </p>
-                             <button className="mt-8 py-3 bg-white border border-gray-100 rounded-lg text-[10px] font-black uppercase text-gray-900 shadow-sm hover:border-red-600 transition-all italic">
+                             <button className="mt-8 py-3 bg-white border border-slate-100 rounded-lg text-[10px] font-black uppercase text-gray-900 shadow-sm hover:border-red-600 transition-all italic">
                                 Download Annual Prospectus
                              </button>
                          </div>
@@ -252,7 +250,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Quick Launch */}
-                    <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm w-[98%] mx-auto lg:w-full">
+                    <div className="bg-white rounded-lg p-8 border border-slate-100 shadow-sm w-[98%] mx-auto lg:w-full">
                         <h2 className="text-[10px] font-black uppercase italic text-gray-400 tracking-[0.2em] mb-6">Quick Launch</h2>
                         <div className="grid grid-cols-2 gap-4">
                             {[

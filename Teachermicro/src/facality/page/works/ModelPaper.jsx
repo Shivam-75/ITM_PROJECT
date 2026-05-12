@@ -97,7 +97,7 @@ const ModelPaper = () => {
   }, [modelPapers, debouncedSearch]);
 
   return (
-    <div className="flex bg-[#f8fafc] min-h-screen">
+    <div className="flex bg-pink-50 min-h-screen">
       <main className="pt-24 h-screen overflow-y-auto px-4 sm:px-6 md:px-8 w-full mx-auto pb-20">
         {loading && (
           <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex justify-center items-center z-50">
@@ -120,14 +120,14 @@ const ModelPaper = () => {
                   placeholder="Search protocols..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="px-6 py-2.5 bg-white border border-slate-100 rounded-lg text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-sm w-64"
+                  className="px-6 py-2.5 bg-white border border-slate-100 rounded-[10px] text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-slate-900 transition-all shadow-sm w-64"
                 />
              </div>
              
              {!showForm && (
                 <button
                   onClick={() => setShowForm(true)}
-                  className="px-8 py-2.5 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-widest italic shadow-lg hover:bg-indigo-600 transition-all flex items-center gap-2"
+                  className="px-8 py-2.5 bg-slate-900 text-white rounded-[10px] text-[10px] font-black uppercase tracking-widest italic shadow-lg hover:bg-indigo-600 transition-all flex items-center gap-2"
                 >
                   <FiPlus size={14} /> Publish
                 </button>
@@ -148,7 +148,7 @@ const ModelPaper = () => {
         ) : (
           <div className="space-y-6">
             {filteredModelPapers.length === 0 ? (
-                <div className="py-32 text-center bg-white rounded-lg border-4 border-dashed border-slate-50">
+                <div className="py-32 text-center bg-white rounded-[10px] border-4 border-dashed border-slate-50">
                   <FiFileText size={48} className="mx-auto text-slate-100 mb-6" />
                   <h3 className="text-sm font-black text-slate-300 uppercase tracking-[0.3em] italic">No Model Papers Indexed.</h3>
                 </div>

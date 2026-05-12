@@ -36,7 +36,7 @@ const StudentTable = ({ students })=> {
         {students.map((s) => (
           <div
             key={s.id}
-            className="bg-white p-4 rounded-lg shadow space-y-1"
+            className="bg-white p-4 rounded-[10px] shadow space-y-1"
           >
             <p className="font-semibold">{s.name}</p>
             <p className="text-sm text-gray-500">{s.roll}</p>

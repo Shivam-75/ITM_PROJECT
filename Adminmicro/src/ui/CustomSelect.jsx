@@ -29,7 +29,7 @@ const CustomSelect = ({ label, options, value, onChange, placeholder = "Select..
           type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={`w-full flex items-center justify-between px-4 py-3 bg-white border ${
-            isOpen ? "border-red-600 ring-2 ring-red-600/10" : "border-gray-200"
+            isOpen ? "border-red-600 ring-2 ring-red-600/10" : "border-slate-100"
           } ${
             disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           } rounded-lg transition-all duration-200 shadow-sm`}
@@ -44,7 +44,7 @@ const CustomSelect = ({ label, options, value, onChange, placeholder = "Select..
         </button>
 
         {isOpen && (
-          <div className="absolute z-[100] w-full mt-2 bg-white border border-gray-100 rounded-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 max-h-60 overflow-y-auto">
+          <div className="absolute z-[100] w-full mt-2 bg-white border border-slate-100 rounded-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 max-h-60 overflow-y-auto">
             {options.length === 0 ? (
               <div className="px-4 py-3 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center italic">
                 No Options Available

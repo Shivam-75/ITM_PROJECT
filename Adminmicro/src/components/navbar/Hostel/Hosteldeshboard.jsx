@@ -42,25 +42,36 @@ const Hosteldeshboard = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [allocRes, roomsRes, compRes, feeRes] = await Promise.all([
-                axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
+            const [studentRes, payRes, roomsRes, compRes] = await Promise.all([
+                axios.get("http://localhost:5001/api/v1/Admin/StudentList", { withCredentials: true }),
+                axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true }),
                 axios.get("http://localhost:5002/api/v3/Admin/Hostel/rooms", { withCredentials: true }),
-                axios.get("http://localhost:5002/api/v3/Admin/Hostel/complaints", { withCredentials: true }),
-                axios.get("http://localhost:5002/api/v3/Admin/Hostel/fees", { withCredentials: true })
+                axios.get("http://localhost:5002/api/v3/Admin/Hostel/complaints", { withCredentials: true })
             ]);
 
-            const totalCapacity = roomsRes.data.rooms?.reduce((acc, r) => acc + r.capacity, 0) || 0;
-            const occupied = roomsRes.data.rooms?.reduce((acc, r) => acc + r.occupied, 0) || 0;
+            const allStudents = studentRes.data.studentList || studentRes.data.data || [];
+            const hostelers = allStudents.filter(s => s.isHostel === true || s.isHostel === "true");
+            const payments = payRes.data.payments || payRes.data.data || [];
+            const rooms = roomsRes.data.rooms || roomsRes.data.data || [];
+
+            // Financial Calculations
+            const expectedTotal = hostelers.reduce((sum, s) => sum + Number(s.hostelFee || 0), 0);
+            const actualCollected = payments
+                .filter(p => p.paymentType === "Hostel")
+                .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+            const totalCapacity = rooms.reduce((acc, r) => acc + (r.capacity || 0), 0);
+            const occupied = rooms.reduce((acc, r) => acc + (r.occupiedBeds || 0), 0);
             
             setStats({
-                totalResidents: occupied,
-                totalInventory: roomsRes.data.rooms?.length || 0,
-                occupiedSpace: occupied,
+                totalResidents: hostelers.length,
+                totalRevenue: expectedTotal,
+                totalCollected: actualCollected,
+                pendingDues: Math.max(0, expectedTotal - actualCollected),
+                totalInventory: rooms.length,
                 vacantUnits: totalCapacity - occupied,
                 grievances: compRes.data.complaints?.length || 0,
-                pendingAction: compRes.data.complaints?.filter(c => c.status === "Pending").length || 0,
-                financialRecords: feeRes.data.fees?.length || 0,
-                exitProtocols: 0 // Mock or from separate API
+                pendingAction: compRes.data.complaints?.filter(c => c.status === "Pending").length || 0
             });
         } catch (err) {
             console.error(err);
@@ -101,59 +112,59 @@ const Hosteldeshboard = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <StatCard
-                    title="Total Residents"
+                    title="Total Hostelers"
                     value={stats.totalResidents}
-                    subtext="Node Occupancy"
+                    subtext="Registered Students"
                     icon={<FiUsers size={20} />}
                     color="indigo"
                 />
                 <StatCard
-                    title="Total Inventory"
-                    value={stats.totalInventory}
-                    subtext="Active Rooms"
-                    icon={<FiHome size={20} />}
+                    title="Expected Fees"
+                    value={`₹${stats.totalRevenue?.toLocaleString()}`}
+                    subtext="Target Revenue"
+                    icon={<FiFileText size={20} />}
                     color="blue"
                 />
                 <StatCard
-                    title="Occupied Space"
-                    value={stats.occupiedSpace}
-                    subtext="Beds Allotted"
+                    title="Actual Collection"
+                    value={`₹${stats.totalCollected?.toLocaleString()}`}
+                    subtext="Secured Funds"
                     icon={<FiCheckSquare size={20} />}
                     color="emerald"
                 />
                 <StatCard
-                    title="Vacant Units"
-                    value={stats.vacantUnits}
-                    subtext="Ready Units"
-                    icon={<FiMapPin size={20} />}
+                    title="Outstanding Dues"
+                    value={`₹${stats.pendingDues?.toLocaleString()}`}
+                    subtext="Pending Recovery"
+                    icon={<FiAlertCircle size={20} />}
                     color="rose"
                 />
                 <StatCard
-                    title="Official Grievances"
-                    value={stats.grievances}
-                    subtext="Audit Logs"
-                    icon={<FiAlertCircle size={20} />}
+                    title="Room Inventory"
+                    value={stats.totalInventory}
+                    subtext="Allocated Blocks"
+                    icon={<FiHome size={20} />}
                     color="amber"
                 />
                 <StatCard
-                    title="Pending Action"
-                    value={stats.pendingAction}
-                    subtext="High Priority"
+                    title="Vacant Beds"
+                    value={stats.vacantUnits}
+                    subtext="Available Space"
+                    icon={<FiMapPin size={20} />}
+                    color="sky"
+                />
+                <StatCard
+                    title="Open Grievances"
+                    value={stats.grievances}
+                    subtext="Pending Resolution"
                     icon={<FiClipboard size={20} />}
                     color="orange"
                 />
                 <StatCard
-                    title="Financial Records"
-                    value={stats.financialRecords}
-                    subtext="Fee Entries"
-                    icon={<FiFileText size={20} />}
-                    color="sky"
-                />
-                <StatCard
-                    title="Exit Protocols"
-                    value={stats.exitProtocols}
-                    subtext="Release Requests"
-                    icon={<FiFileText size={20} />}
+                    title="Protocol Status"
+                    value="Active"
+                    subtext="Node Operations"
+                    icon={<FiActivity size={20} />}
                     color="slate"
                 />
             </div>

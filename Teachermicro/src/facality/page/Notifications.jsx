@@ -61,7 +61,7 @@ export default function Notifications() {
           </p>
         </div>
 
-        <button className="px-4 py-2 rounded-lg border bg-white text-sm font-medium hover:bg-white">
+        <button className="px-4 py-2 rounded-[10px] border bg-white text-sm font-medium hover:bg-white">
           Mark all as read
         </button>
       </div>
@@ -70,7 +70,7 @@ export default function Notifications() {
       <NotificationFilters filter={filter} setFilter={setFilter} />
 
       {/* Notification List */}
-      <div className="bg-white border rounded-lg overflow-hidden shadow-sm">
+      <div className="bg-white border rounded-[10px] overflow-hidden shadow-sm">
         {filteredNotifications.length === 0 ? (
           <div className="p-10 text-center text-slate-500">
             No notifications found.

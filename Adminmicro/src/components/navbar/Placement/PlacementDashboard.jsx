@@ -25,6 +25,10 @@ const PlacementDashboard = () => {
   const [view, setView] = useState("drives"); // "drives" or "applications"
   const [selectedDrive, setSelectedDrive] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  // Registry States
+  const [courses, setCourses] = useState([]);
+  const [semestersList, setSemestersList] = useState([]);
   
   const [formData, setFormData] = useState({
     companyName: "",
@@ -38,6 +42,19 @@ const PlacementDashboard = () => {
     teacherId: "ADMIN_DRIVE", // Default
     status: "Active"
   });
+
+  const fetchRegistries = useCallback(async () => {
+    try {
+      const [cRes, sRes] = await Promise.all([
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+      ]);
+      if (cRes.data.data) setCourses(cRes.data.data);
+      if (sRes.data.data) setSemestersList(sRes.data.data);
+    } catch (err) {
+      console.error("Registry Sync Failed", err);
+    }
+  }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -68,8 +85,9 @@ const PlacementDashboard = () => {
   }, []);
 
   useEffect(() => {
+    fetchRegistries();
     fetchData();
-  }, [fetchData]);
+  }, [fetchRegistries, fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -326,19 +344,27 @@ const PlacementDashboard = () => {
                     </div>
                     <div className="space-y-2">
                        <label className="text-[9px] font-black uppercase text-slate-400 tracking-widest ml-1 flex items-center gap-2"><FiFilter /> Target Course</label>
-                       <input 
-                         required type="text" placeholder="e.g. BCA" 
-                         value={formData.course} onChange={(e) => setFormData({...formData, course: e.target.value})}
-                         className="w-full px-5 py-4 bg-white border border-slate-100 rounded-lg text-xs font-black italic tracking-tight outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner" 
-                       />
+                       <select 
+                         required 
+                         value={formData.course} 
+                         onChange={(e) => setFormData({...formData, course: e.target.value})}
+                         className="w-full px-5 py-4 bg-white border border-slate-100 rounded-lg text-xs font-black italic tracking-tight outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner"
+                       >
+                         <option value="">Select Target Course</option>
+                         {courses.map(c => <option key={c._id} value={c.name}>{c.name.toUpperCase()}</option>)}
+                       </select>
                     </div>
                     <div className="space-y-2">
                        <label className="text-[9px] font-black uppercase text-slate-400 tracking-widest ml-1 flex items-center gap-2"><FiClock /> Target Semester</label>
-                       <input 
-                         required type="text" placeholder="e.g. 6" 
-                         value={formData.semester} onChange={(e) => setFormData({...formData, semester: e.target.value})}
-                         className="w-full px-5 py-4 bg-white border border-slate-100 rounded-lg text-xs font-black italic tracking-tight outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner" 
-                       />
+                       <select 
+                         required 
+                         value={formData.semester} 
+                         onChange={(e) => setFormData({...formData, semester: e.target.value})}
+                         className="w-full px-5 py-4 bg-white border border-slate-100 rounded-lg text-xs font-black italic tracking-tight outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner"
+                       >
+                         <option value="">Select Target Semester</option>
+                         {semestersList.map(s => <option key={s._id} value={s.name}>{s.name.toUpperCase()}</option>)}
+                       </select>
                     </div>
                  </div>
 

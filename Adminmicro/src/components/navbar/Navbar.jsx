@@ -44,7 +44,6 @@ const Navbar = () => {
     {
       title: "Exams",
       children: [
-        { name: "Exams", route: "/exams" },
         { name: "Exam Schedule", route: "/exam-schedule" },
         { name: "Results", route: "/results" },
       ],
@@ -53,7 +52,7 @@ const Navbar = () => {
       title: "Hostel",
       children: [
         { name: "Hostel Dashboard", route: "/hostel" },
-        { name: "Room Allocation", route: "/hostel/rooms" },
+
         { name: "Hostel Students", route: "/hostel/students" },
         { name: "Hostel Fees", route: "/hostel/fees" },
         { name: "Hostel Complaints", route: "/hostel/complaints" },

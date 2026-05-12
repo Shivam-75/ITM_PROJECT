@@ -73,6 +73,7 @@ const Faculitylist = () => {
   const confirmDelete = async () => {
     if (facultyToDelete) {
       try {
+        setLoading(true);
         const response = await authAPI.delete(`/TeacherList/Deleted/${facultyToDelete._id}`);
         if (response.status === 200) {
           toast.success(`${facultyToDelete.name} has been removed`);
@@ -81,6 +82,7 @@ const Faculitylist = () => {
       } catch (error) {
         toast.error("Deletion Failed");
       } finally {
+        setLoading(false);
         setIsDeleteModalOpen(false);
         setFacultyToDelete(null);
       }
@@ -110,7 +112,7 @@ const Faculitylist = () => {
               <div className="flex gap-4">
                 <button 
                   onClick={() => setIsDeleteModalOpen(false)}
-                  className="flex-1 px-6 py-3 bg-white text-gray-600 font-bold uppercase tracking-widest text-[11px] rounded-lg hover:bg-white transition-all border border-gray-100"
+                  className="flex-1 px-6 py-3 bg-white text-gray-600 font-bold uppercase tracking-widest text-[11px] rounded-lg hover:bg-white transition-all border border-slate-100"
                 >
                   Cancel
                 </button>
@@ -134,7 +136,7 @@ const Faculitylist = () => {
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-sm border border-gray-100 w-[98%] mx-auto md:w-full">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-sm border border-slate-100 w-[98%] mx-auto md:w-full">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Faculty Directory</h2>
           <p className="text-gray-500 text-sm mt-1">Manage {facultyData.length} academic staff members</p>
@@ -146,7 +148,7 @@ const Faculitylist = () => {
             <input 
               type="text" 
               placeholder="Search faculty..."
-              className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all w-full md:w-64"
+              className="pl-10 pr-4 py-2 bg-white border border-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all w-full md:w-64"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -166,11 +168,11 @@ const Faculitylist = () => {
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden w-[98%] mx-auto md:w-full">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden w-[98%] mx-auto md:w-full">
         <div className="overflow-x-auto min-h-[400px]">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-white/50 border-b border-gray-100">
+              <tr className="bg-white/50 border-b border-slate-100">
                 <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-gray-500">Member</th>
                 <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-gray-500">Department</th>
                 <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-gray-500">Credentials</th>
@@ -250,7 +252,7 @@ const Faculitylist = () => {
         )}
 
         {/* Improved Pagination Controls */}
-        <div className="px-6 py-4 bg-white/50 border-t border-gray-100 flex items-center justify-between">
+        <div className="px-6 py-4 bg-white/50 border-t border-slate-100 flex items-center justify-between">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] opacity-80">
             Page {currentPage} of {totalPages || 1} • {filteredFaculty.length} Results
           </span>

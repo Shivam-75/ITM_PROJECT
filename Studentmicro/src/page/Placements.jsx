@@ -73,7 +73,7 @@ const Placements = () => {
       {loading && <Loader />}
 
       {/* Hero Header */}
-      <div className="bg-white p-12 rounded-lg text-gray-900 border border-gray-200 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
+      <div className="bg-white p-12 rounded-lg text-gray-900 border border-slate-100 shadow-sm relative overflow-hidden shadow-2xl shadow-gray-200">
         <div className="absolute top-0 right-0 w-80 h-80 bg-red-600 rounded-full -mr-32 -mt-32 blur-[120px] opacity-20 animate-pulse"></div>
         <div className="relative z-10 space-y-6">
            <div className="flex items-center gap-3">
@@ -94,13 +94,13 @@ const Placements = () => {
       {/* Drives Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {drives.length === 0 ? (
-          <div className="col-span-full py-32 text-center bg-white rounded-lg border border-gray-100 shadow-sm">
+          <div className="col-span-full py-32 text-center bg-white rounded-lg border border-slate-100 shadow-sm">
              <FiBriefcase size={48} className="mx-auto text-gray-100 mb-6" />
              <p className="text-[11px] font-black text-gray-300 uppercase tracking-[0.4em] italic">No active placement windows</p>
           </div>
         ) : (
           drives.map((drive) => (
-            <div key={drive._id} className="bg-white rounded-lg p-10 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group relative overflow-hidden">
+            <div key={drive._id} className="bg-white rounded-lg p-10 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 group relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
                
                <div className="flex justify-between items-start relative z-10 mb-8">
@@ -120,11 +120,11 @@ const Placements = () => {
                </div>
 
                <div className="grid grid-cols-2 gap-6 mb-10 relative z-10">
-                  <div className="p-4 bg-white rounded-lg border border-gray-100 group-hover:bg-white transition-colors">
+                  <div className="p-4 bg-white rounded-lg border border-slate-100 group-hover:bg-white transition-colors">
                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2"><FiTarget /> Eligibility</p>
                      <p className="text-[10px] font-black text-gray-800 uppercase italic line-clamp-1">{drive.eligibility}</p>
                   </div>
-                  <div className="p-4 bg-white rounded-lg border border-gray-100 group-hover:bg-white transition-colors">
+                  <div className="p-4 bg-white rounded-lg border border-slate-100 group-hover:bg-white transition-colors">
                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2"><FiCalendar /> Deadline</p>
                      <p className="text-[10px] font-black text-red-600 uppercase italic">{new Date(drive.deadline).toLocaleDateString()}</p>
                   </div>
@@ -182,12 +182,12 @@ const Placements = () => {
                  </div>
 
                  <div className="space-y-3">
-                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-gray-100 pb-2 flex items-center gap-2"><FiInfo /> Description</h4>
+                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-slate-100 pb-2 flex items-center gap-2"><FiInfo /> Description</h4>
                     <p className="text-xs font-bold text-gray-500 uppercase leading-relaxed tracking-wide">{selectedDrive.description}</p>
                  </div>
 
                  <div className="space-y-3">
-                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-gray-100 pb-2 flex items-center gap-2"><FiTarget /> Requirements</h4>
+                    <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] italic border-b border-slate-100 pb-2 flex items-center gap-2"><FiTarget /> Requirements</h4>
                     <p className="text-xs font-bold text-gray-500 uppercase leading-relaxed tracking-wide">{selectedDrive.eligibility}</p>
                  </div>
 

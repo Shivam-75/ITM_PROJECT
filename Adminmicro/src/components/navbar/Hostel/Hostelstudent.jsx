@@ -13,9 +13,45 @@ const Hostelstudent = () => {
     const fetchStudents = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true });
-        if (response.data.allocations) setStudentsData(response.data.allocations);
-      } catch (err) { toast.error("Failed to fetch hostelers"); }
+        const [studentRes, allocRes, payRes] = await Promise.all([
+          axios.get("http://localhost:5001/api/v1/Admin/StudentList", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
+          axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true })
+        ]);
+
+        const allStudents = studentRes.data.studentList || [];
+        const hostelRegistered = allStudents.filter(s => s.isHostel === true);
+        const allocations = allocRes.data.allocations || [];
+        const payments = payRes.data.payments || [];
+
+        // Enrich student profiles with allocation and payment data
+        const enriched = hostelRegistered.map(profile => {
+          const allocation = allocations.find(a => a.studentId === profile.studentId);
+          const studentPayments = payments.filter(p => 
+            p.studentId === profile.studentId && p.paymentType === "Hostel"
+          );
+          const totalPaid = studentPayments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+          const totalFee = Number(profile.hostelFee || 0);
+
+          return {
+            _id: profile._id,
+            studentName: profile.name || profile.studentName,
+            studentId: profile.studentId,
+            course: profile.course,
+            roomNo: allocation?.roomNo || "NOT ASSIGNED",
+            joiningDate: allocation?.joiningDate,
+            totalHostelFee: totalFee,
+            paidHostelFee: totalPaid,
+            pendingFee: Math.max(0, totalFee - totalPaid),
+            status: allocation ? "Active" : "Pending Assignment"
+          };
+        });
+
+        setStudentsData(enriched);
+      } catch (err) { 
+        console.error(err);
+        toast.error("Failed to synchronize hostel student registry"); 
+      }
       finally { setLoading(false); }
     };
     fetchStudents();
@@ -71,41 +107,21 @@ const Hostelstudent = () => {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white p-5 rounded-lg shadow mb-6">
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Search by Name or ID..."
-            className="border p-3 rounded-lg focus:ring-2 focus:ring-blue-400"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <select
-            className="border p-3 rounded-lg"
-            value={courseFilter}
-            onChange={(e) => setCourseFilter(e.target.value)}
-          >
-            <option value="">Filter by Course</option>
-            {[...new Set(studentsData.map(s => s.course))].map(c => (
-                <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-      </div>
+
 
       {/* Students Table */}
       <div className="bg-white rounded-lg shadow p-6 overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-white">
-              <th className="p-3">Name</th>
-              <th className="p-3">Student ID</th>
-              <th className="p-3">Course</th>
-              <th className="p-3">Room No</th>
-              <th className="p-3">Join Date</th>
-              <th className="p-3 text-center">Status</th>
-              <th className="p-3 text-center">Action</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Name</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Student ID</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Placement</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Total Fee</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Paid Amt</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Pending</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic text-center">Status</th>
+              <th className="p-3 text-[10px] font-black uppercase tracking-widest text-slate-400 italic text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -116,13 +132,40 @@ const Hostelstudent = () => {
             ) : (
               filteredStudents.map((student, index) => (
                 <tr key={index} className="border-b hover:bg-white">
-                  <td className="p-3 font-medium">{student.studentName}</td>
-                  <td className="p-3">{student.studentId}</td>
-                  <td className="p-3 capitalize">{student.course}</td>
-                  <td className="p-3">{student.roomNo}</td>
-                  <td className="p-3">{new Date(student.joiningDate).toLocaleDateString()}</td>
+                  <td className="p-3">
+                    <p className="text-[11px] font-black text-slate-900 uppercase italic leading-none">{student.studentName}</p>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">{student.course}</p>
+                  </td>
+                  <td className="p-3">
+                    <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[9px] font-black text-slate-600 italic">{student.studentId}</span>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex flex-col">
+                      <span className={`text-[10px] font-black italic uppercase ${student.roomNo === "NOT ASSIGNED" ? "text-amber-500" : "text-blue-600"}`}>
+                        {student.roomNo === "NOT ASSIGNED" ? "No Room" : `Room ${student.roomNo}`}
+                      </span>
+                      <span className="text-[8px] font-bold text-slate-400 uppercase">
+                        {student.joiningDate ? new Date(student.joiningDate).toLocaleDateString() : "Pending Join"}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="p-3 font-black text-slate-900 text-[11px] italic">₹{student.totalHostelFee?.toLocaleString() || 0}</td>
+                  <td className="p-3">
+                    <span className={`text-[11px] font-black italic ${student.paidHostelFee >= student.totalHostelFee ? "text-emerald-500" : "text-amber-500"}`}>
+                      ₹{student.paidHostelFee?.toLocaleString() || 0}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    <span className={`text-[11px] font-black italic ${student.pendingFee > 0 ? "text-rose-500" : "text-slate-300"}`}>
+                      {student.pendingFee > 0 ? `₹${student.pendingFee.toLocaleString()}` : "Dues Clear"}
+                    </span>
+                  </td>
                   <td className="p-3 text-center">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${student.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase italic ${
+                      student.status === "Active" 
+                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100" 
+                        : "bg-amber-50 text-amber-600 border border-amber-100"
+                    }`}>
                       {student.status}
                     </span>
                   </td>

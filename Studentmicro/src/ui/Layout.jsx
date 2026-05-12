@@ -27,7 +27,7 @@ const Layout = () => {
                             </div>
                         </main>
 
-                        <footer className="py-6 text-center text-[10px] text-gray-300 uppercase tracking-[0.3em] border-t border-gray-50 bg-white">
+                        <footer className="py-6 text-center text-[10px] text-gray-300 uppercase tracking-[0.3em] border-t border-slate-50 bg-white">
                             ITM College • System v2.0
                         </footer>
                     </div>

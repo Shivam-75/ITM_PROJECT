@@ -16,6 +16,7 @@ import { hostelRoute } from "./src/admin/routes/hostel.route.js";
 import { notificationRoute } from "./src/admin/routes/notification.route.js";
 import { placementRoute } from "./src/admin/routes/placement.route.js";
 import { feeRoute } from "./src/admin/routes/fee.route.js";
+import { paymentRoute } from "./src/admin/routes/payment.route.js";
 
 config();
 
@@ -62,6 +63,8 @@ app.use("/api/v3/Admin/Hostel", hostelRoute);
 app.use("/api/v3/Admin/Notification", notificationRoute);
 app.use("/api/v3/Admin/Placement", placementRoute);
 app.use("/api/v3/Admin/Fee", feeRoute);
+app.use("/api/v3/Admin/Payment", paymentRoute);
+app.use("/api/v3/Teacher/Payment", paymentRoute);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

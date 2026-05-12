@@ -1,6 +1,6 @@
 export default function NotificationFilters({ filter, setFilter }) {
   const btnClass = (value) =>
-    `px-4 py-2 rounded-lg text-sm font-medium border transition
+    `px-4 py-2 rounded-[10px] text-sm font-medium border transition
      ${
        filter === value
          ? "bg-blue-600 text-white border-blue-600"

@@ -54,7 +54,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070a] text-slate-300 font-mono flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200 overflow-hidden relative">
+    <div className="min-h-screen bg-[#05070a] text-slate-300 font-mono flex flex-col selection:bg-white border border-slate-1000/30 selection:text-indigo-200 overflow-hidden relative">
       
       {/* BACKGROUND DECOR */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-10"
@@ -87,14 +87,14 @@ function Login() {
       </div>
 
       <main className="flex-grow flex items-center justify-center p-6 relative z-10">
-        <div className="w-full w-full grid grid-cols-1 lg:grid-cols-12 bg-black/60 border border-white/5 rounded-lg overflow-hidden shadow-[0_0_80px_-20px_rgba(79,70,229,0.15)] backdrop-blur-3xl">
+        <div className="w-full w-full grid grid-cols-1 lg:grid-cols-12 bg-black/60 border border-white/5 rounded-[10px] overflow-hidden shadow-[0_0_80px_-20px_rgba(79,70,229,0.15)] backdrop-blur-3xl">
           
           {/* LEFT: SYSTEM STATS / INFO */}
           <div className="hidden lg:flex lg:col-span-5 p-16 flex-col justify-between relative overflow-hidden group">
             <div className="absolute inset-0 bg-indigo-600/5 group-hover:bg-indigo-600/10 transition-colors duration-700"></div>
             
             <div className="relative z-10 space-y-10">
-              <div className="inline-flex p-5 rounded-lg bg-white/5 border border-white/10 shadow-inner">
+              <div className="inline-flex p-5 rounded-[10px] bg-white/5 border border-white/10 shadow-sm">
                 <FiCpu className="text-indigo-600" size={36} />
               </div>
               
@@ -109,11 +109,11 @@ function Login() {
               </div>
 
               <div className="grid grid-cols-2 gap-6 pt-6">
-                <div className="p-6 rounded-lg bg-white/5 border border-white/5 space-y-2">
+                <div className="p-6 rounded-[10px] bg-white/5 border border-white/5 space-y-2">
                    <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest italic">Sync Latency</div>
                    <div className="text-2xl font-black text-indigo-400 italic">12ms</div>
                 </div>
-                <div className="p-6 rounded-lg bg-white/5 border border-white/5 space-y-2">
+                <div className="p-6 rounded-[10px] bg-white/5 border border-white/5 space-y-2">
                    <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest italic">Node Status</div>
                    <div className="text-2xl font-black text-slate-200 italic tracking-tighter uppercase">Online</div>
                 </div>
@@ -122,7 +122,7 @@ function Login() {
 
             <div className="relative z-10 pt-10">
                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-lg border border-white/10 flex items-center justify-center bg-white/5">
+                  <div className="w-12 h-12 rounded-[10px] border border-white/10 flex items-center justify-center bg-white/5">
                      <FiShield className="text-indigo-500" size={20} />
                   </div>
                   <div className="text-[9px] font-black tracking-[0.3em] text-slate-500 leading-tight uppercase italic">
@@ -142,7 +142,7 @@ function Login() {
               )}
 
               <div className="mb-14 space-y-4">
-                <div className="inline-block px-4 py-1.5 bg-indigo-600/10 text-indigo-500 rounded-lg text-[9px] font-black tracking-[0.3em] uppercase border border-indigo-600/20 italic">
+                <div className="inline-block px-4 py-1.5 bg-indigo-600/10 text-indigo-500 rounded-[10px] text-[9px] font-black tracking-[0.3em] uppercase border border-indigo-600/20 italic">
                   Uplink Authentication
                 </div>
                 <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Execute Login</h2>
@@ -160,7 +160,7 @@ function Login() {
                       type="tel"
                       name="moNumber"
                       placeholder="0000000000"
-                      className="w-full pl-14 pr-6 py-5 bg-white/5 border border-white/10 rounded-lg focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 focus:bg-white/10 outline-none transition-all text-white font-black tracking-widest placeholder:text-slate-800 text-sm italic"
+                      className="w-full pl-14 pr-6 py-5 bg-white/5 border border-white/10 rounded-[10px] focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 focus:bg-white/10 outline-none transition-all text-white font-black tracking-widest placeholder:text-slate-800 text-sm italic"
                       value={loginData.moNumber}
                       onChange={handleChange}
                       maxLength={10}
@@ -181,7 +181,7 @@ function Login() {
                       type={showPassword ? "text" : "password"}
                       name="password"
                       placeholder="••••••••"
-                      className="w-full pl-14 pr-16 py-5 bg-white/5 border border-white/10 rounded-lg focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 focus:bg-white/10 outline-none transition-all text-white font-black tracking-widest placeholder:text-slate-800 text-sm"
+                      className="w-full pl-14 pr-16 py-5 bg-white/5 border border-white/10 rounded-[10px] focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 focus:bg-white/10 outline-none transition-all text-white font-black tracking-widest placeholder:text-slate-800 text-sm"
                       value={loginData.password}
                       onChange={handleChange}
                       required
@@ -211,7 +211,7 @@ function Login() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-6 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 rounded-lg shadow-[0_20px_50px_-15px_rgba(79,70,229,0.4)] active:scale-[0.98] disabled:opacity-50 italic flex items-center justify-center gap-4"
+                  className="w-full py-6 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 rounded-[10px] shadow-[0_20px_50px_-15px_rgba(79,70,229,0.4)] active:scale-[0.98] disabled:opacity-50 italic flex items-center justify-center gap-4"
                 >
                   {loading ? "LINKING TO HUB..." : (
                     <>

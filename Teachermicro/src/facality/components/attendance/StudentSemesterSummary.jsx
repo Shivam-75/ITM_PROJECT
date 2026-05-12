@@ -14,7 +14,7 @@ function StudentSemesterSummary({ students, attendance }) {
   }, [attendance, students]);
 
   return (
-    <div className="bg-white p-4 rounded-lg border">
+    <div className="bg-white p-4 rounded-[10px] border">
       <h3 className="font-semibold mb-4">
         Semester Attendance (Per Student)
       </h3>

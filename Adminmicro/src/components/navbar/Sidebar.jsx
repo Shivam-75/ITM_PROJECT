@@ -64,7 +64,7 @@ const Sidebar = ({ isMobile, onClose }) => {
       children: [
         { name: "Dashboard", route: "/fees" },
         { name: "Structure", route: "/fee-structure" },
-        { name: "Payments", route: "/fee-payments" },
+        { name: "Fee Submission", route: "/fee-payments" },
       ],
     },
     {
@@ -79,7 +79,7 @@ const Sidebar = ({ isMobile, onClose }) => {
       children: [
         { name: "Exams", route: "/exams" },
         { name: "Schedule", route: "/exam-schedule" },
-        { name: "Results", route: "/results" },
+        { name: "Sessional Results", route: "/sessional-results" },
         { name: "Documents", route: "/academic-docs" },
       ],
     },
@@ -90,7 +90,6 @@ const Sidebar = ({ isMobile, onClose }) => {
         { name: "Dashboard", route: "/hostel" },
         { name: "Rooms", route: "/hostel/rooms" },
         { name: "Students", route: "/hostel/students" },
-        { name: "Fees", route: "/hostel/fees" },
         { name: "Complaints", route: "/hostel/complaints" },
       ],
     },
@@ -135,9 +134,9 @@ const Sidebar = ({ isMobile, onClose }) => {
   }, [location.pathname]);
 
   return (
-    <div className={`h-full bg-white text-gray-700 flex flex-col border-r border-gray-100`}>
+    <div className={`h-full bg-white text-gray-700 flex flex-col border-r border-slate-100`}>
       {/* Sidebar Header */}
-      <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100 bg-white/50">
+      <div className="h-20 flex items-center justify-between px-6 border-b border-slate-100 bg-white/50">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white font-black italic shadow-md shadow-red-600/20">
             ITM
@@ -246,10 +245,10 @@ const Sidebar = ({ isMobile, onClose }) => {
       </div>
 
       {/* Footer / User Session Info */}
-      <div className="p-4 border-t border-gray-100 bg-white/50 space-y-3">
+      <div className="p-4 border-t border-slate-100 bg-white/50 space-y-3">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 p-4 rounded-lg transition-all bg-white border border-gray-100 shadow-sm hover:shadow-md text-red-500 font-bold uppercase tracking-[0.2em] text-[11px] italic"
+          className="w-full flex items-center justify-center gap-3 p-4 rounded-lg transition-all bg-white border border-slate-100 shadow-sm hover:shadow-md text-red-500 font-bold uppercase tracking-[0.2em] text-[11px] italic"
         >
           <FiLogOut size={16} />
           <span>Logout Session</span>

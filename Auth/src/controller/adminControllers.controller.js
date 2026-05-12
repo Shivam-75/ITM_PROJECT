@@ -15,32 +15,45 @@ const AdminTokenCreator = async (userId) => {
 
 }
 class AdminController {
+    static async GetNextAdminId(req, res) {
+        try {
+            const yearSuffix = new Date().getFullYear().toString().slice(-2);
+            const count = await Admin.countDocuments();
+            const serial = (count + 1).toString().padStart(2, '0');
+            const nextId = `ADM/${yearSuffix}/${serial}`;
+
+            return res.status(200).json({ nextId, status: 200 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
     static async AdminRegistration(req, res) {
         try {
-            const { name, password, mobNumber } = req.body;
+            const { name, password, mobNumber, adminId, superAdmin } = req.body;
 
-            if (!name || !password || !mobNumber) {
+            if (!name || !password || !mobNumber || !adminId) {
                 return res.status(400).json({ message: "Fill All column !!", status: 400 });
             }
 
-            const findUser = await Admin.findOne({ mobNumber });
+            const findUser = await Admin.findOne({ $or: [{ mobNumber }, { adminId }] });
             if (findUser) {
-                return res.status(400).json({ message: "Try Another Mobile Number !!", status: 400 });
+                return res.status(400).json({ message: "Admin ID or Mobile Number already exists !!", status: 400 });
             }
 
             const createUser = await Admin.create({
-                name, password, mobNumber
+                name, password, mobNumber, adminId, superAdmin: superAdmin || false
             })
 
             const searchUser = await Admin.findById(createUser._id).select("-password ");
 
             if (!searchUser) {
-                return res.status(400).json({ message: "Registraiton Faild !!", status: 400 });
+                return res.status(400).json({ message: "Registration Failed !!", status: 400 });
             }
 
             return res.status(201).json({ message: "Successfully Admin Registered !!", status: 201, searchUser });
         } catch (err) {
-            return res.status(500).json({ message: err });
+            return res.status(500).json({ message: err.message });
         }
     }
 
@@ -172,8 +185,31 @@ class AdminController {
 
     static async StudentList(req, res) {
         try {
+            const { course, semester, section, year } = req.query;
+            const filter = {};
+            
+            if (course) {
+                filter.course = { $regex: course, $options: "i" };
+            }
+            
+            if (semester) {
+                const semNum = semester.match(/\d+/);
+                if (semNum) {
+                    filter.semester = { $regex: `(${semester}|${semNum[0]})`, $options: "i" };
+                } else {
+                    filter.semester = { $regex: semester, $options: "i" };
+                }
+            }
 
-            const studentList = await Student.find().select("-password -refreshtkn").sort({ createdAt: -1 });
+            if (section) {
+                filter.section = { $regex: section, $options: "i" };
+            }
+            
+            if (year) {
+                filter.year = { $regex: year, $options: "i" };
+            }
+
+            const studentList = await Student.find(filter).select("-password -refreshtkn").sort({ createdAt: -1 });
 
             if (!studentList) {
                 return res.status(400).json({ message: "Student Not Found !!", status: 400 });

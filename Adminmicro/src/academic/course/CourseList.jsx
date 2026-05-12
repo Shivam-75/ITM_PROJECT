@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { AcademicAPI } from "../../api/apis";
 import { toast } from "react-toastify";
 import { FiAward } from "react-icons/fi";
 import useAuth from "../../store/AdminStore";
@@ -24,9 +24,7 @@ const CourseList = () => {
   const fetchCourses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", {
-        withCredentials: true
-      });
+      const response = await AcademicAPI.get("/courses");
       if (response.data.courses) {
         setCourses(response.data.courses);
       }
@@ -54,10 +52,10 @@ const CourseList = () => {
     try {
       setLoading(true);
       if (editId !== null) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${editId}`, { withCredentials: true });
+        await AcademicAPI.delete(`/courses/${editId}`);
       }
       
-      await axios.post("http://localhost:5002/api/v3/Admin/Academic/courses", form, { withCredentials: true });
+      await AcademicAPI.post("/courses", form);
       toast.success(editId ? "Course Updated" : "Course Added", toststyle);
       
       fetchCourses();
@@ -87,7 +85,7 @@ const CourseList = () => {
     if (window.confirm("Delete this course from the registry?")) {
       try {
         setLoading(true);
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${id}`, { withCredentials: true });
+        await AcademicAPI.delete(`/courses/${id}`);
         toast.success("Course Deleted", toststyle);
         fetchCourses();
       } catch (err) {
@@ -103,8 +101,8 @@ const CourseList = () => {
       <div className="w-full max-w-[1400px] mx-auto space-y-8">
         
         {/* ADD / EDIT FORM */}
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm w-full overflow-hidden">
-          <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="bg-white border border-slate-100 rounded-lg shadow-sm w-full overflow-hidden">
+          <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
                 <FiAward size={20} />
              </div>
@@ -180,12 +178,12 @@ const CourseList = () => {
               ) : (
                  courses.map((c) => (
                   <tr key={c.id || c._id} className="hover:bg-white/50 transition-colors">
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-gray-200">{c.name}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-purple-600 text-center italic border-r border-gray-200 uppercase">{c.department} <br/><span className="text-[8px] text-gray-500">{c.deptCode}</span></td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{c.hod || "-"}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-gray-200 uppercase">{c.duration}</td>
-                    <td className="px-4 py-4 text-[10px] font-bold text-gray-500 text-center italic border-r border-gray-200">{c.description || "-"}</td>
-                    <td className="px-4 py-4 text-center border-r border-gray-200">
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-800 italic uppercase border-r border-slate-100">{c.name}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-purple-600 text-center italic border-r border-slate-100 uppercase">{c.department} <br/><span className="text-[8px] text-gray-500">{c.deptCode}</span></td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{c.hod || "-"}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-600 text-center italic border-r border-slate-100 uppercase">{c.duration}</td>
+                    <td className="px-4 py-4 text-[10px] font-bold text-gray-500 text-center italic border-r border-slate-100">{c.description || "-"}</td>
+                    <td className="px-4 py-4 text-center border-r border-slate-100">
                         <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter ${
                             c.status === 'Active' ? 'bg-green-100 text-green-600 border border-green-200' : 
                             'bg-red-100 text-red-600 border border-red-200'

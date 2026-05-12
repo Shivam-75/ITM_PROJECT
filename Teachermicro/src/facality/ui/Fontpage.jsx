@@ -38,9 +38,9 @@ const Fontpage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full w-full">
           <NavLink
             to={"/faclity"}
-            className="group relative p-12 bg-black/40 border border-white/5 rounded-lg flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
+            className="group relative p-12 bg-black/40 border border-white/5 rounded-[10px] flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
           >
-            <div className="w-20 h-20 rounded-lg bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-inner">
+            <div className="w-20 h-20 rounded-[10px] bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-sm">
                <FiCpu size={40} />
             </div>
             <div className="text-center">
@@ -54,9 +54,9 @@ const Fontpage = () => {
 
           <NavLink
             to={"/Student"}
-            className="group relative p-12 bg-black/40 border border-white/5 rounded-lg flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
+            className="group relative p-12 bg-black/40 border border-white/5 rounded-[10px] flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
           >
-            <div className="w-20 h-20 rounded-lg bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-inner">
+            <div className="w-20 h-20 rounded-[10px] bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-sm">
                <FiSmartphone size={40} />
             </div>
             <div className="text-center">
@@ -70,9 +70,9 @@ const Fontpage = () => {
 
           <NavLink
             to={"/Admin"}
-            className="group relative p-12 bg-black/40 border border-white/5 rounded-lg flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
+            className="group relative p-12 bg-black/40 border border-white/5 rounded-[10px] flex flex-col items-center justify-center gap-8 hover:bg-white/5 transition-all duration-500 hover:border-red-600/30 hover:shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)]"
           >
-            <div className="w-20 h-20 rounded-lg bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-inner">
+            <div className="w-20 h-20 rounded-[10px] bg-red-600/10 border border-red-600/20 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all duration-500 shadow-sm">
                <FiShield size={40} />
             </div>
             <div className="text-center">
