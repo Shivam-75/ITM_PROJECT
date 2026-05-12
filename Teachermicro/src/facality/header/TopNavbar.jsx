@@ -153,13 +153,13 @@ const TopNavbar = () => {
                   <h3 className="text-xs font-black text-slate-900 uppercase italic truncate">
                     {teacherProfile?.name || "Faculty"}
                   </h3>
-                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mt-1 italic">{teacherProfile?.course}</p>
+                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mt-1 italic">{teacherProfile?.department?.join(", ") || "General Academic"}</p>
                 </div>
 
                 <div className="p-4 space-y-2 border-b border-slate-50 mb-2">
                   <div className="flex justify-between items-center text-[9px] font-black italic">
                     <span className="text-slate-400 uppercase tracking-widest">Dept</span>
-                    <span className="text-blue-600 bg-white border border-slate-100 px-3 py-1 rounded-[10px]">{teacherProfile?.course || "N/A"}</span>
+                    <span className="text-blue-600 bg-white border border-slate-100 px-3 py-1 rounded-[10px]">{teacherProfile?.department?.join(", ") || "N/A"}</span>
                   </div>
                 </div>
 

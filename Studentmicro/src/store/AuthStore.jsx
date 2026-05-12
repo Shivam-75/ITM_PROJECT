@@ -18,7 +18,7 @@ export const AuthContextProvider = ({ children }) => {
         if (data) setStudent(data);
     };
 
-    const userLooutData = () => {
+    const userLogoutData = () => {
         setuserLogin(false);
         setStudent(null);
         localStorage.removeItem("stLogged");
@@ -52,7 +52,7 @@ export const AuthContextProvider = ({ children }) => {
             // If the backend returns 404, it means the student ID in the token
             // no longer exists in the database (deleted). We must log out.
             if (err.response?.status === 404) {
-                userLooutData();
+                userLogoutData();
             }
         } finally {
             setLoading(false);
@@ -67,7 +67,7 @@ export const AuthContextProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                userLooutData,
+                userLogoutData,
                 userLogin,
                 loginRegistration,
                 toaststyle,

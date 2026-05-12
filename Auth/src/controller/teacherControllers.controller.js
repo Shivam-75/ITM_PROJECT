@@ -192,6 +192,52 @@ class TeacherController {
             return res.status(500).json({ message: err.message });
         }
     }
+
+    static async verifyContact(req, res) {
+        try {
+            const { moNumber } = req.body;
+            if (!moNumber) return res.status(400).json({ message: "Mobile number required" });
+
+            const formattedNumber = Number(moNumber.toString().trim());
+            const user = await Teacher.findOne({ moNumber: formattedNumber });
+            
+            if (!user) {
+                return res.status(404).json({ message: "Faculty identifier not found. Contact Admin for deployment.", status: 404 });
+            }
+
+            return res.status(200).json({
+                exists: true,
+                hasPassword: !!user.password,
+                name: user.name,
+                status: 200
+            });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    static async setupPassword(req, res) {
+        try {
+            const { moNumber, password } = req.body;
+            if (!moNumber || !password) return res.status(400).json({ message: "Mobile and Password required" });
+
+            const formattedNumber = Number(moNumber.toString().trim());
+            const user = await Teacher.findOne({ moNumber: formattedNumber });
+            
+            if (!user) return res.status(404).json({ message: "Faculty node not found" });
+
+            if (user.password) {
+                return res.status(400).json({ message: "Access Key already mapped. Please login." });
+            }
+
+            user.password = password; // Model pre-save hook will hash this
+            await user.save();
+
+            return res.status(200).json({ message: "Protocol setup successful. You can now login.", status: 200 });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
 }
 
 export default TeacherController;
