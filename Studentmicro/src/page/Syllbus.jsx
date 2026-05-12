@@ -5,7 +5,7 @@ import { FiDownload, FiFileText, FiBookOpen, FiSearch, FiArrowRight, FiCheckCirc
 
 const SyllabusCard = memo(({ item }) => {
   return (
-    <div className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
       <div className="relative z-10">
         <div className="w-16 h-16 bg-black text-white rounded-[1.25rem] flex items-center justify-center shadow-2xl group-hover:-rotate-6 transition-transform mb-10">
            <FiBookOpen size={28} />
@@ -19,7 +19,7 @@ const SyllabusCard = memo(({ item }) => {
         </div>
 
         <div className="mt-8 space-y-4">
-             <div className="flex items-center gap-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+             <div className="flex items-center gap-4 bg-gray-50 p-5 rounded-2xl border border-slate-100">
                 <FiCheckCircle className="text-emerald-500" size={20} />
                 <span className="text-xs font-black text-gray-700 uppercase tracking-widest">Standard University Curriculum</span>
              </div>
@@ -102,7 +102,7 @@ const Syllabus = () => {
                  <span className="px-6 py-2 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full border border-black shadow-xl shadow-gray-200">
                     {studentInfo?.course || "Course"} Verified
                  </span>
-                 <span className="px-6 py-2 bg-white text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] rounded-full border border-gray-100 shadow-sm">
+                 <span className="px-6 py-2 bg-white text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] rounded-full border border-slate-100 shadow-sm">
                     Year {studentInfo?.year || "1"} 
                  </span>
             </div>
@@ -111,7 +111,7 @@ const Syllabus = () => {
       </div>
 
       {filteredList.length === 0 && !loading ? (
-        <div className="py-40 text-center bg-gray-50 rounded-[4rem] border border-gray-100 mx-6 flex flex-col items-center">
+        <div className="py-40 text-center bg-gray-50 rounded-[4rem] border border-slate-100 mx-6 flex flex-col items-center">
             <FiBookOpen size={64} className="text-gray-200 mb-8" />
             <p className="text-xs font-black text-gray-300 uppercase tracking-[0.6em]">No Curriculum Resources Found</p>
         </div>
@@ -124,7 +124,7 @@ const Syllabus = () => {
       )}
 
       {/* Footer Info */}
-      <div className="pt-20 flex flex-col md:flex-row items-center justify-between gap-10 border-t border-gray-100 px-6 opacity-60">
+      <div className="pt-20 flex flex-col md:flex-row items-center justify-between gap-10 border-t border-slate-100 px-6 opacity-60">
            <div className="flex items-center gap-4">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-200"></div>
               <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Documents Verified by ITM Academic Council</p>

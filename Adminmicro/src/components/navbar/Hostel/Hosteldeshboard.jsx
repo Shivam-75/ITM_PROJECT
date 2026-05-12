@@ -104,7 +104,7 @@ const Hosteldeshboard = () => {
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 italic">Last Node Sync</p>
                         <p className="text-sm font-black text-slate-900 italic uppercase">Just Now</p>
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-lg shadow-indigo-100">
+                    <div className="w-12 h-12 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-indigo-600 shadow-lg shadow-indigo-100">
                         <FiActivity size={24} className="animate-pulse" />
                     </div>
                 </div>

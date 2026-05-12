@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070a] text-slate-300 font-mono flex flex-col selection:bg-blue-500/30 selection:text-blue-200 overflow-hidden relative">
+    <div className="min-h-screen bg-[#05070a] text-slate-300 font-mono flex flex-col selection:bg-white border border-slate-1000/30 selection:text-blue-200 overflow-hidden relative">
       
       {/* BACKGROUND DECOR */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-20"

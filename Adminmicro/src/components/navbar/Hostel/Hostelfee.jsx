@@ -242,7 +242,7 @@ const Hostelfee = () => {
                     documents.map((doc) => (
                       <div key={doc._id} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between group">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+                          <div className="w-10 h-10 bg-white border border-slate-100 text-blue-600 rounded-lg flex items-center justify-center">
                             <FiFileText size={20} />
                           </div>
                           <div>

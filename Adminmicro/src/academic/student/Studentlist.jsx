@@ -311,7 +311,7 @@ const Studentlist = () => {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                             <span className="w-2 h-2 rounded-full bg-white border border-slate-1000"></span>
                              <span className="text-[10px] font-black uppercase text-gray-600 tracking-wider italic">{student.course}</span>
                           </div>
                         </td>
@@ -485,7 +485,7 @@ const Studentlist = () => {
                         </td>
                         <td className="px-6 py-4 text-[10px] font-black uppercase text-gray-700 italic">{student.name}</td>
                         <td className="px-6 py-4">
-                          <span className="px-2 py-0.5 rounded text-[9px] font-black bg-blue-50 text-blue-600 border border-blue-100 uppercase italic">
+                          <span className="px-2 py-0.5 rounded text-[9px] font-black bg-white border border-slate-100 text-blue-600 border border-blue-100 uppercase italic">
                             SEM {student.semester}
                           </span>
                         </td>
@@ -610,7 +610,7 @@ const Studentlist = () => {
                   <div className="grid grid-cols-2 border-t border-slate-50">
                       <button 
                         onClick={() => { setShowDeleteModal(false); setDeletingId(null); }}
-                        className="py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all border-r border-slate-50"
+                        className="py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-white border border-slate-100 transition-all border-r border-slate-50"
                       >
                           Abort
                       </button>

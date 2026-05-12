@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { 
   FiChevronDown, FiBell, FiUser, FiLogOut, FiMenu, FiX,
@@ -14,11 +14,28 @@ const TopNavbar = () => {
     const [activeMenu, setActiveMenu] = useState(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    
+    const navRef = useRef(null);
+    const profileRef = useRef(null);
 
     useEffect(() => {
       const handleScroll = () => setScrolled(window.scrollY > 20);
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    // Handle clicks outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setActiveMenu(null);
+            }
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setIsProfileOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const navMenus = [
@@ -65,7 +82,7 @@ const TopNavbar = () => {
 
     return (
         <header className={`w-full h-24 z-50 sticky top-0 transition-all duration-500 ${
-            scrolled ? 'bg-white/80 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border-b border-white/20' : 'bg-transparent'
+            scrolled ? 'bg-white/90 backdrop-blur-2xl shadow-sm border-b border-slate-100' : 'bg-transparent'
         }`}>
             <div className="max-w-[1440px] mx-auto h-full px-8 flex items-center justify-between gap-4">
                 
@@ -193,4 +210,3 @@ const TopNavbar = () => {
 };
 
 export default TopNavbar;
-

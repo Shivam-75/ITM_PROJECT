@@ -31,7 +31,7 @@ const ExamCard = memo(({ exam }) => {
 
       <div className="grid grid-cols-2 gap-4 pt-6 border-t border-slate-100">
          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-white border border-slate-100 transition-all">
                 <FiCalendar size={18} />
             </div>
             <div>
@@ -41,7 +41,7 @@ const ExamCard = memo(({ exam }) => {
          </div>
 
          <div className="flex items-center gap-3 border-l border-slate-100 pl-4">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-white border border-slate-100 transition-all">
                 <FiClock size={18} />
             </div>
             <div>
@@ -51,7 +51,7 @@ const ExamCard = memo(({ exam }) => {
          </div>
 
          <div className="flex items-center gap-3 col-span-2 mt-2 pt-4 border-t border-slate-50">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-white border border-slate-100 transition-all">
                 <FiMapPin size={18} />
             </div>
             <div>

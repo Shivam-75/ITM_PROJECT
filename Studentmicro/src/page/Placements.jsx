@@ -31,7 +31,7 @@ const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
       ></div>
       
       {/* Modal Content */}
-      <div className="relative bg-white w-full max-w-lg rounded-[10px] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 border border-gray-100">
+      <div className="relative bg-white w-full max-w-lg rounded-[10px] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 border border-slate-100">
         <div className="p-6 md:p-8 space-y-6">
           {/* Header */}
           <div className="flex justify-between items-start">
@@ -52,15 +52,15 @@ const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
 
           {/* Compact Details Grid */}
           <div className="grid grid-cols-3 gap-3">
-             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Role</p>
                 <p className="text-[10px] font-black text-black uppercase truncate">{drive.jobProfile}</p>
              </div>
-             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Package</p>
                 <p className="text-[10px] font-black text-black">{drive.ctc} LPA</p>
              </div>
-             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Deadline</p>
                 <p className="text-[10px] font-black text-black uppercase">{new Date(drive.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
              </div>
@@ -76,12 +76,12 @@ const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
              </div>
              
              <div className="space-y-3">
-                <div className="p-4 bg-gray-50 rounded-[10px] border border-gray-100">
-                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-gray-200 pb-1.5 mb-2">Description</p>
+                <div className="p-4 bg-gray-50 rounded-[10px] border border-slate-100">
+                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-slate-100 pb-1.5 mb-2">Description</p>
                    <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-3">{drive.description || "Detailed description will be shared during the pre-placement talk."}</p>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-[10px] border border-gray-100">
-                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-gray-200 pb-1.5 mb-2">Eligibility Criteria</p>
+                <div className="p-4 bg-gray-50 rounded-[10px] border border-slate-100">
+                   <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-slate-100 pb-1.5 mb-2">Eligibility Criteria</p>
                    <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-2">{drive.eligibility}</p>
                 </div>
              </div>
@@ -182,9 +182,9 @@ const Placements = () => {
         )}
 
         {/* 🚀 PREMIUM PLACEMENT REGISTRY TABLE */}
-        <div className="bg-white rounded-[10px] border border-gray-100 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div className="bg-white rounded-[10px] border border-slate-100 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
           {/* Table Header Overlay */}
-          <div className="p-10 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-gradient-to-r from-gray-50/50 to-transparent">
+          <div className="p-10 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-gradient-to-r from-gray-50/50 to-transparent">
              <div className="space-y-1">
                 <div className="flex items-center gap-3">
                    <div className="w-10 h-1 bg-black rounded-full"></div>
@@ -203,14 +203,14 @@ const Placements = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50/50">
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">#</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Company</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Role Profile</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">CTC (LPA)</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Eligibility</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Deadline</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100">Status</th>
-                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-gray-100 text-right">Action</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">#</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">Company</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">Role Profile</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">CTC (LPA)</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">Eligibility</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">Deadline</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100">Status</th>
+                  <th className="px-10 py-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] border-b border-slate-100 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -245,7 +245,7 @@ const Placements = () => {
                           </div>
                         </td>
                         <td className="px-10 py-8">
-                          <span className="px-4 py-1.5 bg-gray-50 text-black text-[9px] font-black uppercase tracking-widest rounded-full border border-gray-100">
+                          <span className="px-4 py-1.5 bg-gray-50 text-black text-[9px] font-black uppercase tracking-widest rounded-full border border-slate-100">
                             {drive.jobProfile}
                           </span>
                         </td>

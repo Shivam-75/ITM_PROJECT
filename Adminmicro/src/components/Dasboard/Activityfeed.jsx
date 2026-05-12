@@ -16,7 +16,7 @@ const Activityfeed = memo(() => {
     <ul className="space-y-2 text-sm">
       {activity.map((a, i) => (
         <li key={i} className="flex items-start gap-3">
-          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+          <div className="w-2 h-2 bg-white border border-slate-1000 rounded-full mt-2 flex-shrink-0" />
           <div>
             <div>{a.text}</div>
             <div className="text-xs text-gray-400">{a.time}</div>
