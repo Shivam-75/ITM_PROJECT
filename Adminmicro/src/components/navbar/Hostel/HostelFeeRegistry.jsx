@@ -108,7 +108,7 @@ const HostelFeeRegistry = () => {
               </div>
               
               <div className="flex items-center gap-4 mb-6">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${f.hostelType === 'Boys' ? 'bg-blue-50 text-blue-600' : 'bg-pink-50 text-pink-600'}`}>
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${f.hostelType === 'Boys' ? 'bg-white border border-slate-100 text-blue-600' : 'bg-pink-50 text-pink-600'}`}>
                    <FiHome size={24} />
                 </div>
                 <div>

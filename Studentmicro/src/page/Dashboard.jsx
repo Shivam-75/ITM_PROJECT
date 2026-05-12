@@ -11,7 +11,7 @@ import {
 import Loader from "../components/common/Loader";
 
 const GlassCard = ({ children, className = "" }) => (
-  <div className={`bg-white border-2 border-gray-100 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.15)] transition-all duration-500 ${className}`}>
+  <div className={`bg-white border border-slate-100 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.15)] transition-all duration-500 ${className}`}>
     {children}
   </div>
 );
@@ -108,7 +108,7 @@ const Dashboard = () => {
       <div className="relative overflow-hidden rounded-[10px] bg-black py-8 px-6 group shadow-xl">
         <div className="absolute top-0 right-0 w-[40%] h-full bg-gradient-to-l from-rose-600 via-pink-600 to-transparent opacity-20 transition-opacity duration-1000"></div>
         <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -top-24 right-24 w-64 h-64 bg-indigo-500/20 rounded-full blur-[80px]"></div>
+        <div className="absolute -top-24 right-24 w-64 h-64 bg-white border border-slate-1000/20 rounded-full blur-[80px]"></div>
 
         <div className="relative z-10 flex items-center justify-between gap-6 px-4">
           <div className="flex items-center gap-6">
@@ -145,7 +145,7 @@ const Dashboard = () => {
               <h2 className="text-3xl font-black tracking-tight text-black">Academic Modules</h2>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Everything you need to excel</p>
             </div>
-            <div className="hidden md:flex items-center gap-4 px-5 py-2 bg-gray-50 border border-gray-100 rounded-full">
+            <div className="hidden md:flex items-center gap-4 px-5 py-2 bg-gray-50 border border-slate-100 rounded-full">
                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Live Updates Syncing</p>
             </div>
@@ -181,7 +181,7 @@ const Dashboard = () => {
             
             <div className="flex-grow space-y-6 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
                {counts.notices === 0 ? (
-                 <div className="flex flex-col items-center justify-center py-20 text-center bg-white/50 border-2 border-dashed border-gray-100 rounded-[2.5rem]">
+                 <div className="flex flex-col items-center justify-center py-20 text-center bg-white/50 border-2 border-dashed border-slate-100 rounded-[2.5rem]">
                     <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                        <FiInfo size={32} className="text-gray-200" />
                     </div>
@@ -202,7 +202,7 @@ const Dashboard = () => {
                 Enter Notice Board <FiArrowRight size={18} />
               </button>
 
-              <div className="p-8 bg-indigo-50/50 border border-indigo-100 rounded-[2.5rem] group/support cursor-pointer hover:bg-white transition-all">
+              <div className="p-8 bg-white border border-slate-100/50 border border-slate-100 rounded-[2.5rem] group/support cursor-pointer hover:bg-white transition-all">
                 <div className="flex items-center gap-5">
                     <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-50 group-hover/support:scale-110 transition-transform duration-500">
                        <FiBriefcase size={22} />

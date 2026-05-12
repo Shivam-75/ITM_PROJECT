@@ -14,7 +14,7 @@ const AssignmentModal = ({ item, onClose }) => {
         onClick={onClose}
       ></div>
       
-      <div className="relative bg-white w-full max-w-lg rounded-[10px] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 border border-gray-100">
+      <div className="relative bg-white w-full max-w-lg rounded-[10px] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 border border-slate-100">
         <div className="p-6 space-y-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1.5">
@@ -33,11 +33,11 @@ const AssignmentModal = ({ item, onClose }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Academic Year</p>
                 <p className="text-[10px] font-black text-black">{item.year || "2026-27"}</p>
              </div>
-             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-gray-100">
+             <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Submission Date</p>
                 <p className="text-[10px] font-black text-black">{new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
              </div>
@@ -54,7 +54,7 @@ const AssignmentModal = ({ item, onClose }) => {
              <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
                 {item.questions?.length > 0 ? (
                   item.questions.map((q, i) => (
-                    <div key={i} className="flex gap-3 items-start p-4 bg-white rounded-[10px] border border-gray-100 hover:border-black transition-all group">
+                    <div key={i} className="flex gap-3 items-start p-4 bg-white rounded-[10px] border border-slate-100 hover:border-black transition-all group">
                        <span className="w-6 h-6 rounded-lg bg-gray-50 text-gray-400 text-[10px] font-black flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-all">
                           {i + 1}
                        </span>
@@ -69,7 +69,7 @@ const AssignmentModal = ({ item, onClose }) => {
              </div>
           </div>
 
-          <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-[10px] border border-gray-100">
+          <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-[10px] border border-slate-100">
              <FiInfo className="text-black shrink-0" size={14} />
              <p className="text-[9px] font-medium text-gray-600 leading-relaxed">
                 Important: Late submissions will result in credit deductions. Ensure all supporting documentation is attached.
@@ -85,7 +85,7 @@ const AssignmentCard = memo(({ item, onOpen }) => {
   const dueDate = item?.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : "N/A";
 
   return (
-    <div className="bg-white rounded-[10px] p-6 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-[10px] p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
       <div className="flex-1">
         <div className="flex justify-between items-start mb-6">
             <div className="w-12 h-12 bg-black text-white rounded-[10px] flex items-center justify-center shadow-xl group-hover:rotate-6 transition-transform">
@@ -103,7 +103,7 @@ const AssignmentCard = memo(({ item, onOpen }) => {
         <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">Academic Module</p>
 
         <div className="space-y-4 mb-6">
-            <div className="flex justify-between items-center bg-gray-50 p-4 rounded-[10px] border border-gray-100">
+            <div className="flex justify-between items-center bg-gray-50 p-4 rounded-[10px] border border-slate-100">
                <div className="space-y-0.5">
                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Submission Window</p>
                   <p className="text-[11px] font-black text-black uppercase">{dueDate}</p>
@@ -120,7 +120,7 @@ const AssignmentCard = memo(({ item, onOpen }) => {
                    {item?.questions?.length > 0 ? (
                       item.questions.slice(0, 2).map((q, i) => (
                         <div key={i} className="flex gap-3 items-start group/q">
-                           <span className="w-5 h-5 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-black text-[9px] font-black shrink-0 group-hover/q:bg-black group-hover/q:text-white transition-all">
+                           <span className="w-5 h-5 rounded-lg bg-gray-100 border border-slate-100 flex items-center justify-center text-black text-[9px] font-black shrink-0 group-hover/q:bg-black group-hover/q:text-white transition-all">
                               {i + 1}
                            </span>
                            <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-1">
@@ -224,7 +224,7 @@ const Assignment = () => {
       </div>
 
       {data.length === 0 && !loading && (
-        <div className="py-20 text-center bg-gray-50 rounded-[10px] border border-gray-100 mx-6">
+        <div className="py-20 text-center bg-gray-50 rounded-[10px] border border-slate-100 mx-6">
            <FiLayers size={32} className="text-gray-200 mx-auto mb-4" />
            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.5em]">No Assignment Records Found</p>
         </div>

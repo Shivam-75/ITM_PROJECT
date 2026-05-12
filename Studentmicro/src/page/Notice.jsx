@@ -5,13 +5,13 @@ import { FiBell, FiArrowRight, FiCalendar, FiUser, FiInfo } from "react-icons/fi
 
 const NoticeCard = memo(({ notice }) => {
   return (
-    <div className="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group flex flex-col justify-between h-full min-h-[320px]">
+    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group flex flex-col justify-between h-full min-h-[320px]">
       <div>
         <div className="flex justify-between items-start mb-6">
             <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                <FiBell size={22} />
             </div>
-            <div className="px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-2">
+            <div className="px-3 py-1 bg-gray-50 rounded-full border border-slate-100 flex items-center gap-2">
                <div className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></div>
                <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest">New</p>
             </div>
@@ -25,14 +25,14 @@ const NoticeCard = memo(({ notice }) => {
         </p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100/50">
+            <div className="bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
                <div className="flex items-center gap-2 mb-1">
                   <FiCalendar size={10} className="text-gray-400" />
                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Date</p>
                </div>
                <p className="text-xs font-black text-black">{new Date(notice?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
             </div>
-            <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100/50">
+            <div className="bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
                <div className="flex items-center gap-2 mb-1">
                   <FiUser size={10} className="text-gray-400" />
                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Audience</p>
@@ -41,7 +41,7 @@ const NoticeCard = memo(({ notice }) => {
             </div>
         </div>
 
-        <div className="p-5 bg-gray-50 rounded-2xl text-[12px] text-gray-600 leading-relaxed border border-gray-100">
+        <div className="p-5 bg-gray-50 rounded-2xl text-[12px] text-gray-600 leading-relaxed border border-slate-100">
            {notice?.description}
         </div>
       </div>
@@ -91,7 +91,7 @@ const Notice = () => {
           <p className="text-sm text-gray-500 font-medium max-w-md leading-relaxed">Official announcements and critical updates from the ITM Faculty Administration.</p>
         </div>
         
-        <div className="flex items-center gap-4 bg-gray-50 px-6 py-4 rounded-full border border-gray-100">
+        <div className="flex items-center gap-4 bg-gray-50 px-6 py-4 rounded-full border border-slate-100">
            <FiInfo className="text-black" />
            <p className="text-[10px] font-black uppercase tracking-widest text-black">Registry Operational</p>
         </div>
@@ -104,7 +104,7 @@ const Notice = () => {
       </div>
 
       {notices.length === 0 && !loading && (
-        <div className="py-32 text-center bg-gray-50 rounded-[3rem] border border-gray-100 mx-6">
+        <div className="py-32 text-center bg-gray-50 rounded-[3rem] border border-slate-100 mx-6">
            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.6em]">No Active Announcements</p>
         </div>
       )}

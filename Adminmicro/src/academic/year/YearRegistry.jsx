@@ -107,7 +107,7 @@ const YearRegistry = () => {
         
         <div className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden w-[98%] mx-auto md:w-full">
           <div className="bg-white px-6 py-4 border-b border-slate-100 flex items-center gap-3">
-             <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+             <div className="p-2 bg-white border border-slate-100 text-indigo-600 rounded-lg">
                 <FiAward size={20} />
              </div>
             <h1 className="text-xl font-bold text-gray-900 font-sans uppercase italic tracking-tight">

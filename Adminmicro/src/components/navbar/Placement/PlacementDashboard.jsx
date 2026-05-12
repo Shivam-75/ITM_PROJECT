@@ -159,7 +159,7 @@ const PlacementDashboard = () => {
           </button>
           <button 
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-indigo-500 transition-all shadow-xl shadow-indigo-600/20"
+            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg font-black uppercase tracking-widest text-[10px] italic hover:bg-white border border-slate-1000 transition-all shadow-xl shadow-indigo-600/20"
           >
             <FiPlus /> New Drive
           </button>
@@ -273,7 +273,7 @@ const PlacementDashboard = () => {
                              <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-[0.2em] italic ${
                                app.status === 'Selected' ? 'bg-emerald-50 text-emerald-600' :
                                app.status === 'Rejected' ? 'bg-rose-50 text-rose-600' :
-                               'bg-indigo-50 text-indigo-600'
+                               'bg-white border border-slate-100 text-indigo-600'
                              }`}>
                                 {app.status}
                              </span>

@@ -110,7 +110,7 @@ const BulkResults = () => {
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department</label>
                             <select 
-                                className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
+                                className="w-full px-5 py-4 bg-white border border-slate-100 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
                                 value={filters.course}
                                 onChange={e => setFilters({...filters, course: e.target.value})}
                             >
@@ -121,7 +121,7 @@ const BulkResults = () => {
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Semester</label>
                             <select 
-                                className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
+                                className="w-full px-5 py-4 bg-white border border-slate-100 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
                                 value={filters.semester}
                                 onChange={e => setFilters({...filters, semester: e.target.value})}
                             >
@@ -132,7 +132,7 @@ const BulkResults = () => {
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Section</label>
                             <select 
-                                className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
+                                className="w-full px-5 py-4 bg-white border border-slate-100 border-2 border-transparent rounded-xl text-[11px] font-black uppercase outline-none focus:border-red-600 transition-all appearance-none"
                                 value={filters.section}
                                 onChange={e => setFilters({...filters, section: e.target.value})}
                             >
@@ -155,7 +155,7 @@ const BulkResults = () => {
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-2xl shadow-slate-100/50 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse">
-                            <thead className="bg-slate-50/50">
+                            <thead className="bg-white border border-slate-100/50">
                                 <tr>
                                     <th className="px-8 py-6 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Student Identity</th>
                                     <th className="px-8 py-6 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Academic Context</th>
@@ -166,7 +166,7 @@ const BulkResults = () => {
                             <tbody className="divide-y divide-slate-50">
                                 {marksData.length > 0 ? (
                                     marksData.map((res) => (
-                                        <tr key={res._id} className="hover:bg-slate-50/30 transition-all group">
+                                        <tr key={res._id} className="hover:bg-white border border-slate-100/30 transition-all group">
                                             <td className="px-8 py-6">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-black italic">UID</div>
@@ -180,7 +180,7 @@ const BulkResults = () => {
                                             <td className="px-8 py-6">
                                                 <div className="flex flex-wrap gap-2">
                                                     {res.entries.map((ent, i) => (
-                                                        <div key={i} className="px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100 flex items-center gap-2 group-hover:bg-white transition-all">
+                                                        <div key={i} className="px-3 py-1.5 bg-white border border-slate-100 rounded-lg border border-slate-100 flex items-center gap-2 group-hover:bg-white transition-all">
                                                             <span className="text-[9px] font-black text-slate-400 uppercase italic">{ent.subject}</span>
                                                             <div className="w-[1px] h-3 bg-slate-200"></div>
                                                             <span className="text-[11px] font-black text-red-600 italic">{ent.marks}</span>
@@ -229,7 +229,7 @@ const BulkResults = () => {
                         <div className="grid grid-cols-2 border-t border-slate-50">
                             <button 
                                 onClick={() => { setShowDeleteModal(false); setDeletingId(null); }}
-                                className="py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all border-r border-slate-50"
+                                className="py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-white border border-slate-100 transition-all border-r border-slate-50"
                             >
                                 Cancel
                             </button>

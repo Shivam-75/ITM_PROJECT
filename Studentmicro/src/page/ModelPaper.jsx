@@ -6,7 +6,7 @@ import { FiDownload, FiFileText, FiSearch, FiLayers, FiCheckCircle, FiArrowRight
 // 🔹 Single Card Component
 const PaperCard = memo(({ paper }) => {
   return (
-    <div className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between h-full">
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-10">
             <div className="w-16 h-16 bg-black text-white rounded-[1.25rem] flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
@@ -26,14 +26,14 @@ const PaperCard = memo(({ paper }) => {
         </div>
 
         <div className="mt-8 pt-8 grid grid-cols-2 gap-6">
-              <div className="space-y-2 bg-gray-50/50 p-4 rounded-2xl border border-gray-100/50">
+              <div className="space-y-2 bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Max Weightage</p>
                 <div className="flex items-center gap-2 text-[11px] font-black text-black">
                     <FiCheckCircle size={14} className="text-emerald-500" />
                     {paper.totalMarks || "100"} Points
                 </div>
              </div>
-             <div className="space-y-2 bg-gray-50/50 p-4 rounded-2xl border border-gray-100/50">
+             <div className="space-y-2 bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Release Cycle</p>
                 <div className="flex items-center gap-2 text-[11px] font-black text-black">
                     <FiLayers size={14} className="text-black" />
@@ -115,7 +115,7 @@ const ModelPaper = () => {
             <h2 className="text-2xl md:text-4xl font-black text-black tracking-tighter leading-none">
               Model Paper.
             </h2>
-            <div className="flex items-center gap-4 bg-gray-50 px-6 py-3 rounded-full border border-gray-100 w-fit">
+            <div className="flex items-center gap-4 bg-gray-50 px-6 py-3 rounded-full border border-slate-100 w-fit">
                  <p className="text-[11px] font-black text-gray-500 uppercase tracking-[0.2em]">
                     {studentInfo?.course || "ITM"} Curriculum Assets
                  </p>
@@ -125,7 +125,7 @@ const ModelPaper = () => {
       </div>
 
       {filteredList.length === 0 && !loading ? (
-        <div className="py-40 text-center bg-gray-50 rounded-[4rem] border border-gray-100 mx-6 flex flex-col items-center">
+        <div className="py-40 text-center bg-gray-50 rounded-[4rem] border border-slate-100 mx-6 flex flex-col items-center">
             <FiFileText size={64} className="text-gray-200 mb-8" />
             <h3 className="text-xs font-bold text-gray-300 uppercase tracking-[0.6em]">No Resources Archived</h3>
         </div>

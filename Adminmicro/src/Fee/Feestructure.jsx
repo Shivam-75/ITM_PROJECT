@@ -193,7 +193,7 @@ const Feestructure = () => {
                 Fee Registry
               </h2>
               <p className="text-[8px] md:text-xs font-bold text-gray-400 uppercase tracking-widest italic flex items-center gap-2 mt-1">
-                <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+                <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white border border-slate-1000 rounded-full animate-pulse"></div>
                 Institutional Fee Audit v4.0
               </p>
             </div>
@@ -201,7 +201,7 @@ const Feestructure = () => {
             <div className="flex items-center gap-2 md:gap-3 flex-1 justify-end">
               <button
                 onClick={() => navigate("/fee-payments")}
-                className="p-3 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all flex items-center gap-2 border border-indigo-100 shadow-sm shadow-indigo-100"
+                className="p-3 bg-white border border-slate-100 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all flex items-center gap-2 border border-slate-100 shadow-sm shadow-indigo-100"
                 title="Go to Fee Submission"
               >
                 <FiCreditCard size={18} />
@@ -375,17 +375,17 @@ const Feestructure = () => {
                         fetchRecentCollections();
                         toast.info("Registry Synced", { ...toststyle, autoClose: 1000 });
                       }}
-                      className="p-1.5 hover:bg-indigo-50 text-indigo-400 hover:text-indigo-600 rounded-lg transition-all"
+                      className="p-1.5 hover:bg-white border border-slate-100 text-indigo-400 hover:text-indigo-600 rounded-lg transition-all"
                       title="Sync Latest Submissions"
                     >
                       <FiActivity className="animate-spin-slow" size={14} />
                     </button>
-                    <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded italic">Live Registry</span>
+                    <span className="text-[9px] font-bold text-indigo-600 bg-white border border-slate-100 px-2 py-0.5 rounded italic">Live Registry</span>
                   </div>
                 </h4>
 
                 {/* Filter Controls */}
-                <div className="grid grid-cols-3 gap-2 mb-6 p-2 bg-slate-50 rounded-xl border border-slate-100">
+                <div className="grid grid-cols-3 gap-2 mb-6 p-2 bg-white border border-slate-100 rounded-xl border border-slate-100">
                   <select 
                     value={activeFilters.course}
                     onChange={(e) => setActiveFilters({...activeFilters, course: e.target.value})}
@@ -422,14 +422,14 @@ const Feestructure = () => {
                     })
                     .length === 0 ? (
                     <div className="py-10 text-center space-y-2">
-                      <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
+                      <div className="w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center mx-auto">
                         <FiFileText className="text-slate-200" />
                       </div>
                       <p className="text-slate-300 text-[10px] font-black uppercase tracking-widest italic">No transactions indexed yet</p>
                     </div>
                   ) : (
                     recentPayments.map((p) => (
-                      <div key={p._id} className="flex items-center justify-between p-4 bg-slate-50/50 rounded-xl border border-transparent hover:border-indigo-100 hover:bg-white transition-all group cursor-default">
+                      <div key={p._id} className="flex items-center justify-between p-4 bg-white border border-slate-100/50 rounded-xl border border-transparent hover:border-slate-100 hover:bg-white transition-all group cursor-default">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-indigo-600 font-black italic shadow-sm group-hover:scale-110 transition-transform">
                             {p.studentName?.charAt(0).toUpperCase()}

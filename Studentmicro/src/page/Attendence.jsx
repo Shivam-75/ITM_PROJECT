@@ -154,7 +154,7 @@ const Attendence = () => {
       {/* List Section */}
       <div className="space-y-6 px-4 md:px-0">
         <div className="flex items-center gap-3">
-           <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+           <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-indigo-600">
               <FiFilter size={14} />
            </div>
            <h3 className="text-sm md:text-lg font-black text-slate-800 tracking-tight italic uppercase">

@@ -40,11 +40,11 @@ const HomeworkModal = ({ item, onClose }) => {
 
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100/50">
+             <div className="bg-gray-50 p-6 rounded-3xl border border-slate-100/50">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Subject Code</p>
                 <p className="text-lg font-black text-black uppercase">{item.subject?.substring(0, 3)}-{item.semester || "NA"}</p>
              </div>
-             <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100/50">
+             <div className="bg-gray-50 p-6 rounded-3xl border border-slate-100/50">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Posted On</p>
                 <p className="text-lg font-black text-black">{postingDate}</p>
              </div>
@@ -66,7 +66,7 @@ const HomeworkModal = ({ item, onClose }) => {
              <div className="space-y-4 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
                 {item.questions?.length > 0 ? (
                   item.questions.map((q, i) => (
-                    <div key={i} className="flex gap-4 items-start p-5 bg-white rounded-2xl border border-gray-100 hover:border-black transition-all group">
+                    <div key={i} className="flex gap-4 items-start p-5 bg-white rounded-2xl border border-slate-100 hover:border-black transition-all group">
                        <span className="w-8 h-8 rounded-xl bg-gray-50 text-gray-400 text-xs font-black flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-all">
                           {i + 1}
                        </span>
@@ -99,7 +99,7 @@ const HomeworkCard = memo(({ item, onOpen }) => {
   const submissionDate = item?.submissionDate || "N/A";
 
   return (
-    <div className="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
+    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group relative overflow-hidden flex flex-col justify-between h-full">
       <div className="flex-1">
         <div className="flex justify-between items-start mb-8">
             <div className="w-12 h-12 bg-black text-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -116,7 +116,7 @@ const HomeworkCard = memo(({ item, onOpen }) => {
         <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-8">Academic Module</p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+            <div className="bg-gray-50 p-4 rounded-2xl border border-slate-100/50">
                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Posted On</p>
                <p className="text-xs font-black text-black">{postingDate}</p>
             </div>
@@ -212,7 +212,7 @@ const Homework = () => {
           <h2 className="text-2xl md:text-4xl font-black text-black tracking-tight">Daily Homework.</h2>
           <p className="text-sm text-gray-500 font-medium max-w-sm leading-relaxed">Manage and review your daily academic tasks. Ensure all submissions are completed before the due date.</p>
         </div>
-        <div className="bg-gray-50 px-8 py-4 rounded-2xl border border-gray-100">
+        <div className="bg-gray-50 px-8 py-4 rounded-2xl border border-slate-100">
            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
            <p className="text-sm font-black text-black uppercase tracking-widest flex items-center gap-2">
               <FiCheckCircle className="text-emerald-500" /> Registry Active
@@ -231,8 +231,8 @@ const Homework = () => {
       </div>
 
       {homeworkData.length === 0 && !loading && (
-           <div className="py-32 text-center bg-gray-50 rounded-[3rem] border border-dashed border-gray-200 mx-4">
-              <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm border border-gray-100">
+           <div className="py-32 text-center bg-gray-50 rounded-[3rem] border border-dashed border-slate-100 mx-4">
+              <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm border border-slate-100">
                  <FiEdit3 className="text-gray-200" size={32} />
               </div>
               <p className="text-xs font-black text-gray-400 uppercase tracking-[0.4em]">No Tasks Found</p>

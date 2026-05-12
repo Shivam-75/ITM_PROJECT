@@ -144,7 +144,7 @@ const Feepayment = () => {
         <div className="bg-white w-full max-w-2xl p-6 md:p-10 rounded-2xl shadow-2xl shadow-gray-200/50 border border-slate-100 animate-in zoom-in-95 duration-500 relative">
           
           <div className="text-center mb-8">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-blue-600 shadow-inner border border-blue-100/50">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-blue-600 shadow-inner border border-blue-100/50">
               <FiCreditCard size={32} className="animate-pulse" />
             </div>
             <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-none">
@@ -264,7 +264,7 @@ const Feepayment = () => {
           <div className="bg-white rounded-xl shadow-xl shadow-gray-200/40 border border-slate-100 p-4 w-full md:w-[95%] lg:w-[90%] flex flex-col md:flex-row items-center justify-between gap-4 transition-all">
             
             <div className="flex items-center gap-6 w-full md:w-auto">
-              <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 shadow-inner">
+              <div className="w-10 h-10 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-blue-600 shadow-inner">
                 <FiActivity size={18} />
               </div>
               <div className="space-y-0.5">
@@ -328,7 +328,7 @@ const Feepayment = () => {
               )}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 text-xl font-black italic shadow-inner border border-blue-100">
+                  <div className="w-14 h-14 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-blue-600 text-xl font-black italic shadow-inner border border-blue-100">
                     {student.name[0]}
                   </div>
                   <div>

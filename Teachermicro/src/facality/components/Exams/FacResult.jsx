@@ -43,6 +43,7 @@ export default function FacResult() {
   const [years, setYears] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [sections, setSections] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     const fetchRegistry = async () => {
@@ -53,16 +54,42 @@ export default function FacResult() {
           AcademicAPI.get("/semesters"),
           AcademicAPI.get("/sections")
         ]);
-        setCourses(cRes.data.data || []);
-        setYears(yRes.data.data || []);
-        setSemesters(sRes.data.data || []);
-        setSections(secRes.data.data || []);
+        setCourses(cRes.data.courses || cRes.data.data || []);
+        setYears(yRes.data.years || yRes.data.data || []);
+        setSemesters(sRes.data.semesters || sRes.data.data || []);
+        setSections(secRes.data.sections || secRes.data.data || []);
       } catch (err) {
         console.error("Registry fetch failed", err);
       }
     };
     fetchRegistry();
   }, []);
+
+  const fetchSubjects = useCallback(async () => {
+    if (!student.course || !student.semester) {
+        setSubjects([]);
+        return;
+    }
+    try {
+        const { data } = await AcademicAPI.get("/subjects", {
+            params: {
+                department: student.course,
+                semester: student.semester
+            }
+        });
+        if (data.subjects) {
+            setSubjects(data.subjects);
+        }
+    } catch (err) {
+        console.error("Failed to fetch subjects", err);
+    }
+  }, [student.course, student.semester]);
+
+  useEffect(() => {
+    fetchSubjects();
+    // Reset entries subject when filters change to avoid stale data
+    setEntries([{ subject: "", marks: "" }]);
+  }, [fetchSubjects]);
 
   const fetchStudents = useCallback(async () => {
     try {
@@ -396,7 +423,15 @@ export default function FacResult() {
                             <div key={i} className="flex gap-4 items-center bg-white border border-slate-100/50 p-4 rounded-[10px] border border-slate-100 animate-in slide-in-from-right-4 duration-300">
                                 <div className="flex-[3] relative">
                                     <FiBook className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" />
-                                    <input className="w-full pl-14 pr-4 py-4 bg-white  rounded-[10px] text-[11px] font-black uppercase italic shadow-sm outline-none focus:ring-2 focus:ring-slate-900" placeholder="SUBJECT" value={s.subject} onChange={(e) => handleEntryChange(i, "subject", e.target.value)} />
+                                    <select 
+                                        className="w-full pl-14 pr-4 py-4 bg-white  rounded-[10px] text-[11px] font-black uppercase outline-none focus:ring-2 focus:ring-slate-900 shadow-sm cursor-pointer appearance-none" 
+                                        value={s.subject} 
+                                        disabled={!student.course || !student.semester}
+                                        onChange={(e) => handleEntryChange(i, "subject", e.target.value)}
+                                    >
+                                        <option value="">{subjects.length > 0 ? "CHOOSE SUBJECT" : "NO SUBJECTS FOUND"}</option>
+                                        {subjects.map(sub => <option key={sub._id} value={sub.name}>{sub.name.toUpperCase()} ({sub.code})</option>)}
+                                    </select>
                                 </div>
                                 <div className="flex-[1] relative">
                                     <FiAward className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" />

@@ -151,7 +151,7 @@ const Exams = () => {
         <div className="px-8 py-6 border-b border-slate-50 bg-white/30">
           <div className="flex flex-col sm:flex-row gap-4">
             <select
-              className="bg-white border-2 border-slate-100 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all cursor-pointer shadow-sm"
+              className="bg-white border border-slate-100 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all cursor-pointer shadow-sm"
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
@@ -163,7 +163,7 @@ const Exams = () => {
             </select>
 
             <select
-              className="bg-white border-2 border-slate-100 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all disabled:opacity-50 cursor-pointer shadow-sm"
+              className="bg-white border border-slate-100 rounded-lg px-5 py-3 text-[10px] font-black uppercase tracking-widest w-full sm:w-64 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 outline-none transition-all disabled:opacity-50 cursor-pointer shadow-sm"
               value={semester}
               disabled={!department}
               onChange={(e) => setSemester(e.target.value)}
@@ -194,7 +194,7 @@ const Exams = () => {
                     <label className="text-[9px] uppercase tracking-widest text-slate-400 ml-1">Department</label>
                     <select 
                         required
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black uppercase"
                         value={formData.Department}
                         onChange={e => setFormData({...formData, Department: e.target.value})}
                     >
@@ -207,7 +207,7 @@ const Exams = () => {
                     <label className="text-[9px] uppercase tracking-widest text-slate-400 ml-1">Semester</label>
                     <select 
                         required
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black uppercase"
                         value={formData.Semester}
                         onChange={e => setFormData({...formData, Semester: e.target.value})}
                     >
@@ -220,7 +220,7 @@ const Exams = () => {
                     <label className="text-[9px] uppercase tracking-widest text-slate-400 ml-1">Academic Year (ct)</label>
                     <select 
                         required
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black uppercase"
                         value={formData.ct}
                         onChange={e => setFormData({...formData, ct: e.target.value})}
                     >
@@ -234,7 +234,7 @@ const Exams = () => {
                     <select 
                         required
                         disabled={!formData.Department || !formData.Semester}
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black uppercase disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black uppercase disabled:opacity-50"
                         value={formData.Subject}
                         onChange={e => setFormData({...formData, Subject: e.target.value})}
                     >
@@ -246,7 +246,7 @@ const Exams = () => {
                   <div className="space-y-1">
                     <label className="text-[9px] uppercase tracking-widest text-slate-400 ml-1">Exam Type</label>
                     <select 
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black"
                         value={formData.ExamType}
                         onChange={e => setFormData({...formData, ExamType: e.target.value})}
                     >
@@ -261,7 +261,7 @@ const Exams = () => {
                     <input 
                         required
                         type="date" 
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black"
                         value={formData.Date}
                         onChange={e => setFormData({...formData, Date: e.target.value})}
                     />
@@ -273,7 +273,7 @@ const Exams = () => {
                         required
                         type="text" 
                         placeholder="e.g. 10:00 AM - 1:00 PM"
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black"
                         value={formData.time}
                         onChange={e => setFormData({...formData, time: e.target.value})}
                     />
@@ -285,7 +285,7 @@ const Exams = () => {
                         required
                         type="text" 
                         placeholder="e.g. LH-01"
-                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-lg text-[11px] font-black"
+                        className="w-full px-4 py-3 bg-white border border-slate-100 border-none rounded-lg text-[11px] font-black"
                         value={formData.RoomNo}
                         onChange={e => setFormData({...formData, RoomNo: e.target.value})}
                     />
@@ -331,7 +331,7 @@ const Exams = () => {
                     <td className="px-8 py-5">
                       <p className="text-[12px] font-black text-slate-900 uppercase tracking-tight">{exam.Subject}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[9px] font-black text-indigo-600 uppercase bg-indigo-50 px-2 py-0.5 rounded">{exam.Department}</span>
+                        <span className="text-[9px] font-black text-indigo-600 uppercase bg-white border border-slate-100 px-2 py-0.5 rounded">{exam.Department}</span>
                         <span className="text-[9px] font-bold text-slate-400 uppercase italic">{exam.Semester} • {exam.ct}</span>
                       </div>
                     </td>
@@ -347,7 +347,7 @@ const Exams = () => {
                        <p className="text-[11px] font-black text-slate-500 uppercase">{exam.time}</p>
                     </td>
                     <td className="px-6 py-5 text-center">
-                       <p className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-[9px] font-black uppercase tracking-tighter inline-block italic">
+                       <p className="px-3 py-1 bg-white border border-slate-100 text-indigo-700 rounded-lg text-[9px] font-black uppercase tracking-tighter inline-block italic">
                         {exam.RoomNo || exam.room}
                        </p>
                     </td>

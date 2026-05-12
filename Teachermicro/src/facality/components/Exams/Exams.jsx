@@ -13,6 +13,7 @@ const Exams = () => {
   // Registry States
   const [courses, setCourses] = useState([]);
   const [semestersList, setSemestersList] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const [newExam, setNewExam] = useState({
     department: "",
@@ -37,6 +38,30 @@ const Exams = () => {
       console.error("Exam Registry Sync Failed", err);
     }
   }, []);
+
+  const fetchSubjects = useCallback(async () => {
+    if (!newExam.department || !newExam.semester) {
+        setSubjects([]);
+        return;
+    }
+    try {
+        const { data } = await AcademicAPI.get("/subjects", {
+            params: {
+                department: newExam.department,
+                semester: newExam.semester
+            }
+        });
+        if (data.subjects) {
+            setSubjects(data.subjects);
+        }
+    } catch (err) {
+        console.error("Failed to fetch subjects", err);
+    }
+  }, [newExam.department, newExam.semester]);
+
+  useEffect(() => {
+    fetchSubjects();
+  }, [fetchSubjects]);
 
   const fetchExams = useCallback(async () => {
     try {
@@ -166,7 +191,7 @@ const Exams = () => {
                   className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.department}
                   onChange={(e) =>
-                    setNewExam({ ...newExam, department: e.target.value })
+                    setNewExam({ ...newExam, department: e.target.value, subject: "" })
                   }
                 >
                   <option value="">Select Path</option>
@@ -180,7 +205,7 @@ const Exams = () => {
                   className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.semester}
                   onChange={(e) =>
-                    setNewExam({ ...newExam, semester: e.target.value })
+                    setNewExam({ ...newExam, semester: e.target.value, subject: "" })
                   }
                 >
                   <option value="">Select Stage</option>
@@ -190,15 +215,17 @@ const Exams = () => {
 
             <div className="space-y-1.5">
                 <label className="text-[9px] font-black text-indigo-400 uppercase tracking-widest ml-1">Subject Title</label>
-                <input
-                  type="text"
-                  placeholder="E.G. DATA STRUCTURES"
-                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm"
+                <select
+                  className="w-full bg-white  rounded-[10px] px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-600 shadow-sm cursor-pointer"
                   value={newExam.subject}
+                  disabled={!newExam.department || !newExam.semester}
                   onChange={(e) =>
                     setNewExam({ ...newExam, subject: e.target.value })
                   }
-                />
+                >
+                  <option value="">{subjects.length > 0 ? "CHOOSE SUBJECT" : "NO SUBJECTS FOUND"}</option>
+                  {subjects.map(s => <option key={s._id} value={s.name}>{s.name.toUpperCase()} ({s.code})</option>)}
+                </select>
             </div>
 
             <div className="space-y-1.5">

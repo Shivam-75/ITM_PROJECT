@@ -137,7 +137,7 @@ const Hostelstudent = () => {
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">{student.course}</p>
                   </td>
                   <td className="p-3">
-                    <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[9px] font-black text-slate-600 italic">{student.studentId}</span>
+                    <span className="px-2 py-1 bg-white border border-slate-100 border border-slate-100 rounded text-[9px] font-black text-slate-600 italic">{student.studentId}</span>
                   </td>
                   <td className="p-3">
                     <div className="flex flex-col">

@@ -159,20 +159,19 @@ const TopNavbar = () => {
             <div 
               key={menu.title} 
               className="relative px-1 group/menu py-2"
-              onMouseEnter={() => setActiveMenu(menu.title)}
-              onMouseLeave={() => setActiveMenu(null)}
             >
               {menu.children ? (
                 <div className="flex flex-col items-center">
                   <div
-                    className={`flex flex-col items-center gap-1 px-2 py-1.5 rounded-xl transition-all duration-300 min-w-[70px] cursor-default ${
+                    onClick={() => setActiveMenu(activeMenu === menu.title ? null : menu.title)}
+                    className={`flex flex-col items-center gap-1 px-2 py-1.5 rounded-xl transition-all duration-300 min-w-[70px] cursor-pointer ${
                       isActive || activeMenu === menu.title 
                         ? "text-blue-600 scale-105" 
                         : "text-slate-400 hover:text-slate-600"
                     }`}
                   >
                     <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 ${
-                      isActive || activeMenu === menu.title ? "bg-blue-50 shadow-inner" : ""
+                      isActive || activeMenu === menu.title ? "bg-white border border-slate-100 shadow-inner" : ""
                     }`}>
                       <span className="text-lg">{menu.icon}</span>
                     </div>
@@ -196,7 +195,7 @@ const TopNavbar = () => {
                           onClick={() => setActiveMenu(null)}
                           className={({ isActive }) =>
                             `block px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all ${
-                              isActive ? 'bg-blue-50 text-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:translate-x-1'
+                              isActive ? 'bg-white border border-slate-100 text-blue-600 shadow-sm' : 'text-slate-600 hover:bg-white border border-slate-100 hover:translate-x-1'
                             }`
                           }
                         >
@@ -216,7 +215,7 @@ const TopNavbar = () => {
                   }
                 >
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 ${
-                    isActive ? "bg-blue-50 shadow-inner" : ""
+                    isActive ? "bg-white border border-slate-100 shadow-inner" : ""
                   }`}>
                     <span className="text-lg">{menu.icon}</span>
                   </div>
@@ -243,7 +242,7 @@ const TopNavbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-slate-50 text-slate-400 hover:text-blue-600 rounded-xl transition-all cursor-pointer">
+          <div className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-blue-600 rounded-xl transition-all cursor-pointer">
             <FiMoon size={20} />
           </div>
           
@@ -259,7 +258,7 @@ const TopNavbar = () => {
 
             {isProfileOpen && (
               <div className="absolute top-full right-0 mt-4 w-64 bg-white rounded-3xl shadow-2xl border border-slate-50 p-4 animate-in fade-in zoom-in-95 duration-300 origin-top-right z-50">
-                <div className="p-4 mb-3 bg-slate-50 rounded-2xl">
+                <div className="p-4 mb-3 bg-white border border-slate-100 rounded-2xl">
                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Session ID</p>
                   <h3 className="text-xs font-black text-slate-900 uppercase italic truncate">
                     {userProfileData?.name || "Admin"}

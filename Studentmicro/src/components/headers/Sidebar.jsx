@@ -77,7 +77,7 @@ const Sidebar = () => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-screen bg-white z-40 transition-all duration-500 ease-in-out flex flex-col border-r border-gray-100 shadow-2xl shadow-black/[0.02]
+        className={`fixed top-0 left-0 h-screen bg-white z-40 transition-all duration-500 ease-in-out flex flex-col border-r border-slate-100 shadow-2xl shadow-black/[0.02]
         ${isSidebarOpen ? "w-72 translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-72"}`}
       >
         {/* Branding Section */}
