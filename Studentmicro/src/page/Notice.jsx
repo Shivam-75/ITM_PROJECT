@@ -5,10 +5,10 @@ import { FiBell, FiArrowRight, FiCalendar, FiUser, FiInfo } from "react-icons/fi
 
 const NoticeCard = memo(({ notice }) => {
   return (
-    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group flex flex-col justify-between h-full min-h-[320px]">
+    <div className="bg-white rounded-[10px] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 group flex flex-col justify-between h-full min-h-[300px]">
       <div>
         <div className="flex justify-between items-start mb-6">
-            <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 bg-black text-white rounded-[10px] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                <FiBell size={22} />
             </div>
             <div className="px-3 py-1 bg-gray-50 rounded-full border border-slate-100 flex items-center gap-2">
@@ -24,24 +24,24 @@ const NoticeCard = memo(({ notice }) => {
            {notice?.subject || "Announcement"}
         </p>
 
-        <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
+         <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100/50">
                <div className="flex items-center gap-2 mb-1">
                   <FiCalendar size={10} className="text-gray-400" />
                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Date</p>
                </div>
-               <p className="text-xs font-black text-black">{new Date(notice?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+               <p className="text-[10px] font-black text-black">{new Date(notice?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
             </div>
-            <div className="bg-gray-50/50 p-4 rounded-2xl border border-slate-100/50">
+            <div className="bg-gray-50/50 p-4 rounded-[10px] border border-slate-100/50">
                <div className="flex items-center gap-2 mb-1">
                   <FiUser size={10} className="text-gray-400" />
                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">Audience</p>
                </div>
-               <p className="text-xs font-black text-black">{notice?.className || "All"}</p>
+               <p className="text-[10px] font-black text-black">{notice?.className || "All"}</p>
             </div>
         </div>
 
-        <div className="p-5 bg-gray-50 rounded-2xl text-[12px] text-gray-600 leading-relaxed border border-slate-100">
+        <div className="p-5 bg-gray-50 rounded-[10px] text-[11px] text-gray-600 leading-relaxed border border-slate-100 break-words overflow-hidden">
            {notice?.description}
         </div>
       </div>
@@ -87,8 +87,8 @@ const Notice = () => {
              <div className="w-12 h-1 bg-black rounded-full"></div>
              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">Bulletin</p>
           </div>
-          <h2 className="text-2xl md:text-4xl font-black text-black tracking-tighter">Academic <br /><span className="text-gray-200">Notices.</span></h2>
-          <p className="text-sm text-gray-500 font-medium max-w-md leading-relaxed">Official announcements and critical updates from the ITM Faculty Administration.</p>
+          <h2 className="text-xl md:text-2xl font-black text-black tracking-tighter">Academic <br /><span className="text-gray-200 text-lg md:text-xl">Notices.</span></h2>
+          <p className="text-xs text-gray-500 font-medium max-w-md leading-relaxed uppercase tracking-widest opacity-80">Official announcements and critical updates from the ITM Faculty Administration.</p>
         </div>
         
         <div className="flex items-center gap-4 bg-gray-50 px-6 py-4 rounded-full border border-slate-100">
@@ -104,7 +104,7 @@ const Notice = () => {
       </div>
 
       {notices.length === 0 && !loading && (
-        <div className="py-32 text-center bg-gray-50 rounded-[3rem] border border-slate-100 mx-6">
+        <div className="py-32 text-center bg-gray-50 rounded-[10px] border border-slate-100 mx-6">
            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.6em]">No Active Announcements</p>
         </div>
       )}

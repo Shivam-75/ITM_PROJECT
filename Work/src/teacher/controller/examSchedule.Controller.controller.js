@@ -54,7 +54,12 @@ class ExamScheduleController {
 
     static async getExams(req, res) {
         try {
-            const data = await Exam.find();
+            const { department, semester } = req.query;
+            const filter = {};
+            if (department) filter.Department = department;
+            if (semester) filter.Semester = semester;
+
+            const data = await Exam.find(filter).sort({ Date: 1 });
             return res.status(200).json({
                 message: "Exams Fetched Successfully",
                 status: 200,

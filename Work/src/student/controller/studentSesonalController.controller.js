@@ -7,13 +7,11 @@ class studentSesonalController {
     static async showResult(req, res) {
         try {
             const { course } = req.students;
-            const { id } = req.params;
+            const { id } = req.query;
 
             const searchResult = await Marks.find({
-                $and: [{
-                    rollNo: id,
-                    course: course
-                }]
+                userId: id,
+                course: course
             });
 
 

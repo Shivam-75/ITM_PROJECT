@@ -40,7 +40,7 @@ const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
                  <span className="px-2 py-0.5 bg-black text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full">Placement Drive</span>
                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{drive.year || "2026-27"}</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-black tracking-tighter uppercase leading-tight">{drive.companyName}</h2>
+              <h2 className="text-xl md:text-2xl font-black text-black tracking-tighter uppercase leading-tight">{drive.companyName}</h2>
             </div>
             <button 
               onClick={onClose}
@@ -78,11 +78,11 @@ const DriveModal = ({ drive, onClose, onApply, isApplied, status }) => {
              <div className="space-y-3">
                 <div className="p-4 bg-gray-50 rounded-[10px] border border-slate-100">
                    <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-slate-100 pb-1.5 mb-2">Description</p>
-                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-3">{drive.description || "Detailed description will be shared during the pre-placement talk."}</p>
+                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-3 break-words">{drive.description || "Detailed description will be shared during the pre-placement talk."}</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-[10px] border border-slate-100">
                    <p className="text-[9px] font-black text-black uppercase tracking-widest border-b border-slate-100 pb-1.5 mb-2">Eligibility Criteria</p>
-                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-2">{drive.eligibility}</p>
+                   <p className="text-[11px] font-medium text-gray-600 leading-relaxed line-clamp-2 break-words">{drive.eligibility}</p>
                 </div>
              </div>
           </div>
@@ -190,7 +190,7 @@ const Placements = () => {
                    <div className="w-10 h-1 bg-black rounded-full"></div>
                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.5em]">Active Registry</p>
                 </div>
-                <h2 className="text-3xl font-black text-black tracking-tighter uppercase italic">Placement Opportunities.</h2>
+                <h2 className="text-xl font-black text-black tracking-tighter uppercase italic">Placement Opportunities.</h2>
              </div>
              <div className="flex items-center gap-4">
                 <div className="bg-black text-white px-6 py-3 rounded-[10px] text-[10px] font-black uppercase tracking-[0.2em] shadow-xl">
@@ -239,8 +239,8 @@ const Placements = () => {
                                 <FiBriefcase size={24} />
                              </div>
                              <div className="space-y-0.5">
-                                <p className="text-base font-black text-black uppercase tracking-tight group-hover:text-black/60 transition-colors">{drive.companyName}</p>
-                                <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">{drive.year || "2026-27"}</p>
+                                <p className="text-[12px] font-black text-black uppercase tracking-tight group-hover:text-black/60 transition-colors">{drive.companyName}</p>
+                                <p className="text-[8px] font-black text-gray-300 uppercase tracking-widest">{drive.year || "2026-27"}</p>
                              </div>
                           </div>
                         </td>
@@ -251,12 +251,12 @@ const Placements = () => {
                         </td>
                         <td className="px-10 py-8">
                           <div className="flex items-baseline gap-1.5">
-                             <span className="text-2xl font-black text-black tracking-tighter leading-none">{drive.ctc}</span>
-                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">LPA</span>
+                             <span className="text-xl font-black text-black tracking-tighter leading-none">{drive.ctc}</span>
+                             <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">LPA</span>
                           </div>
                         </td>
                         <td className="px-10 py-8">
-                           <p className="text-[11px] font-black text-gray-500 uppercase tracking-tight max-w-[140px] truncate">{drive.eligibility}</p>
+                           <p className="text-[10px] font-black text-gray-500 uppercase tracking-tight max-w-[140px] truncate">{drive.eligibility}</p>
                         </td>
                         <td className="px-10 py-8">
                            <div className="flex flex-col">

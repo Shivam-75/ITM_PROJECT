@@ -22,7 +22,7 @@ const AssignmentModal = ({ item, onClose }) => {
                  <span className="px-2 py-0.5 bg-black text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full">Project Unit</span>
                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest italic">{item.year || "2026-27"}</span>
               </div>
-              <h2 className="text-2xl font-black text-black tracking-tighter uppercase leading-tight">{item.subject}</h2>
+              <h2 className="text-2xl font-black text-black tracking-tighter uppercase leading-tight break-words">{item.subject}</h2>
             </div>
             <button 
               onClick={onClose}
@@ -97,7 +97,7 @@ const AssignmentCard = memo(({ item, onOpen }) => {
             </div>
         </div>
 
-        <h3 className="text-xl font-black text-black tracking-tight mb-1.5 leading-tight uppercase italic">
+        <h3 className="text-xl font-black text-black tracking-tight mb-1.5 leading-tight uppercase italic break-words">
             {item?.subject || "Subject"}
         </h3>
         <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">Academic Module</p>
