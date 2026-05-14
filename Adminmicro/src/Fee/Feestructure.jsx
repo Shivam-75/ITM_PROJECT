@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import useAuth from "../store/AdminStore";
 import { useNavigate } from "react-router-dom";
 import { FiCreditCard } from "react-icons/fi";
-import { AcademicService, FeeService, ProfileService } from "../api/apis";
+import { AcademicService, FeeService, StudentService, PaymentService } from "../api/apis";
 
 const Feestructure = () => {
   const navigate = useNavigate();
@@ -27,7 +27,8 @@ const Feestructure = () => {
   const [registry, setRegistry] = useState({
     courses: [],
     batches: [],
-    semesters: []
+    semesters: [],
+    departments: []
   });
 
   const [recentPayments, setRecentPayments] = useState([]);
@@ -58,8 +59,8 @@ const Feestructure = () => {
       const [feeRes, courseRes, batchRes, semRes] = await Promise.all([
         FeeService.getFeeStructures(),
         AcademicService.getCourses(),
-        AcademicService.getAllBatches(),
-        AcademicService.getAllSemesters()
+        AcademicService.getBatches(),
+        AcademicService.getSemesters()
       ]);
 
       if (feeRes.data.structures) setFeeStructures(feeRes.data.structures);
@@ -70,7 +71,8 @@ const Feestructure = () => {
       setRegistry({
         courses: courseRes.data.data || [],
         batches: batchRes.data.batches || [],
-        semesters: semRes.data.data || []
+        semesters: semRes.data.data || [],
+        departments: courseRes.data.data || []
       });
     } catch (err) {
       console.error(err);
@@ -88,7 +90,7 @@ const Feestructure = () => {
     try {
       setLoading(true);
       setError("");
-      const response = await ProfileService.getStudentRegistry();
+      const response = await StudentService.getStudentRegistry();
       const data = response.data.studentList.find(s => s.studentId.trim().toLowerCase() === searchId.trim().toLowerCase());
 
       if (!data) {
@@ -118,7 +120,7 @@ const Feestructure = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await FeeService.publishFee(publishForm);
+      const res = await FeeService.addFeeStructure(publishForm);
       toast.success(res.data.message, toststyle);
       setShowPublishModal(false);
       setPublishForm({
@@ -151,7 +153,7 @@ const Feestructure = () => {
   /* ================= RECENT COLLECTIONS ================= */
   const fetchRecentCollections = async () => {
     try {
-      const payRes = await FeeService.getPaymentHistory();
+      const payRes = await PaymentService.getPaymentHistory();
       if (payRes.data.payments) setRecentPayments(payRes.data.payments.slice(0, 15)); // Show last 15
     } catch (e) {
       console.error("Payment History Load Failed", e);

@@ -6,7 +6,7 @@ import Loader from "./components/Loader";
 
 const Dashboards = lazy(() => import("./page/Dashboard"));
 const Profile = lazy(() => import("./page/Profile"));
-const Feestructure = lazy(() => import("./Fee/FeeStructure"));
+const Feestructure = lazy(() => import("./Fee/Feestructure"));
 const Studentlist = lazy(() => import("./academic/student/Studentlist"));
 const Studentadd = lazy(() => import("./academic/student/Studentadd"));
 const Faculitylist = lazy(() => import("./academic/faculity/Faculitylist"));

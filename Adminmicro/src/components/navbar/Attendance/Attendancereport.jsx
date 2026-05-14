@@ -42,9 +42,9 @@ const Attendancereport = () => {
       setLoading(true);
       const [attRes, courseRes, secRes, semRes] = await Promise.all([
         axios.get(`${ADMIN_REPORT_URL}/Attendance/All`, { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/sections", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/semesters", { withCredentials: true })
       ]);
       
       if (attRes.data.data) setAttendanceList(attRes.data.data);

@@ -70,13 +70,13 @@ const createAxiosInstance = (baseURL) => {
 export const authAPI = createAxiosInstance(import.meta.env.VITE_BASE_Auth);
 export const WorkAPI = createAxiosInstance(import.meta.env.VITE_BASE_WORK); // Likely /api/v2/Admin/Work
 export const ReportAPI = createAxiosInstance(import.meta.env.VITE_BASE_REPORT);
-export const AcademicAPI = createAxiosInstance(import.meta.env.VITE_BASE_ACADEMIC || "http://localhost:5002/api/v3/Admin/Academic");
-export const AdminGlobalAPI = createAxiosInstance(import.meta.env.VITE_BASE_ADMIN_GLOBAL || "http://localhost:5002/api/v3/Admin");
-export const HostelAPI = createAxiosInstance(import.meta.env.VITE_BASE_HOSTEL || "http://localhost:5002/api/v3/Admin/Hostel");
-export const NotificationAPI = createAxiosInstance(import.meta.env.VITE_BASE_NOTIFICATION || "http://localhost:5002/api/v3/Admin/Notification");
-export const PlacementAPI = createAxiosInstance(import.meta.env.VITE_BASE_PLACEMENT || "http://localhost:5002/api/v3/Admin/Placement");
-export const FeeAPI = createAxiosInstance(import.meta.env.VITE_BASE_FEE || "http://localhost:5002/api/v3/Admin/Fee");
-export const PaymentAPI = createAxiosInstance(import.meta.env.VITE_BASE_PAYMENT || "http://localhost:5002/api/v3/Admin/Payment");
+export const AcademicAPI = createAxiosInstance(import.meta.env.VITE_BASE_ACADEMIC || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic");
+export const AdminGlobalAPI = createAxiosInstance(import.meta.env.VITE_BASE_ADMIN_GLOBAL || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin");
+export const HostelAPI = createAxiosInstance(import.meta.env.VITE_BASE_HOSTEL || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel");
+export const NotificationAPI = createAxiosInstance(import.meta.env.VITE_BASE_NOTIFICATION || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Notification");
+export const PlacementAPI = createAxiosInstance(import.meta.env.VITE_BASE_PLACEMENT || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement");
+export const FeeAPI = createAxiosInstance(import.meta.env.VITE_BASE_FEE || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Fee");
+export const PaymentAPI = createAxiosInstance(import.meta.env.VITE_BASE_PAYMENT || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Payment");
 
 // 🔹 Caching Wrapper
 export const cachedFetch = async (apiCall, key, forceRefresh = false) => {

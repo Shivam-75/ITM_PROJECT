@@ -19,8 +19,8 @@ const Roomallocation = () => {
     try {
       setLoading(true);
       const [roomsRes, allocRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Hostel/rooms", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/rooms", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate", { withCredentials: true })
       ]);
       
       // Group rooms by block
@@ -52,7 +52,7 @@ const Roomallocation = () => {
  
     try {
       setSubmitting(true);
-      const response = await axios.post("http://localhost:5002/api/v3/Admin/Hostel/allocate", {
+      const response = await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate", {
         studentName,
         course,
         roomNo: room,
@@ -82,7 +82,7 @@ const Roomallocation = () => {
   const handleRemove = async (id) => {
     if (window.confirm("CRITICAL: Are you sure you want to de-allocate this room?")) {
       try {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Hostel/allocate/${id}`, { withCredentials: true });
+        await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate/${id}`, { withCredentials: true });
         toast.success("Allocation Revoked");
         fetchData(); // Sync with backend
       } catch (err) {

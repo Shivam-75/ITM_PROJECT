@@ -21,10 +21,10 @@ const Exams = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, sRes, yRes, subRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/subjects", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/years", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/subjects", { withCredentials: true })
       ]);
       if (cRes.data.data) setCourses(cRes.data.data);
       if (sRes.data.data) setSemestersList(sRes.data.data);

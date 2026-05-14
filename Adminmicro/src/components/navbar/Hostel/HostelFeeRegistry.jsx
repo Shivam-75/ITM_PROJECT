@@ -26,8 +26,8 @@ const HostelFeeRegistry = () => {
     try {
       setLoading(true);
       const [feeRes, batchRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Hostel/fees", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/batches", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/fees", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/batches", { withCredentials: true })
       ]);
 
       if (feeRes.data.fees) setFeeStructures(feeRes.data.fees);
@@ -47,7 +47,7 @@ const HostelFeeRegistry = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Hostel/fees", formData, { withCredentials: true });
+      const res = await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/fees", formData, { withCredentials: true });
       toast.success(res.data.message, toststyle);
       setShowModal(false);
       setFormData({ roomType: "", hostelType: "", amount: "", academicYear: "", description: "" });
@@ -64,7 +64,7 @@ const HostelFeeRegistry = () => {
     try {
       setLoading(true);
       // Assuming a delete route exists or needs to be added
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Hostel/fees/${id}`, { withCredentials: true });
+      await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/fees/${id}`, { withCredentials: true });
       toast.success("Structure Purged", toststyle);
       fetchData();
     } catch (err) {

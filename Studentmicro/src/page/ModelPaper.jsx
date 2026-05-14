@@ -46,7 +46,7 @@ const PaperCard = memo(({ paper }) => {
       <div className="mt-12 relative z-10">
         {paper.paperImage && (
           <a 
-            href={`http://localhost:5002${paper.paperImage}`} 
+            href={`https://itm-project-1-ilmh.onrender.com${paper.paperImage}`} 
             target="_blank" 
             rel="noreferrer" 
             className="w-full flex items-center justify-center gap-3 py-5 bg-black text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-[1.5rem] hover:bg-gray-900 transition-all shadow-xl shadow-gray-200 active:scale-95"

@@ -25,7 +25,7 @@ const BulkResults = () => {
 
     const fetchRegistries = useCallback(async () => {
         try {
-            const academicBase = "http://localhost:5002/api/v3/Admin/Academic";
+            const academicBase = "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic";
             const [cRes, sRes, yRes, secRes] = await Promise.all([
                 axios.get(`${academicBase}/courses`, { withCredentials: true }),
                 axios.get(`${academicBase}/semesters`, { withCredentials: true }),

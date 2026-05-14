@@ -17,7 +17,7 @@ const Timetable = lazy(() => import("./facality/page/TimeTable/Timetable"));
 const HostelRegistration = lazy(() => import("./facality/page/works/HostelRegistration"));
 const Complain = lazy(() => import("./facality/components/Hostelwarden/Complain"));
 const HostelStudent = lazy(() => import("./facality/components/Hostelwarden/Hostelstudent"));
-const HostelReport = lazy(() => import("./facality/components/Hostelwarden/Hostelreport"));
+const HostelReport = lazy(() => import("./facality/components/Hostelwarden/HostelReport"));
 const Event = lazy(() => import("./facality/components/ParamparaEvent/Event"));
 const Exams = lazy(() => import("./facality/components/Exams/Exams"));
 const FacResult = lazy(() => import("./facality/components/Exams/FacResult"));

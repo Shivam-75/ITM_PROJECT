@@ -119,8 +119,8 @@ const Placements = () => {
     try {
       setLoading(true);
       const [drivesRes, appsRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Placement/drives"),
-        axios.get(`http://localhost:5002/api/v3/Admin/Placement/applications?studentId=${student?.studentId}`)
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/drives"),
+        axios.get(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/applications?studentId=${student?.studentId}`)
       ]);
       setDrives(drivesRes.data.data || []);
       setApplications(appsRes.data.data || []);
@@ -140,7 +140,7 @@ const Placements = () => {
     
     try {
       setLoading(true);
-      await axios.post("http://localhost:5002/api/v3/Admin/Placement/apply", {
+      await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/apply", {
         placementId: drive._id,
         studentId: student.studentId,
         studentName: student.name,
