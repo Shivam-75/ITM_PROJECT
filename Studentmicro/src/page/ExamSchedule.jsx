@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { ReportAPI, authAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 import { FiCalendar, FiClock, FiMapPin, FiLayers, FiFileText } from "react-icons/fi";
 
@@ -8,39 +8,36 @@ const ExamSchedule = () => {
   const [loading, setLoading] = useState(false);
   const [studentInfo, setStudentInfo] = useState(null);
 
-  const fetchExams = useCallback(async (course, semester) => {
+  const fetchExams = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await ReportAPI.get("/Exam-Schedule/uploader", {
-        params: {
-            department: course,
-            semester: semester
-        }
-      });
-      
+      if (isInitial || exams.length === 0) setLoading(true);
+      const res = await StudentAcademicService.getExams();
+      const data = res.data || res;
       if (data?.data) {
         setExams(data.data);
+      } else if (Array.isArray(data)) {
+        setExams(data);
       }
     } catch (err) {
       console.error("Exam fetch failed:", err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [exams.length]);
 
   useEffect(() => {
     const init = async () => {
        try {
-          const profile = await authAPI.get("/userProfile");
-          const student = profile.data?.StudentData;
+          const profile = await StudentProfileService.getUserData();
+          const student = profile.userData || profile.data?.StudentData;
           setStudentInfo(student);
-          fetchExams(student?.course, student?.semester);
+          fetchExams(true);
        } catch (err) {
-          fetchExams();
+          fetchExams(true);
        }
     }
     init();
-  }, [fetchExams]);
+  }, []);
 
   return (
     <div className="min-h-screen space-y-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">

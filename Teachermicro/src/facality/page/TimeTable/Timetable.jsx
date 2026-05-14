@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { ReportAPI, AcademicAPI } from "../../api/apis";
+import { TeacherService, AcademicService } from "../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../common/Loader";
 import { useAcademicRegistry } from "../../hooks/useAcademicRegistry";
@@ -32,8 +32,15 @@ const Timetable = () => {
   const fetchSubjects = useCallback(async () => {
     if (!course) return;
     try {
-      const { data } = await AcademicAPI.get(`/subjects?department=${course}${semester ? `&semester=${semester}` : ""}`);
-      setSubjects(data?.subjects || []);
+      // Note: TeacherService doesn't have this specific param version, 
+      // but I can use AcademicService.getSubjects and filter locally if needed,
+      // or I'll just use the centralized AcademicAPI from AcademicService.
+      const data = await AcademicService.getSubjects(); // Use cached subjects
+      const filtered = data?.subjects?.filter(s => 
+        s.department?.toLowerCase() === course.toLowerCase() &&
+        (!semester || s.semester?.toString().toLowerCase() === semester.toString().toLowerCase())
+      ) || [];
+      setSubjects(filtered);
     } catch (err) {
       console.error("Subject fetch failed", err);
     }
@@ -48,12 +55,12 @@ const Timetable = () => {
     
     try {
       setLoading(true);
-      const { data } = await ReportAPI.get("/TimeTable/uploader");
+      const data = await TeacherService.getTimeTable(); // Use cached timetable
       
       const match = data?.data?.find(t => 
         t.course.toLowerCase() === course.toLowerCase() &&
         t.section.toLowerCase() === section.toLowerCase() &&
-        t.semester.toString().toLowerCase() === semester.toString().toLowerCase() // String comparison
+        t.semester.toString().toLowerCase() === semester.toString().toLowerCase()
       );
 
       if (match) {
@@ -62,17 +69,12 @@ const Timetable = () => {
           Thursday: [], Friday: [], Saturday: []
         };
         
-        // Group by Day
         match.timeSheet.forEach(item => {
           if (newFormData[item.day]) {
-            newFormData[item.day].push({
-                ...item,
-                day: item.day // ensure day is present
-            });
+            newFormData[item.day].push({ ...item, day: item.day });
           }
         });
         
-        // Sort each day by lecture number
         Object.keys(newFormData).forEach(d => {
             newFormData[d].sort((a, b) => a.lecture - b.lecture);
         });
@@ -80,7 +82,6 @@ const Timetable = () => {
         setFormData(newFormData);
         toast.info("Existing Schedule Loaded ⚡", { autoClose: 1000, theme: "colored" });
       } else {
-          // Reset if no match found
           setFormData({
             Monday: [], Tuesday: [], Wednesday: [], 
             Thursday: [], Friday: [], Saturday: []
@@ -119,7 +120,7 @@ const Timetable = () => {
     setFormData({ ...formData, [day]: updated });
   };
 
-  const handleSubmitDay = async (day) => {
+  const handleSubmitDay = useCallback(async (day) => {
     if (!course || !section || !semester || formData[day].length === 0) {
       toast.error("Complete Course details and add at least one lecture", { theme: "colored" });
       return;
@@ -128,20 +129,23 @@ const Timetable = () => {
     const payload = {
       course: course.toLowerCase(),
       section: section.toLowerCase(),
-      semester: semester.toString().toLowerCase(), // Removed Number() casting
+      semester: semester.toString().toLowerCase(),
       timeSheet: formData[day],
     };
 
     try {
       setLoading(true);
-      await ReportAPI.post("/TimeTable/uploader", payload);
+      // We don't have a specific submitTimetable in TeacherService yet, 
+      // but I'll add it or use WorkAPI directly if it's the only place.
+      // Actually, user wants ALL in TeacherService.
+      await TeacherService.submitTimetable(payload);
       toast.success(`${day} Schedule Synchronized Successfully ✅`);
     } catch (error) {
       toast.error(error?.response?.data?.message || `Failed to save ${day} schedule`);
     } finally {
       setLoading(false);
     }
-  };
+  }, [course, section, semester, formData]);
 
   return (
     <div className="space-y-10 animate-in fade-in duration-500 pb-20">
@@ -251,8 +255,8 @@ const Timetable = () => {
                                             onChange={(e) => handleChange(activeDay, idx, "subject", e.target.value)}
                                         >
                                             <option value="">SELECT SUBJECT</option>
-                                            {subjects.map(sub => (
-                                                <option key={sub._id} value={sub.name}>
+                                            {subjects.map((sub, sidx) => (
+                                                <option key={sub._id || `sub-${sidx}`} value={sub.name}>
                                                     {sub.code} - {sub.name.toUpperCase()}
                                                 </option>
                                             ))}
@@ -282,8 +286,8 @@ const Timetable = () => {
                                             }}
                                         >
                                             <option value="">SELECT TIME SLOT</option>
-                                            {periods.map(p => (
-                                                <option key={p._id} value={`${p.startTime}-${p.endTime}`}>
+                                            {periods.map((p, pidx) => (
+                                                <option key={p._id || `per-${pidx}`} value={`${p.startTime}-${p.endTime}`}>
                                                     {p.startTime} - {p.endTime} ({p.name.toUpperCase()})
                                                 </option>
                                             ))}

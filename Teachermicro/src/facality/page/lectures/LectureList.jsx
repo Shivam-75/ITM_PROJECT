@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import LectureForm from "../../components/lectureComponents/LectureForm.jsx";
 import LectureTable from "../../components/lectureComponents/LectureTable.jsx";
 import BigLoader from "../../common/BigLoader.jsx";
-import { WorkAPI } from "../../api/apis.js";
+import { TeacherService } from "../../api/apis.js";
 import { toast } from "react-toastify";
 import useAuth from "../../../store/FacultyStore.jsx";
 
@@ -12,11 +12,11 @@ export default function LectureList() {
   const [activeTab, setActiveTab] = useState("archive"); // archive | conduct
   const { toststyle } = useAuth();
 
-  const getLinks = useCallback(async () => {
+  const getLinks = useCallback(async (isInitial = false) => {
     try {
-      setLinkLoader(true);
-      const { data } = await WorkAPI.get("/Link/Uploader", { withCredentials: true });
-      setLinks(data?.findUserLinks || []);
+      if (!isInitial) setLinkLoader(true);
+      const data = await TeacherService.getOnlineLinks();
+      setLinks(data?.findUserLinks || data?.data?.findUserLinks || []);
     } catch (err) {
       console.log(err.response?.data?.message || err.message);
     } finally {
@@ -25,7 +25,7 @@ export default function LectureList() {
   }, []);
 
   useEffect(() => {
-    getLinks();
+    getLinks(true); // Initial/Cached check
   }, [getLinks]);
 
   const handleDeleteLecture = useCallback(async (id) => {
@@ -33,7 +33,8 @@ export default function LectureList() {
     setLinks(prev => prev.filter(item => item._id !== id));
     try {
       setLinkLoader(true);
-      const { data } = await WorkAPI.delete(`/Link/Delete/${id}`, { withCredentials: true });
+      // You might need to add deleteOnlineLink to TeacherService in apis.js
+      const { data } = await TeacherService.deleteOnlineLink(id); 
       toast.success(data?.message || "Session Record Purged", toststyle);
     } catch (err) {
       toast.error(err.response?.data?.message || "Deletion Failed", toststyle);

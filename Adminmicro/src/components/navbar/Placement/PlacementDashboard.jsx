@@ -214,7 +214,7 @@ const PlacementDashboard = () => {
                          <p className="text-[10px] font-black text-rose-500 uppercase italic tracking-tight">{new Date(drive.deadline).toLocaleDateString()}</p>
                       </td>
                       <td className="px-8 py-6 text-right">
-                        <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-end gap-3 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity">
                            <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors"><FiExternalLink size={18} /></button>
                         </div>
                       </td>

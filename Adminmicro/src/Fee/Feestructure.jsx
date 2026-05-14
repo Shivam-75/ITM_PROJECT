@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import Loader from "../components/Loader";
 import { 
   FiSearch, FiPrinter, FiBookOpen, FiUser, FiHash, 
@@ -10,6 +9,7 @@ import { toast } from "react-toastify";
 import useAuth from "../store/AdminStore";
 import { useNavigate } from "react-router-dom";
 import { FiCreditCard } from "react-icons/fi";
+import { AcademicService, FeeService, ProfileService } from "../api/apis";
 
 const Feestructure = () => {
   const navigate = useNavigate();
@@ -56,10 +56,10 @@ const Feestructure = () => {
     try {
       setLoading(true);
       const [feeRes, courseRes, batchRes, semRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Fee/structure", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/batches", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+        FeeService.getFeeStructures(),
+        AcademicService.getCourses(),
+        AcademicService.getAllBatches(),
+        AcademicService.getAllSemesters()
       ]);
 
       if (feeRes.data.structures) setFeeStructures(feeRes.data.structures);
@@ -88,7 +88,7 @@ const Feestructure = () => {
     try {
       setLoading(true);
       setError("");
-      const response = await axios.get(`http://localhost:5002/api/v3/Profile/student-list`, { withCredentials: true });
+      const response = await ProfileService.getStudentRegistry();
       const data = response.data.studentList.find(s => s.studentId.trim().toLowerCase() === searchId.trim().toLowerCase());
 
       if (!data) {
@@ -118,7 +118,7 @@ const Feestructure = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Fee/structure", publishForm, { withCredentials: true });
+      const res = await FeeService.publishFee(publishForm);
       toast.success(res.data.message, toststyle);
       setShowPublishModal(false);
       setPublishForm({
@@ -138,7 +138,7 @@ const Feestructure = () => {
     if (!window.confirm("Purge this fee structure?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Fee/structure/${id}`, { withCredentials: true });
+      await FeeService.deleteFeeStructure(id);
       toast.success("Structure Purged", toststyle);
       fetchData();
     } catch (err) {
@@ -151,7 +151,7 @@ const Feestructure = () => {
   /* ================= RECENT COLLECTIONS ================= */
   const fetchRecentCollections = async () => {
     try {
-      const payRes = await axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true });
+      const payRes = await FeeService.getPaymentHistory();
       if (payRes.data.payments) setRecentPayments(payRes.data.payments.slice(0, 15)); // Show last 15
     } catch (e) {
       console.error("Payment History Load Failed", e);

@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback, useMemo } from "react";
-import { WorkAPI, authAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 import { FiDownload, FiFileText, FiSearch, FiLayers, FiCheckCircle, FiArrowRight } from "react-icons/fi";
 
@@ -70,13 +70,16 @@ const ModelPaper = () => {
   const fetchPapers = useCallback(async () => {
     try {
       setLoading(true);
-      const profileRes = await authAPI.get("/userProfile");
-      const student = profileRes.data?.StudentData;
+      const profileRes = await StudentProfileService.getUserData();
+      const student = profileRes.userData || profileRes.data?.StudentData;
       setStudentInfo(student);
 
       if (student) {
-          const { data } = await WorkAPI.get("/ModelPaper/all");
-          if (data?.success && Array.isArray(data.data)) {
+          const res = await StudentAcademicService.getModelPapers();
+          const data = res.data || res;
+          if (Array.isArray(data)) {
+            setPapers(data);
+          } else if (Array.isArray(data.data)) {
             setPapers(data.data);
           }
       }

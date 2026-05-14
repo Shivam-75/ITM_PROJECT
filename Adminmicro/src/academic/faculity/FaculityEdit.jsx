@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiArrowLeft, FiSave, FiUploadCloud, FiUser, FiBriefcase, FiMapPin, FiCalendar } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
-import { ReportAPI, AcademicAPI, authAPI } from "../../api/apis";
+import { AcademicService, TeacherService } from "../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
@@ -34,7 +34,7 @@ const FaculityEdit = () => {
   useEffect(() => {
     const fetchDeps = async () => {
       try {
-        const res = await AcademicAPI.get("/courses");
+        const res = await AcademicService.getCourses();
         if (res.data.courses) {
             setDepartmentList(res.data.courses);
         } else if (res.data.data) {
@@ -52,7 +52,7 @@ const FaculityEdit = () => {
     const fetchTeacher = async () => {
       try {
         setLoading(true);
-        const response = await authAPI.get(`/Faculty/get/${id}`);
+        const response = await TeacherService.getTeacherById(id);
         if (response.data.data) {
           const data = response.data.data;
           setTeacher({
@@ -102,7 +102,7 @@ const FaculityEdit = () => {
         formData.append("image", teacher.image);
       }
 
-      const response = await authAPI.put(`/Faculty/update/${id}`, formData);
+      const response = await TeacherService.updateTeacher(id, formData);
       
       if (response.status === 200) {
         toast.success("Faculty record updated successfully!");

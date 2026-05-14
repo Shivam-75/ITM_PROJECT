@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useCallback } from "react";
-import { WorkAPI } from "../api/apis";
+import { StudentAcademicService } from "../api/apis";
 import Loader from "../components/common/Loader.jsx";
 import { FiEdit3, FiCalendar, FiBook, FiCheckCircle, FiArrowRight, FiX, FiFileText, FiInfo, FiClock } from "react-icons/fi";
 
@@ -167,11 +167,13 @@ const Homework = () => {
   const [loading, setLoading] = useState(false);
   const [selectedHomework, setSelectedHomework] = useState(null);
 
-  const fetchHomework = useCallback(async () => {
+  const fetchHomework = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await WorkAPI.get("/HomeWork/getHwDpt", { withCredentials: true });
-      if (Array.isArray(data?.data)) {
+      if (isInitial || homeworkData.length === 0) setLoading(true);
+      const { data } = await StudentAcademicService.getHomework();
+      if (Array.isArray(data)) {
+        setHomeworkData(data);
+      } else if (Array.isArray(data?.data)) {
         setHomeworkData(data.data);
       } else {
         setHomeworkData([]);
@@ -181,11 +183,11 @@ const Homework = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [homeworkData.length]);
 
   useEffect(() => {
-    fetchHomework();
-  }, [fetchHomework]);
+    fetchHomework(true);
+  }, []);
 
   return (
     <div className="max-w-[1400px] mx-auto min-h-screen space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">

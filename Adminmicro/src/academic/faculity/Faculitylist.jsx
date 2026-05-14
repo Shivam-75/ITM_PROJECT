@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { authAPI } from "../../api/apis";
+import { TeacherService } from "../../api/apis";
 import { 
   FiUserPlus, 
   FiSearch, 
@@ -34,7 +34,7 @@ const Faculitylist = () => {
   const fetchFaculty = async () => {
     try {
       setLoading(true);
-      const response = await authAPI.get("/TeacherList");
+      const response = await TeacherService.getAllTeachers();
       if (response.data.TeacherList) {
         setFacultyData(response.data.TeacherList);
       }
@@ -74,7 +74,7 @@ const Faculitylist = () => {
     if (facultyToDelete) {
       try {
         setLoading(true);
-        const response = await authAPI.delete(`/TeacherList/Deleted/${facultyToDelete._id}`);
+        const response = await TeacherService.deleteTeacherProfile(facultyToDelete._id);
         if (response.status === 200) {
           toast.success(`${facultyToDelete.name} has been removed`);
           fetchFaculty();
@@ -214,7 +214,7 @@ const Faculitylist = () => {
                     <div className="text-sm font-medium text-gray-600">{faculty.doj}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity">
                       <button 
                         onClick={() => handleEdit(faculty._id)}
                         className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { ReportAPI, AcademicAPI } from "../../api/apis";
+import { ReportAPI, AcademicAPI, AcademicService, ExamService } from "../../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../../common/Loader";
 
@@ -29,11 +29,11 @@ const Exams = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, sRes] = await Promise.all([
-        AcademicAPI.get("/courses"),
-        AcademicAPI.get("/semesters")
+        AcademicService.getCourses(),
+        AcademicService.getSemesters()
       ]);
-      if (cRes.data.courses) setCourses(cRes.data.courses);
-      if (sRes.data.semesters) setSemestersList(sRes.data.semesters);
+      setCourses(cRes.data?.data || cRes.data?.courses || cRes.data || []);
+      setSemestersList(sRes.data?.data || sRes.data?.semesters || sRes.data || []);
     } catch (err) {
       console.error("Exam Registry Sync Failed", err);
     }
@@ -45,15 +45,12 @@ const Exams = () => {
         return;
     }
     try {
-        const { data } = await AcademicAPI.get("/subjects", {
-            params: {
-                department: newExam.department,
-                semester: newExam.semester
-            }
-        });
-        if (data.subjects) {
-            setSubjects(data.subjects);
-        }
+        const data = await AcademicService.getSubjects(); // Cached subjects
+        const filtered = data?.subjects?.filter(s => 
+          s.department?.toLowerCase() === newExam.department?.toLowerCase() &&
+          s.semester?.toLowerCase() === newExam.semester?.toLowerCase()
+        ) || [];
+        setSubjects(filtered);
     } catch (err) {
         console.error("Failed to fetch subjects", err);
     }
@@ -63,13 +60,11 @@ const Exams = () => {
     fetchSubjects();
   }, [fetchSubjects]);
 
-  const fetchExams = useCallback(async () => {
+  const fetchExams = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await ReportAPI.get("/Exam-Schedule/uploader");
-      if (data?.data) {
-        setExamData(data.data);
-      }
+      if (!isInitial) setLoading(true);
+      const data = await ExamService.getExams();
+      setExamData(data?.data || data || []);
     } catch (error) {
       console.error("Failed to fetch exams", error);
     } finally {
@@ -79,7 +74,7 @@ const Exams = () => {
 
   useEffect(() => {
     fetchRegistries();
-    fetchExams();
+    fetchExams(true);
   }, [fetchRegistries, fetchExams]);
 
   const handleDelete = async (id) => {

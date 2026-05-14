@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthStore";
-import { WorkAPI, AcademicAPI } from "../api/apis";
+import { StudentAcademicService } from "../api/apis";
 import { 
   FiBookOpen, FiEdit3, FiTv, FiBell, FiClock, 
   FiFileText, FiLayers, FiBriefcase, FiArrowRight, 
@@ -65,59 +65,63 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  const fetchDashboardData = useCallback(async () => {
+  const fetchDashboardData = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
+      const isDataEmpty = Object.values(counts).every(v => v === 0);
+      if (isInitial || isDataEmpty) setLoading(true);
       
-      // Initial parallel fetch for departmental work
+      // Use centralized services with caching
       const [hwRes, assRes, mpRes, noteRes] = await Promise.all([
-        WorkAPI.get("/HomeWork/getHwDpt"),
-        WorkAPI.get("/Assignment/getAssDpt"),
-        WorkAPI.get("/ModelPaper/all"),
-        WorkAPI.get("/Notice/getNoticeDpt")
+        StudentAcademicService.getHomework(),
+        StudentAcademicService.getAssignments(),
+        StudentAcademicService.getModelPapers(),
+        StudentAcademicService.getNotice()
       ]);
 
-      // Specialized fetch for Syllabus/Subjects based on student profile
       let syllabusCount = 0;
       if (student) {
         try {
-          const { data } = await AcademicAPI.get("/subjects", {
-            params: {
+          const res = await StudentAcademicService.getSubjects({
               department: student.course,
               semester: student.semester
-            }
           });
-          
+          const data = res.data || res;
           if (Array.isArray(data?.subjects)) {
             syllabusCount = data.subjects.length;
           } else {
-            const sylRes = await WorkAPI.get("/Syllabus/getSyllabus");
-            syllabusCount = Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0;
+            const sylRes = await StudentAcademicService.getSyllabus();
+            const sylData = sylRes.data || sylRes;
+            syllabusCount = Array.isArray(sylData?.data) ? sylData.data.length : (Array.isArray(sylData) ? sylData.length : 0);
           }
         } catch (sylErr) {
-          console.error("Syllabus fetch failed", sylErr);
-          const sylRes = await WorkAPI.get("/Syllabus/getSyllabus");
-          syllabusCount = Array.isArray(sylRes.data?.data) ? sylRes.data.data.length : 0;
+          const sylRes = await StudentAcademicService.getSyllabus();
+          const sylData = sylRes.data || sylRes;
+          syllabusCount = Array.isArray(sylData?.data) ? sylData.data.length : (Array.isArray(sylData) ? sylData.length : 0);
         }
       }
 
+      const hwData = hwRes.data || hwRes;
+      const assData = assRes.data || assRes;
+      const mpData = mpRes.data || mpRes;
+      const noteData = noteRes.data || noteRes;
+
       setCounts({
-        homework: Array.isArray(hwRes.data?.data) ? hwRes.data.data.length : 0,
-        assignments: Array.isArray(assRes.data?.data) ? assRes.data.data.length : 0,
-        modelPapers: Array.isArray(mpRes.data?.data) ? mpRes.data.data.length : 0,
+        homework: Array.isArray(hwData?.data) ? hwData.data.length : (Array.isArray(hwData) ? hwData.length : 0),
+        assignments: Array.isArray(assData?.data) ? assData.data.length : (Array.isArray(assData) ? assData.length : 0),
+        modelPapers: Array.isArray(mpData?.data) ? mpData.data.length : (Array.isArray(mpData) ? mpData.length : 0),
         syllabus: syllabusCount,
-        notices: Array.isArray(noteRes.data?.data) ? noteRes.data.data.length : 0
+        notices: Array.isArray(noteData?.data) ? noteData.data.length : (Array.isArray(noteData) ? noteData.length : 0)
       });
     } catch (error) {
       console.error("Failed to fetch dashboard counts", error);
     } finally {
       setLoading(false);
     }
-  }, [student]);
+  }, [student, counts]);
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [fetchDashboardData]);
+    fetchDashboardData(true);
+  }, []);
 
   const getTimeOfDay = () => {
     const hour = new Date().getHours();
@@ -127,7 +131,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto p-4 md:p-8 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-24">
+    <div className="max-w-[1440px] mx-auto p-4 pt-0 md:p-8 md:pt-4 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-24">
       
       {/* 🌟 ULTRA-SLIM HERO STRIP */}
       <div className="relative overflow-hidden rounded-[10px] bg-black py-8 px-6 group shadow-xl">

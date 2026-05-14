@@ -2,33 +2,29 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./facality/ui/Layout";
 import { lazy, Suspense } from "react";
 
-import Dashboard from "./facality/page/Dashboard";
-import Notifications from "./facality/page/Notifications";
-import ModelPaper from "./facality/page/works/ModelPaper";
-import NoticeDashboard from "./facality/page/works/NoticeDashboard";
-import Attendance from "./facality/page/classes/Attendance";
-import StudentListPage from "./facality/page/classes/students/StudentListPage";
-import StudentProfilePage from "./facality/page/classes/students/StudentProfilePage";
-import AddLecture from "./facality/page/lectures/AddLecture";
-import LectureList from "./facality/page/lectures/LectureList";
-import Fontpage from "./facality/ui/Fontpage";
-import Timetable from "./facality/page/TimeTable/Timetable";
-import RoomAllocation from "./facality/components/Hostelwarden/RoomAllocation";
-import HostelRegistration from "./facality/page/works/HostelRegistration";
-import Complain from "./facality/components/Hostelwarden/Complain";
-import HostelStudent from "./facality/components/Hostelwarden/Hostelstudent";
-import HostelReport from "./facality/components/Hostelwarden/Hostelreport";
-import Event from "./facality/components/ParamparaEvent/Event";
-import Exams from "./facality/components/Exams/Exams";
-import FacResult from "./facality/components/Exams/FacResult";
-import ResultList from "./facality/components/Exams/ResultList";
-import HomeworkForm from "./facality/components/homework/HomeworkForm";
-import AssignmentForm from "./facality/components/assignment/AssignmentForm";
+import Loader from "./facality/common/Loader";
 
-
-// import StudentDetails from "./facality/components/studentComponents/StudentDetails";
-
-import FeeSubmission from "./facality/page/Fees/FeeSubmission";
+const Dashboard = lazy(() => import("./facality/page/Dashboard"));
+const Notifications = lazy(() => import("./facality/page/Notifications"));
+const ModelPaper = lazy(() => import("./facality/page/works/ModelPaper"));
+const NoticeDashboard = lazy(() => import("./facality/page/works/NoticeDashboard"));
+const Attendance = lazy(() => import("./facality/page/classes/Attendance"));
+const StudentListPage = lazy(() => import("./facality/page/classes/students/StudentListPage"));
+const StudentProfilePage = lazy(() => import("./facality/page/classes/students/StudentProfilePage"));
+const AddLecture = lazy(() => import("./facality/page/lectures/AddLecture"));
+const LectureList = lazy(() => import("./facality/page/lectures/LectureList"));
+const Timetable = lazy(() => import("./facality/page/TimeTable/Timetable"));
+const HostelRegistration = lazy(() => import("./facality/page/works/HostelRegistration"));
+const Complain = lazy(() => import("./facality/components/Hostelwarden/Complain"));
+const HostelStudent = lazy(() => import("./facality/components/Hostelwarden/Hostelstudent"));
+const HostelReport = lazy(() => import("./facality/components/Hostelwarden/Hostelreport"));
+const Event = lazy(() => import("./facality/components/ParamparaEvent/Event"));
+const Exams = lazy(() => import("./facality/components/Exams/Exams"));
+const FacResult = lazy(() => import("./facality/components/Exams/FacResult"));
+const ResultList = lazy(() => import("./facality/components/Exams/ResultList"));
+const HomeworkForm = lazy(() => import("./facality/components/homework/HomeworkForm"));
+const AssignmentForm = lazy(() => import("./facality/components/assignment/AssignmentForm"));
+const FeeSubmission = lazy(() => import("./facality/page/Fees/FeeSubmission"));
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -132,7 +128,11 @@ const App = () => {
     },
   ]);
 
-  return <RouterProvider router={routes} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <RouterProvider router={routes} />
+    </Suspense>
+  );
 };
 export default App;
 

@@ -101,7 +101,7 @@ const HostelFeeRegistry = () => {
         ) : (
           feeStructures.map((f) => (
             <div key={f._id} className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all relative group">
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all">
+              <div className="absolute top-4 right-4 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-all">
                 <button onClick={() => handleDelete(f._id)} className="text-gray-300 hover:text-red-500 p-2">
                   <FiTrash2 size={16} />
                 </button>

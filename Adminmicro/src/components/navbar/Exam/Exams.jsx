@@ -355,7 +355,7 @@ const Exams = () => {
                     <td className="px-8 py-5 text-right">
                       <button
                         onClick={() => handleDelete(exam._id || exam.id)}
-                        className="bg-slate-900 text-white px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all hover:bg-red-600 shadow-lg shadow-slate-200"
+                        className="bg-slate-900 text-white px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-all hover:bg-red-600 shadow-lg shadow-slate-200"
                       >
                         Purge
                       </button>

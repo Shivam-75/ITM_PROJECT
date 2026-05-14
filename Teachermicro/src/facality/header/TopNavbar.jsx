@@ -4,7 +4,7 @@ import {
   FiGrid, FiBook, FiEdit3, FiUsers,
   FiBell, FiUser, FiLogOut, FiChevronDown,
   FiInfo, FiHash, FiAward, FiShield, FiActivity, FiMoon,
-  FiClock, FiCheckSquare, FiBookOpen
+  FiClock, FiCheckSquare, FiBookOpen, FiMenu, FiX
 } from "react-icons/fi";
 import { authAPI } from "../api/apis";
 import useAuth from "../../store/FacultyStore";
@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 const TopNavbar = () => {
   const [teacherProfile, setTeacherProfile] = useState({});
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -68,26 +69,33 @@ const TopNavbar = () => {
   ];
 
   return (
-    <header className="h-[100px] bg-white border-b border-slate-100 px-6 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+    <header className="h-16 md:h-[100px] bg-white border-b border-slate-100 px-4 md:px-6 flex items-center justify-between sticky top-0 z-50 shadow-sm">
       {/* Brand Section */}
-      <div className="flex items-center gap-4 shrink-0">
+      <div className="flex items-center gap-3 md:gap-4 shrink-0">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
+        >
+          {isMobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+        </button>
+
         <div
           onClick={() => navigate("/")}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-2 md:gap-3 cursor-pointer group"
         >
-          <div className="w-20 h-12 bg-slate-900 rounded-[10px] flex items-center justify-center text-white shadow-xl group-hover:scale-105 transition-all relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-8 h-8 bg-white/10 rounded-full -mr-4 -mt-4 blur-xl"></div>
-             <span className="text-[10px] font-black tracking-[0.2em] uppercase italic">Faculty</span>
+          <div className="w-8 h-8 md:w-20 md:h-12 bg-slate-900 rounded-[8px] md:rounded-[10px] flex items-center justify-center text-white shadow-xl group-hover:scale-105 transition-all relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-8 h-8 bg-white/10 rounded-full -mr-4 -mt-4 blur-xl"></div>
+            <span className="text-[7px] md:text-[10px] font-black tracking-[0.2em] uppercase italic">Faculty</span>
           </div>
-          <div className="hidden lg:block text-left">
-            <h1 className="text-slate-900 font-black tracking-tighter uppercase italic text-xl leading-none">ITMIAN <span className="text-blue-600">Pro.</span></h1>
-            <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mt-1">Academic Node</p>
+          <div className="hidden sm:block text-left">
+            <h1 className="text-slate-900 font-black tracking-tighter uppercase italic text-lg md:text-xl leading-none">ITMIAN <span className="text-blue-600">Pro.</span></h1>
+            <p className="text-[7px] md:text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mt-1">Academic Node</p>
           </div>
         </div>
       </div>
 
-      {/* Center Navigation - Flat Icons */}
-      <nav className="flex items-center justify-center gap-0.5 overflow-x-auto no-scrollbar mx-2 py-1 flex-nowrap">
+      {/* Center Navigation - Hidden on Mobile */}
+      <nav className="hidden lg:flex items-center justify-center gap-0.5 overflow-x-auto no-scrollbar mx-2 py-1 flex-nowrap">
         {navLinks.map((link) => (
           <NavLink
             key={link.route}
@@ -115,32 +123,31 @@ const TopNavbar = () => {
       </nav>
 
       {/* Right Section */}
-      <div className="flex items-center gap-4 shrink-0">
-        {/* User Profile Info */}
-        <div className="text-right hidden xl:block border-r border-slate-100 pr-4 mr-2">
-          <h4 className="text-[11px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
-            {teacherProfile?.name || "Faculty User"}
+      <div className="flex items-center gap-3 md:gap-4 shrink-0">
+        <div className="text-right hidden sm:block border-r border-slate-100 pr-4 mr-2">
+          <h4 className="text-[10px] md:text-[11px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
+            {teacherProfile?.name?.split(" ")[0] || "Faculty"}
           </h4>
-          <p className="text-[9px] font-bold text-blue-500 uppercase tracking-widest flex items-center justify-end gap-1">
-            <FiActivity size={10} className="animate-pulse" /> {teacherProfile?.role || "Faculty Node"}
+          <p className="text-[8px] md:text-[9px] font-bold text-blue-500 uppercase tracking-widest flex items-center justify-end gap-1">
+            {teacherProfile?.role || "Active"}
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-blue-600 rounded-[10px] transition-all cursor-pointer">
-            <FiMoon size={20} />
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="p-2.5 md:p-3 bg-white border border-slate-100 text-slate-400 hover:text-blue-600 rounded-[10px] transition-all cursor-pointer hidden xs:flex">
+            <FiMoon size={18} />
           </div>
 
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className={`w-12 h-12 bg-[#111111] text-white rounded-[10px] flex items-center justify-center shadow-lg transition-all active:scale-95 ${isProfileOpen ? "ring-4 ring-blue-50" : ""
+              className={`w-8 h-8 md:w-12 md:h-12 bg-[#111111] text-white rounded-[8px] md:rounded-[10px] flex items-center justify-center shadow-lg transition-all active:scale-95 ${isProfileOpen ? "ring-4 ring-blue-50" : ""
                 }`}
             >
               {teacherProfile?.name ? (
-                <span className="text-sm font-black italic uppercase">{teacherProfile.name[0]}</span>
+                <span className="text-[10px] md:text-sm font-black italic uppercase">{teacherProfile.name[0]}</span>
               ) : (
-                <FiUser size={22} />
+                <FiUser size={18} />
               )}
             </button>
 
@@ -153,33 +160,48 @@ const TopNavbar = () => {
                   <h3 className="text-xs font-black text-slate-900 uppercase italic truncate">
                     {teacherProfile?.name || "Faculty"}
                   </h3>
-                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mt-1 italic">{teacherProfile?.department?.join(", ") || "General Academic"}</p>
-                </div>
-
-                <div className="p-4 space-y-2 border-b border-slate-50 mb-2">
-                  <div className="flex justify-between items-center text-[9px] font-black italic">
-                    <span className="text-slate-400 uppercase tracking-widest">Dept</span>
-                    <span className="text-blue-600 bg-white border border-slate-100 px-3 py-1 rounded-[10px]">{teacherProfile?.department?.join(", ") || "N/A"}</span>
-                  </div>
                 </div>
 
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-between p-4 rounded-[10px] text-rose-500 hover:bg-rose-50 transition-all font-black uppercase tracking-widest text-[10px] italic group"
                 >
-                  <div className="flex items-center gap-3">
-                    <FiLogOut size={18} />
-                    <span>Terminate Session</span>
-                  </div>
-                  <div className="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                    <FiLogOut size={12} />
-                  </div>
+                  <FiLogOut size={18} />
+                  <span>Logout</span>
                 </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Sidebar */}
+      {isMobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          ></div>
+          <div className="fixed top-2  left-0 bottom-0 w-[80%] max-w-xs bg-white border-r border-slate-100 z-50 lg:hidden overflow-y-auto animate-in slide-in-from-left duration-300">
+            <div className="pt-2 px-3 pb-8 space-y-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.route}
+                  to={link.route}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-4 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isActive ? 'bg-slate-900 text-white shadow-xl' : 'text-slate-600 hover:bg-slate-50'
+                    }`
+                  }
+                >
+                  <span className="text-xl">{link.icon}</span>
+                  {link.name}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </header>
   );
 };

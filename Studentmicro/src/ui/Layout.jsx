@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import Login from "../components/registration/Login";
 import TopNavbar from "../components/headers/TopNavbar";
 import { useAuth } from "../store/AuthStore";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout = () => {
     const { userLogin } = useAuth();
@@ -16,9 +18,9 @@ const Layout = () => {
                         <TopNavbar />
                     </div>
 
-                    <div className="flex-1 flex flex-col min-h-screen pt-40">
+                    <div className="flex-1 flex flex-col min-h-screen pt-16 md:pt-24">
                         {/* Main Content Area */}
-                        <main className="flex-1 pb-10 px-4 sm:px-6 lg:px-8 bg-pink-50">
+                        <main className="flex-1 bg-pink-50">
                             <div className="w-full">
                                 <Outlet />
                             </div>
@@ -33,6 +35,7 @@ const Layout = () => {
             ) : (
                 <Login />
             )}
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };

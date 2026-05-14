@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import { WorkAPI, AcademicAPI } from "../../api/apis";
+import { TeacherService, AcademicService, WorkAPI, AcademicAPI } from "../../api/apis";
 import Loader from "../../common/Loader";
 import { toast } from "react-toastify";
 import useAuth from "../../../store/FacultyStore";
@@ -35,17 +35,17 @@ const AssignmentManagement = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, yRes, semRes, secRes, subRes] = await Promise.all([
-        AcademicAPI.get("/courses"),
-        AcademicAPI.get("/years"),
-        AcademicAPI.get("/semesters"),
-        AcademicAPI.get("/sections"),
-        AcademicAPI.get("/subjects")
+        AcademicService.getCourses(),
+        AcademicService.getYears(),
+        AcademicService.getSemesters(),
+        AcademicService.getSections(),
+        AcademicService.getSubjects()
       ]);
-      if (cRes.data.data) setCourses(cRes.data.data);
-      if (yRes.data.data) setYearsList(yRes.data.data);
-      if (semRes.data.data) setSemesters(semRes.data.data);
-      if (secRes.data.data) setSections(secRes.data.data);
-      if (subRes.data.subjects) setSubjectsList(subRes.data.subjects);
+      setCourses(cRes.data?.data || cRes.data || []);
+      setYearsList(yRes.data?.data || yRes.data || []);
+      setSemesters(semRes.data?.data || semRes.data || []);
+      setSections(secRes.data?.data || secRes.data || []);
+      setSubjectsList(subRes.data?.subjects || subRes.subjects || subRes.data || []);
     } catch (err) {
       console.error("Assignment Registry Sync Failed", err);
     }
@@ -101,7 +101,8 @@ const AssignmentManagement = () => {
     try {
       setLoading(true);
       const payload = { ...formData, questions: validQuestions };
-      const { data } = await WorkAPI.post("/Assignment/uploader", payload, { withCredentials: true });
+      const response = await TeacherService.createAssignment(payload);
+      const data = response.data || response;
 
       setFormData(emptyState);
       setActiveView("show");
@@ -114,11 +115,11 @@ const AssignmentManagement = () => {
     }
   };
 
-  const getAssignment = useCallback(async () => {
+  const getAssignment = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await WorkAPI.get("/Assignment/uploader", { withCredentials: true });
-      setAssignments(data?.AssignmnetData || []);
+      if (!isInitial) setLoading(true);
+      const data = await TeacherService.getAssignments();
+      setAssignments(data?.AssignmnetData || data?.data?.AssignmnetData || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -127,7 +128,7 @@ const AssignmentManagement = () => {
   }, []);
 
   useEffect(() => {
-    getAssignment();
+    getAssignment(true); 
     fetchRegistries();
   }, [getAssignment, fetchRegistries]);
 
@@ -135,7 +136,7 @@ const AssignmentManagement = () => {
     if (!window.confirm("Permanent deletion cannot be undone. Proceed?")) return;
     try {
       setLoading(true);
-      await WorkAPI.delete(`/Assignment/Delete/${id}`, { withCredentials: true });
+      await TeacherService.deleteAssignment(id);
       setAssignments((prev) => prev.filter((item) => item._id !== id));
       toast.success("Record Purged Successfully");
     } catch (err) {

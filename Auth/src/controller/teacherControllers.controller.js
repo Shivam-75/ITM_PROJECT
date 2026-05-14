@@ -51,10 +51,11 @@ class TeacherController {
                 });
             }
 
-            const userCheck = await Teacher.findOne({ moNumber }).select(" -role");
+            const formattedNumber = Number(moNumber.toString().trim());
+            const userCheck = await Teacher.findOne({ moNumber: formattedNumber }).select(" -role");
             if (!userCheck) {
                 return res.status(400).json({
-                    message: "User Not Exist !!",
+                    message: "Faculty identifier not found !!",
                     status: 400
                 });
             }

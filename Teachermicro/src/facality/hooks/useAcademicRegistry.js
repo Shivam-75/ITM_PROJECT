@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AcademicAPI } from "../api/apis";
+import { AcademicAPI, AcademicService } from "../api/apis";
 
 export const useAcademicRegistry = () => {
     const [courses, setCourses] = useState([]);
@@ -16,20 +16,20 @@ export const useAcademicRegistry = () => {
             try {
                 setLoading(true);
                 const [cRes, yRes, semRes, secRes, bRes, pRes] = await Promise.all([
-                    AcademicAPI.get("/courses"),
-                    AcademicAPI.get("/years"),
-                    AcademicAPI.get("/semesters"),
-                    AcademicAPI.get("/sections"),
-                    AcademicAPI.get("/batches"),
-                    AcademicAPI.get("/periods")
+                    AcademicService.getCourses(),
+                    AcademicService.getYears(),
+                    AcademicService.getSemesters(),
+                    AcademicService.getSections(),
+                    AcademicService.getBatches(),
+                    AcademicService.getPeriods()
                 ]);
 
-                setCourses(cRes.data.data || []);
-                setYears(yRes.data.data || []);
-                setSemesters(semRes.data.data || []);
-                setSections(secRes.data.data || []);
-                setBatches(bRes.data.batches || []); // Batch returns .batches
-                setPeriods(pRes.data.data || []);
+                setCourses(cRes.data?.data || cRes.data || []);
+                setYears(yRes.data?.data || yRes.data || []);
+                setSemesters(semRes.data?.data || semRes.data || []);
+                setSections(secRes.data?.data || secRes.data || []);
+                setBatches(bRes.data?.batches || bRes.batches || bRes.data || []); 
+                setPeriods(pRes.data?.data || pRes.data || []);
             } catch (err) {
                 console.error("Failed to fetch academic registry:", err);
                 setError(err);

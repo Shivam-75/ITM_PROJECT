@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import {
@@ -15,7 +14,7 @@ import {
   FiActivity,
   FiX
 } from "react-icons/fi";
-import { authAPI, ReportAPI } from "../api/apis";
+import { StudentService, FeeService, AcademicService } from "../api/apis";
 
 const Feepayment = () => {
   const printRef = useRef();
@@ -24,7 +23,6 @@ const Feepayment = () => {
   const [searchId, setSearchId] = useState("");
   const [student, setStudent] = useState(null);
   const [error, setError] = useState("");
-  const [feeStructures, setFeeStructures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [feeType, setFeeType] = useState("Academic");
 
@@ -42,17 +40,6 @@ const Feepayment = () => {
   const [paidOnline, setPaidOnline] = useState(0);
   const [receipt, setReceipt] = useState(null);
 
-  // Silent Initial Data Fetch
-  useEffect(() => {
-    const fetchStructures = async () => {
-      try {
-        const response = await ReportAPI.get("/Fee/structure");
-        if (response.data.structures) setFeeStructures(response.data.structures);
-      } catch (err) { console.error(err); }
-    };
-    fetchStructures();
-  }, []);
-
   /* ================= SEARCH ================= */
   const handleSearch = async (overrideType = null) => {
     const currentType = overrideType || feeType;
@@ -60,8 +47,8 @@ const Feepayment = () => {
       setLoading(true);
       setError("");
       
-      // 🔹 Fetch from AUTH Registry as requested
-      const response = await authAPI.get("/StudentList");
+      // 🔹 Fetch from Cached Registry
+      const response = await StudentService.getAllStudents();
       const studentsList = response.data.studentList || [];
       
       const normalizedSearch = searchId.trim().toLowerCase();
@@ -73,18 +60,8 @@ const Feepayment = () => {
         (s.moNumber && String(s.moNumber).trim() === normalizedSearch)
       );
 
-      // Fallback: Check Academic Registry if not found in Auth
       if (!data) {
-        const acadRes = await ReportAPI.get("/Academic/students");
-        const acadList = acadRes.data.data || [];
-        data = acadList.find(s => 
-            (s.rollNo && s.rollNo.trim().toLowerCase() === normalizedSearch) ||
-            (s.studentId && s.studentId.trim().toLowerCase() === normalizedSearch)
-        );
-      }
-
-      if (!data) {
-        setError(`Record "${searchId}" not indexed in any Registry`);
+        setError(`Record "${searchId}" not indexed in Registry`);
         setStudent(null);
         return;
       }
@@ -96,10 +73,10 @@ const Feepayment = () => {
         return;
       }
 
-      // Fetch specific fee structure from WORK service (v3)
+      // Fetch specific fee structure from Service
       let structure = { academicFee: 60000, hostelFee: 65000 };
       try {
-        const structRes = await ReportAPI.get(`/Fee/structure/specific?department=${data.department || data.course}&course=${data.course}&batch=${data.batch}`);
+        const structRes = await FeeService.getFeeStructureSpecific(data.department || data.course, data.course, data.batch);
         if (structRes.data.structure) structure = structRes.data.structure;
       } catch (fErr) {
         console.warn("Fee Structure missing, using default", fErr);
@@ -114,10 +91,10 @@ const Feepayment = () => {
         feeStructureMissing: !structure._id && !data.academicFee
       });
 
-      // Fetch payment history from WORK service (v3)
+      // Fetch payment history from Service
       let hisPayments = [];
       try {
-        const payRes = await ReportAPI.get(`/Payment/history?studentId=${data.studentId || data.rollNo}&type=${currentType}`);
+        const payRes = await FeeService.getPaymentHistory(data.studentId || data.rollNo, currentType);
         if (payRes.data.payments) hisPayments = payRes.data.payments;
       } catch (pErr) {
         console.warn("Payment history fetch failed", pErr);
@@ -205,7 +182,7 @@ const Feepayment = () => {
 
     try {
       setLoading(true);
-      const res = await ReportAPI.post("/Payment/record", {
+      await FeeService.recordPayment({
         studentId: student.studentId || student.rollNo || student._id,
         studentName: student.name,
         course: student.course || "GENERAL",
@@ -540,6 +517,7 @@ const Feepayment = () => {
   );
 };
 export default Feepayment;
+
 
 
 

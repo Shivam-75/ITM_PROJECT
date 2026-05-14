@@ -278,7 +278,7 @@ const AdministratorRegistration = () => {
                           {currentAdminId !== admin._id && (
                             <button 
                               onClick={() => setDeleteModal({ isOpen: true, adminId: admin._id, adminName: admin.name })}
-                              className="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-600 transition-all"
+                              className="md:opacity-0 md:group-hover:opacity-100 opacity-100 p-2 text-slate-300 hover:text-red-600 transition-all"
                               title="Delete Admin"
                             >
                               <FiTrash2 size={16} />

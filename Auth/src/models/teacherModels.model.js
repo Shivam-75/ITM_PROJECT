@@ -35,8 +35,9 @@ const TeacherSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 TeacherSchema.pre("save", async function () {
-    if (!this.password) return; // Skip hashing if password is blank
+    if (!this.isModified("password") || !this.password) return;
     this.password = await bcrypt.hash(this.password, 10);
+
 });
 
 
