@@ -1,32 +1,34 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "./ui/Layout";
-import Dashboards from "./page/Dashboard";
-import Profile from "./page/Profile";
-import Feestructure from "./Fee/FeeStructure";
-import Studentlist from "./academic/student/Studentlist";
-import Studentadd from "./academic/student/Studentadd";
-import Faculitylist from "./academic/faculity/Faculitylist";
-import FaculityAdd from "./academic/faculity/FaculityAdd";
-import FaculityEdit from "./academic/faculity/FaculityEdit";
-import SubjectList from "./academic/subject/SubjectList";
-import Attendancereport from "./components/navbar/Attendance/Attendancereport";
-import Exams from "./components/navbar/Exam/Exams";
-import Resultschedule from "./components/navbar/Exam/Resultschedule";
-import Examdashboard from "./components/navbar/Exam/Examdashboard";
-import Hosteldeshboard from "./components/navbar/Hostel/Hosteldeshboard";
-import Roomallocation from "./components/navbar/Hostel/Roomallocation";
-import Hostelstudent from "./components/navbar/Hostel/Hostelstudent";
-import Settings from "./page/Settings";
-import SectionRegistry from "./academic/section/SectionRegistry";
-import SemesterRegistry from "./academic/semester/SemesterRegistry";
-import YearRegistry from "./academic/year/YearRegistry";
-import BatchRegistry from "./academic/batch/BatchRegistry";
-import AdministratorRegistration from "./page/AdministratorRegistration";
-import PlacementDashboard from "./components/navbar/Placement/PlacementDashboard";
-import BulkResults from "./components/navbar/Exam/BulkResults";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
 
-import Feepayment from "./Fee/Feepayment";
+const Dashboards = lazy(() => import("./page/Dashboard"));
+const Profile = lazy(() => import("./page/Profile"));
+const Feestructure = lazy(() => import("./Fee/FeeStructure"));
+const Studentlist = lazy(() => import("./academic/student/Studentlist"));
+const Studentadd = lazy(() => import("./academic/student/Studentadd"));
+const Faculitylist = lazy(() => import("./academic/faculity/Faculitylist"));
+const FaculityAdd = lazy(() => import("./academic/faculity/FaculityAdd"));
+const FaculityEdit = lazy(() => import("./academic/faculity/FaculityEdit"));
+const SubjectList = lazy(() => import("./academic/subject/SubjectList"));
+const Attendancereport = lazy(() => import("./components/navbar/Attendance/Attendancereport"));
+const Exams = lazy(() => import("./components/navbar/Exam/Exams"));
+const Resultschedule = lazy(() => import("./components/navbar/Exam/Resultschedule"));
+const Examdashboard = lazy(() => import("./components/navbar/Exam/Examdashboard"));
+const Hosteldeshboard = lazy(() => import("./components/navbar/Hostel/Hosteldeshboard"));
+const Roomallocation = lazy(() => import("./components/navbar/Hostel/Roomallocation"));
+const Hostelstudent = lazy(() => import("./components/navbar/Hostel/Hostelstudent"));
+const Settings = lazy(() => import("./page/Settings"));
+const SectionRegistry = lazy(() => import("./academic/section/SectionRegistry"));
+const SemesterRegistry = lazy(() => import("./academic/semester/SemesterRegistry"));
+const YearRegistry = lazy(() => import("./academic/year/YearRegistry"));
+const BatchRegistry = lazy(() => import("./academic/batch/BatchRegistry"));
+const AdministratorRegistration = lazy(() => import("./page/AdministratorRegistration"));
+const PlacementDashboard = lazy(() => import("./components/navbar/Placement/PlacementDashboard"));
+const BulkResults = lazy(() => import("./components/navbar/Exam/BulkResults"));
+const Feepayment = lazy(() => import("./Fee/Feepayment"));
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -147,7 +149,11 @@ const App = () => {
     },
   ]);
 
-  return <RouterProvider router={routes} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <RouterProvider router={routes} />
+    </Suspense>
+  );
 };
 export default App;
 

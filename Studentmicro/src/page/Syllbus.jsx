@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
-import { WorkAPI, authAPI, AcademicAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 import { FiDownload, FiFileText, FiBookOpen, FiSearch, FiArrowRight, FiCheckCircle } from "react-icons/fi";
 
@@ -12,24 +12,26 @@ const Syllabus = () => {
   const fetchSyllabus = useCallback(async () => {
     try {
       setLoading(true);
-      const profileRes = await authAPI.get("/userProfile");
-      const student = profileRes.data?.StudentData;
+      const profileRes = await StudentProfileService.getUserData();
+      const student = profileRes.userData || profileRes.data?.StudentData;
       setStudentInfo(student);
 
       if (student) {
-          const { data } = await AcademicAPI.get("/subjects", {
-              params: {
-                  department: student.course,
-                  semester: student.semester
-              }
+          const subRes = await StudentAcademicService.getSubjects({
+              department: student.course,
+              semester: student.semester
           });
+          const data = subRes.data || subRes;
           
           if (Array.isArray(data?.subjects)) {
             setSyllabusList(data.subjects);
           } else {
-            const generalSyllabus = await WorkAPI.get("/Syllabus/getSyllabus");
-            if (Array.isArray(generalSyllabus.data?.data)) {
-                setSyllabusList(generalSyllabus.data.data);
+            const generalSyllabus = await StudentAcademicService.getSyllabus();
+            const sylData = generalSyllabus.data || generalSyllabus;
+            if (Array.isArray(sylData?.data)) {
+                setSyllabusList(sylData.data);
+            } else if (Array.isArray(sylData)) {
+                setSyllabusList(sylData);
             }
           }
       }

@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useCallback, useMemo } from "react";
 import { FiTv, FiPlay, FiUser, FiCalendar, FiClock, FiVideo, FiArrowRight, FiActivity } from "react-icons/fi";
-import { WorkAPI, authAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 
 const LectureCard = memo(({ lecture }) => {
@@ -86,15 +86,19 @@ const OnlineClass = () => {
   const fetchLectures = useCallback(async () => {
     try {
       setLoading(true);
-      const profileRes = await authAPI.get("/userProfile");
-      const student = profileRes.data?.StudentData;
+      const profileRes = await StudentProfileService.getUserData();
+      const student = profileRes.userData || profileRes.data?.StudentData;
       setStudentInfo(student);
 
-      const { data } = await WorkAPI.get("/Link/getLinkDpt");
+      const res = await StudentAcademicService.getOnlineClasses();
+      const data = res.data || res;
       if (data?.data && Array.isArray(data.data)) {
-        // Since getLinkDpt might fetch all, we filter on client if server doesn't filter perfectly
         setLectures(data.data.filter(l => 
-            l.department.toLowerCase() === (student?.course)?.toLowerCase()
+            l.department?.toLowerCase() === (student?.course)?.toLowerCase()
+        ));
+      } else if (Array.isArray(data)) {
+        setLectures(data.filter(l => 
+            l.department?.toLowerCase() === (student?.course)?.toLowerCase()
         ));
       }
     } catch (err) {

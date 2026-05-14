@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { authAPI, ReportAPI, AcademicAPI } from "../../api/apis";
+import { TeacherService, AcademicService } from "../../api/apis";
 import { toast } from "react-toastify";
 import useAuth from "../../../store/FacultyStore";
 import BigLoader from "../../common/BigLoader";
@@ -30,17 +30,18 @@ export default function AttendancePage() {
   const [loading, setLoading] = useState(false);
 
   // 🔹 FETCH SUBJECTS
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const res = await AcademicAPI.get("/subjects");
-        if (res.data.subjects) setSubjectsList(res.data.subjects);
-      } catch (err) {
-        console.error("Subject fetch failed", err);
-      }
-    };
-    fetchSubjects();
+  const fetchSubjects = useCallback(async () => {
+    try {
+      const data = await AcademicService.getSubjects();
+      if (data.subjects) setSubjectsList(data.subjects);
+    } catch (err) {
+      console.error("Subject fetch failed", err);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchSubjects();
+  }, [fetchSubjects]);
 
   const filteredSubjects = useMemo(() => {
     if (!selectedCourse || !selectedSemester) return [];
@@ -51,10 +52,10 @@ export default function AttendancePage() {
   }, [selectedCourse, selectedSemester, subjectsList]);
 
   // 🔹 FETCH STUDENT REPOSITORY
-  const fetchStudents = useCallback(async () => {
+  const fetchStudents = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await authAPI.get("/StudentList");
+      if (!isInitial) setLoading(true);
+      const data = await TeacherService.getStudentList(); // Use cached service
       if (data?.studentList) {
         setStudentsData(data.studentList);
       }
@@ -66,7 +67,7 @@ export default function AttendancePage() {
   }, [toststyle]);
 
   useEffect(() => {
-    fetchStudents();
+    fetchStudents(true); // Initial/Cached check
   }, [fetchStudents]);
 
   // 🔹 CLASS FILTER LOGIC
@@ -119,7 +120,7 @@ export default function AttendancePage() {
   }, [attendance, selectedDate, filteredStudents]);
 
   // 🔹 PERSIST ATTENDANCE
-  const handleSaveAttendance = async () => {
+  const handleSaveAttendance = useCallback(async () => {
     if (!selectedDate || !selectedCourse || !selectedSemester || !selectedSection || !selectedSubject || !selectedYear || !selectedBatch || !selectedPeriod) {
       toast.error("VALIDATION ERROR: Please sync all filter parameters.", toststyle);
       return;
@@ -151,14 +152,14 @@ export default function AttendancePage() {
         period: selectedPeriod,
         students
       };
-      await ReportAPI.post("/Attendance/uploader", payload);
+      await TeacherService.submitAttendance(payload);
       toast.success("REGISTRY SYNCED: Attendance data officially broadcasted. ✅", toststyle);
     } catch (error) {
       toast.error(error?.response?.data?.message || "BROADCAST FAILURE", toststyle);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDate, selectedCourse, selectedSemester, selectedSection, selectedSubject, selectedYear, selectedBatch, selectedPeriod, filteredStudents, attendance, toststyle]);
 
   return (
     <div className="min-h-[100dvh] bg-pink-50 pt-6 px-4 md:px-8 pb-32">

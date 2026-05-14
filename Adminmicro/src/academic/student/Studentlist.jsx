@@ -22,7 +22,7 @@ import {
   FiLayers
 } from "react-icons/fi";
 import { toast } from "react-toastify";
-import { ReportService, AcademicService, StudentService } from "../../api/apis";
+import { AcademicService, StudentService } from "../../api/apis";
 import CustomSelect from "../../ui/CustomSelect";
 
 const Studentlist = () => {
@@ -57,10 +57,10 @@ const Studentlist = () => {
   const [isMigrating, setIsMigrating] = useState(false);
 
   // 🔹 Fetch Registry Data
-  const fetchStudents = async () => {
+  const fetchStudents = async (isInitial = false) => {
     try {
-      setLoading(true);
-      const response = await ReportService.getAllStudents();
+      if (isInitial || studentsList.length === 0) setLoading(true);
+      const response = await StudentService.getAllStudents();
       if (response.data.studentList) {
         setStudentsList(response.data.studentList);
       }
@@ -74,7 +74,7 @@ const Studentlist = () => {
 
   useEffect(() => {
     if (activeTab === "registry") {
-      fetchStudents();
+      fetchStudents(true);
     } else {
       fetchMigrationOptions();
     }
@@ -189,7 +189,7 @@ const Studentlist = () => {
     if (!deletingId) return;
     try {
         setLoading(true);
-        await ReportService.deleteProfile(deletingId);
+        await StudentService.deleteProfile(deletingId);
         toast.success("Profile Removed Successfully");
         setShowDeleteModal(false);
         setDeletingId(null);

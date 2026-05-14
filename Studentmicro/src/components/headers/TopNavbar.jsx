@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { 
-  FiChevronDown, FiBell, FiUser, FiLogOut, FiMenu, FiX,
-  FiHome, FiBook, FiTrendingUp, FiCalendar, FiClock, FiAward,
-  FiGrid, FiBriefcase, FiZap
+import {
+    FiChevronDown, FiBell, FiUser, FiLogOut, FiMenu, FiX,
+    FiHome, FiBook, FiTrendingUp, FiCalendar, FiClock, FiAward,
+    FiGrid, FiBriefcase, FiZap
 } from "react-icons/fi";
 import { useAuth } from "../../store/AuthStore";
 
@@ -13,15 +13,16 @@ const TopNavbar = () => {
     const location = useLocation();
     const [activeMenu, setActiveMenu] = useState(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    
+
     const navRef = useRef(null);
     const profileRef = useRef(null);
 
     useEffect(() => {
-      const handleScroll = () => setScrolled(window.scrollY > 20);
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     // Handle clicks outside
@@ -48,7 +49,7 @@ const TopNavbar = () => {
             title: "Navigation",
             icon: <FiHome />,
             children: [
-                { name: "Dashboard", route: "/", icon: <FiGrid size={14} /> },
+
                 { name: "Time Table", route: "/timetable", icon: <FiClock size={14} /> },
                 { name: "Attendance", route: "/attendance", icon: <FiTrendingUp size={14} /> },
                 { name: "Exam Schedule", route: "/exam-schedule", icon: <FiCalendar size={14} /> },
@@ -81,35 +82,42 @@ const TopNavbar = () => {
     };
 
     return (
-        <header className={`w-full h-24 z-50 sticky top-0 transition-all duration-500 ${
-            scrolled ? 'bg-white/90 backdrop-blur-2xl shadow-sm border-b border-slate-100' : 'bg-transparent'
-        }`}>
-            <div className="max-w-[1440px] mx-auto h-full px-8 flex items-center justify-between gap-4">
-                
+        <header className={`w-full h-16 md:h-24 z-50 sticky top-0 transition-all duration-500 ${scrolled || isMobileMenuOpen ? 'bg-white shadow-sm border-b border-slate-100' : 'bg-transparent'
+            }`}>
+            <div className="max-w-[1440px] mx-auto h-full px-4 md:px-8 flex items-center justify-between gap-4">
+
                 {/* Brand Section */}
-                <div 
-                    onClick={() => navigate("/")}
-                    className="flex items-center gap-4 cursor-pointer group shrink-0"
-                >
-                    <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center text-xs font-black shadow-2xl group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
-                        ITM
-                    </div>
-                    <div className="hidden xl:block">
-                        <span className="text-black font-black tracking-tight uppercase text-xl leading-none block group-hover:translate-x-1 transition-transform">Student Hub</span>
-                        <span className="text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] mt-1 block">Academic Portal</span>
+                <div className="flex items-center gap-3 md:gap-4 shrink-0">
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="lg:hidden p-2 text-gray-900 hover:bg-gray-50 rounded-xl transition-all"
+                    >
+                        {isMobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+                    </button>
+
+                    <div
+                        onClick={() => navigate("/")}
+                        className="flex items-center gap-3 md:gap-4 cursor-pointer group"
+                    >
+                        <div className="w-8 h-8 md:w-12 md:h-12 bg-black text-white rounded-xl md:rounded-2xl flex items-center justify-center text-[10px] font-black shadow-2xl group-hover:scale-105 transition-all duration-500">
+                            ITM
+                        </div>
+                        <div className="hidden sm:block">
+                            <span className="text-black font-black tracking-tight uppercase text-lg md:text-xl leading-none block">Student Hub</span>
+                            <span className="text-[7px] md:text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] mt-1 block">Academic Portal</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Center Navigation */}
+                {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-1">
                     {navMenus.map((menu) => (
                         <div key={menu.title} className="relative">
                             {menu.children ? (
                                 <button
                                     onMouseEnter={() => setActiveMenu(menu.title)}
-                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
-                                        activeMenu === menu.title ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
-                                    }`}
+                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeMenu === menu.title ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
+                                        }`}
                                 >
                                     <span className="text-base opacity-70">{menu.icon}</span>
                                     {menu.title}
@@ -118,9 +126,8 @@ const TopNavbar = () => {
                             ) : (
                                 <NavLink
                                     to={menu.route}
-                                    className={({ isActive }) => 
-                                        `flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
-                                            isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-500 hover:bg-white hover:text-black'
                                         }`
                                     }
                                 >
@@ -130,18 +137,17 @@ const TopNavbar = () => {
                             )}
 
                             {activeMenu === menu.title && menu.children && (
-                                <div 
+                                <div
                                     onMouseLeave={() => setActiveMenu(null)}
-                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/20 p-2 z-20 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300"
+                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/20 p-2 z-20 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300"
                                 >
                                     {menu.children.map((child) => (
                                         <NavLink
                                             key={child.route}
                                             to={child.route}
                                             onClick={() => setActiveMenu(null)}
-                                            className={({ isActive }) => 
-                                                `flex items-center gap-4 px-4 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
-                                                    isActive ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                            className={({ isActive }) =>
+                                                `flex items-center gap-4 px-4 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${isActive ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'text-gray-500 hover:bg-gray-50 hover:text-black'
                                                 }`
                                             }
                                         >
@@ -156,21 +162,20 @@ const TopNavbar = () => {
                 </nav>
 
                 {/* Right Section */}
-                <div className="flex items-center gap-4 shrink-0">
+                <div className="flex items-center gap-3 md:gap-4 shrink-0">
                     <div className="text-right hidden sm:block border-r border-slate-100 pr-4">
                         <h4 className="text-[10px] font-black text-slate-900 uppercase italic tracking-tight mb-0.5">
-                            {student?.name || "Student"}
+                            {student?.name?.split(" ")[0]}
                         </h4>
                         <div className="text-[8px] font-bold text-rose-500 uppercase tracking-widest flex items-center justify-end gap-1">
-                            <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div> 
-                            {student?.course || "Scholar"}
+                            {student?.course}
                         </div>
                     </div>
 
                     <div className="relative">
-                        <div 
+                        <div
                             onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center text-xs font-black shadow-xl cursor-pointer hover:scale-105 transition-transform"
+                            className="w-8 h-8 md:w-10 md:h-10 bg-black text-white rounded-xl flex items-center justify-center text-xs font-black shadow-xl cursor-pointer hover:scale-105 transition-transform"
                         >
                             {student?.name?.[0]}
                         </div>
@@ -186,12 +191,12 @@ const TopNavbar = () => {
                                             </div>
                                             <div>
                                                 <h3 className="text-sm font-black tracking-tight leading-none mb-1">{student?.name}</h3>
-                                                <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest">{student?.roll_no}</p>
+                                                <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest">{student?.rollNo}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="p-4 space-y-2">
-                                        <button 
+                                        <button
                                             onClick={handleLogout}
                                             className="w-full flex items-center gap-3 p-3 text-rose-500 hover:bg-rose-50 rounded-xl transition-all text-[10px] font-black uppercase tracking-widest italic"
                                         >
@@ -205,6 +210,55 @@ const TopNavbar = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Navigation Sidebar */}
+            {isMobileMenuOpen && (
+                <>
+                    <div
+                        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    ></div>
+                    <div className="fixed top-2 lg:top-16 left-0 bottom-0 w-[80%] max-w-xs bg-white border-r border-slate-100 z-50 lg:hidden overflow-y-auto animate-in slide-in-from-left duration-300">
+                        <div className="pt-2 px-4 pb-8 space-y-6">
+                            {navMenus.map((menu) => (
+                                <div key={menu.title} className="space-y-3">
+                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em] pl-2 mb-2">{menu.title}</p>
+                                    <div className="space-y-1">
+                                        {menu.children ? (
+                                            menu.children.map((child) => (
+                                                <NavLink
+                                                    key={child.route}
+                                                    to={child.route}
+                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                    className={({ isActive }) =>
+                                                        `flex items-center gap-4 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-600 hover:bg-gray-50'
+                                                        }`
+                                                    }
+                                                >
+                                                    <span className="text-base opacity-70">{child.icon}</span>
+                                                    {child.name}
+                                                </NavLink>
+                                            ))
+                                        ) : (
+                                            <NavLink
+                                                to={menu.route}
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                className={({ isActive }) =>
+                                                    `flex items-center gap-4 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-600 hover:bg-gray-50'
+                                                    }`
+                                                }
+                                            >
+                                                <span className="text-base opacity-70">{menu.icon}</span>
+                                                {menu.title}
+                                            </NavLink>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </>
+            )}
         </header>
     );
 };

@@ -8,16 +8,16 @@ const HostelRegistration = () => {
     const [recentAllotments, setRecentAllotments] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchAllotments = async () => {
+    const fetchAllotments = async (isInitial = false) => {
         try {
-            setLoading(true);
+            if (!isInitial) setLoading(true);
             const res = await HostelService.getAllotments();
-            const data = res.data.allotments || [];
+            const data = (res.data?.allotments || res.allotments || res.data || []);
             setAllotments(data);
             
             // 🔹 Filter for Last 24 Hours
             const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-            const recent = data.filter(item => new Date(item.createdAt) > oneDayAgo);
+            const recent = Array.isArray(data) ? data.filter(item => new Date(item.createdAt) > oneDayAgo) : [];
             setRecentAllotments(recent);
         } catch (error) {
             toast.error("Failed to fetch allotment data");
@@ -27,7 +27,7 @@ const HostelRegistration = () => {
     };
 
     useEffect(() => {
-        fetchAllotments();
+        fetchAllotments(true);
     }, []);
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiArrowLeft, FiSave, FiUploadCloud, FiUser, FiBriefcase, FiMapPin, FiCalendar, FiMail } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { ReportAPI, AcademicAPI, authAPI } from "../../api/apis";
+import { AcademicService, TeacherService } from "../../api/apis";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
@@ -65,7 +65,7 @@ const FaculityAdd = () => {
   useEffect(() => {
     const fetchDeps = async () => {
       try {
-        const res = await AcademicAPI.get("/courses");
+        const res = await AcademicService.getCourses();
         if (res.data.courses) {
             setDepartmentList(res.data.courses);
         } else if (res.data.data) {
@@ -106,7 +106,7 @@ const FaculityAdd = () => {
         formData.append("image", teacher.image);
       }
 
-      const response = await authAPI.post("/Faculty/add", formData);
+      const response = await TeacherService.addTeacher(formData);
 
       if (response.status === 201) {
         toast.success("Teacher Added Successfully!");

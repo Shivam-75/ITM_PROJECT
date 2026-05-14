@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { ReportAPI, authAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 import { FiPieChart, FiFileText } from "react-icons/fi";
 
@@ -63,9 +63,11 @@ const Result = () => {
       setLoading(true);
       if (!sid) return;
       // Fetch results for the specific student ID
-      const { data } = await ReportAPI.get(`/Mark/ShowResult?id=${sid}`);
+      const { data } = await StudentAcademicService.getResults(sid);
       if (data?.result) {
         setResults(data.result);
+      } else if (Array.isArray(data)) {
+        setResults(data);
       } else {
         setResults([]);
       }
@@ -80,8 +82,8 @@ const Result = () => {
   useEffect(() => {
     const init = async () => {
        try {
-          const profile = await authAPI.get("/userProfile");
-          const student = profile.data?.StudentData;
+          const profile = await StudentProfileService.getUserData();
+          const student = profile.userData || profile.data?.StudentData;
           setStudentInfo(student);
           if (student?.studentId) {
              fetchResults(student.studentId);

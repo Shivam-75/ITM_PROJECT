@@ -14,7 +14,7 @@ import {
   FiMoreHorizontal,
   FiRefreshCcw
 } from "react-icons/fi";
-import { authAPI } from "../api/apis";
+import { DashboardService, StudentService } from "../api/apis";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -28,26 +28,18 @@ const Dashboard = () => {
         collection: "₹4.5L",
         outstanding: "₹1.2L",
     });
+    const [studentsList, setStudentsList] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchData = async () => {
-        setLoading(true);
+    const fetchData = async (isInitial = false) => {
+        if (isInitial || (!stats.totalStudents && !stats.totalTeachers)) setLoading(true);
         try {
-            // 1. Fetch Student Count & Hostel Occupancy from Auth Service
-            const studentRes = await authAPI.get("/StudentList");
-            const students = studentRes.data.studentList || [];
-            const sCount = students.length;
-            const hCount = students.filter(s => s.isHostel).length;
-
-            // 2. Fetch Teacher Count from Auth Service
-            const teacherRes = await authAPI.get("/TeacherList");
-            const tCount = teacherRes.data.TeacherList?.length || 0;
-
+            const data = await DashboardService.getStats();
             setStats(prev => ({
                 ...prev,
-                totalStudents: sCount,
-                totalTeachers: tCount,
-                hostelOccupancy: hCount
+                totalStudents: data.totalStudents,
+                totalTeachers: data.totalTeachers,
+                hostelOccupancy: data.hostelOccupancy
             }));
         } catch (error) {
             console.error("Dashboard Fetch Error:", error);
@@ -57,7 +49,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchData(true);
     }, []);
 
     const kpiCards = [

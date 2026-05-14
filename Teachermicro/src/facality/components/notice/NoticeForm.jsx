@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useAuth from "../../../store/FacultyStore";
 import { toast } from "react-toastify";
-import { WorkAPI, AcademicAPI } from "../../api/apis";
+import { TeacherService, AcademicService } from "../../api/apis";
 import { FiSend } from "react-icons/fi";
 
 const NoticeForm = ({ onSave, initialData }) => {
@@ -28,15 +28,22 @@ const NoticeForm = ({ onSave, initialData }) => {
     const fetchRegistries = async () => {
       try {
         const [cRes, yRes, semRes, secRes] = await Promise.all([
-          AcademicAPI.get("/courses"),
-          AcademicAPI.get("/years"),
-          AcademicAPI.get("/semesters"),
-          AcademicAPI.get("/sections")
+          AcademicService.getCourses(),
+          AcademicService.getYears(),
+          AcademicService.getSemesters(),
+          AcademicService.getSections()
         ]);
         if (cRes.data.data) setCourses(cRes.data.data);
+        else if (cRes.data) setCourses(cRes.data);
+        
         if (yRes.data.data) setYearsList(yRes.data.data);
+        else if (yRes.data) setYearsList(yRes.data);
+
         if (semRes.data.data) setSemesters(semRes.data.data);
+        else if (semRes.data) setSemesters(semRes.data);
+
         if (secRes.data.data) setSections(secRes.data.data);
+        else if (secRes.data) setSections(secRes.data);
       } catch (err) {
         console.error("Notice Registry Sync Failed:", err);
       }
@@ -68,7 +75,8 @@ const NoticeForm = ({ onSave, initialData }) => {
         year: formData.year // Removed Number() casting
       };
 
-      const { data } = await WorkAPI.post("/Notice/uploader", payload, { withCredentials: true });
+      const response = await TeacherService.createNotice(payload);
+      const data = response.data || response;
       toast.success(data?.message || "Notice Published Successfully", toststyle);
       
       setFormData({ title: "", description: "", department: "", year: "", semester: "", section: "" });

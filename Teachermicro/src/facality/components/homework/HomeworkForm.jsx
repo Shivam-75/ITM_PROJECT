@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import { WorkAPI, AcademicAPI } from "../../api/apis";
+import { TeacherService, AcademicService, WorkAPI, AcademicAPI } from "../../api/apis";
 import Loader from "../../common/Loader";
 import { toast } from "react-toastify";
 import useAuth from "../../../store/FacultyStore";
@@ -35,17 +35,17 @@ const HomeworkManagement = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, yRes, semRes, secRes, subRes] = await Promise.all([
-        AcademicAPI.get("/courses"),
-        AcademicAPI.get("/years"),
-        AcademicAPI.get("/semesters"),
-        AcademicAPI.get("/sections"),
-        AcademicAPI.get("/subjects")
+        AcademicService.getCourses(),
+        AcademicService.getYears(),
+        AcademicService.getSemesters(),
+        AcademicService.getSections(),
+        AcademicService.getSubjects()
       ]);
-      if (cRes.data.data) setCourses(cRes.data.data);
-      if (yRes.data.data) setYearsList(yRes.data.data);
-      if (semRes.data.data) setSemesters(semRes.data.data);
-      if (secRes.data.data) setSections(secRes.data.data);
-      if (subRes.data.subjects) setSubjectsList(subRes.data.subjects);
+      setCourses(cRes.data?.data || cRes.data || []);
+      setYearsList(yRes.data?.data || yRes.data || []);
+      setSemesters(semRes.data?.data || semRes.data || []);
+      setSections(secRes.data?.data || secRes.data || []);
+      setSubjectsList(subRes.data?.subjects || subRes.subjects || subRes.data || []);
     } catch (err) {
       console.error("Homework Registry Sync Failed", err);
     }
@@ -100,8 +100,9 @@ const HomeworkManagement = () => {
 
     try {
       setLoading(true);
-      const payload = { ...formData, questions: validQuestions }; // Removed Number() casting
-      const { data } = await WorkAPI.post("/Homework/uploader", payload, { withCredentials: true });
+      const payload = { ...formData, questions: validQuestions };
+      const response = await TeacherService.createHomework(payload);
+      const data = response.data || response;
 
       setHomeworks((prev) => [data?.homworkFind || payload, ...prev]);
       setFormData(emptyState);
@@ -114,11 +115,11 @@ const HomeworkManagement = () => {
     }
   };
 
-  const getHomeWork = useCallback(async () => {
+  const getHomeWork = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await WorkAPI.get("/Homework/uploader", { withCredentials: true });
-      setHomeworks(data?.HomeworkData || []);
+      if (!isInitial) setLoading(true);
+      const data = await TeacherService.getHomework();
+      setHomeworks(data?.HomeworkData || data?.data?.HomeworkData || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -127,7 +128,7 @@ const HomeworkManagement = () => {
   }, []);
 
   useEffect(() => {
-    getHomeWork();
+    getHomeWork(true);
     fetchRegistries();
   }, [getHomeWork, fetchRegistries]);
 
@@ -135,7 +136,7 @@ const HomeworkManagement = () => {
     if (!window.confirm("Permanent deletion cannot be undone. Proceed?")) return;
     try {
       setLoading(true);
-      await WorkAPI.delete(`/Homework/Delete/${id}`, { withCredentials: true });
+      await TeacherService.deleteHomework(id);
       setHomeworks((prev) => prev.filter((hw) => hw._id !== id));
       toast.success("Record Purged Successfully");
     } catch (err) {

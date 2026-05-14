@@ -1,19 +1,18 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Syllabus from "./page/Syllbus";
 import Layout from "./ui/Layout";
-import Homework from "./page/Homework";
-import Assignment from "./page/Assignment";
-import ModelPaper from "./page/ModelPaper";
-import Notice from "./page/Notice";
-import OnlineClass from "./page/OnlineClass";
-import Result from "./page/Result";
-import Timetable from "./page/Timetable";
-import Attendence from "./page/Attendence";
-import Dashboard from "./page/Dashboard";
-import ExamSchedule from "./page/ExamSchedule";
-import Placements from "./page/Placements";
-
+const Dashboard = lazy(() => import("./page/Dashboard"));
+const Syllabus = lazy(() => import("./page/Syllbus"));
+const Homework = lazy(() => import("./page/Homework"));
+const Assignment = lazy(() => import("./page/Assignment"));
+const ModelPaper = lazy(() => import("./page/ModelPaper"));
+const Notice = lazy(() => import("./page/Notice"));
+const OnlineClass = lazy(() => import("./page/OnlineClass"));
+const Result = lazy(() => import("./page/Result"));
+const Timetable = lazy(() => import("./page/Timetable"));
+const Attendence = lazy(() => import("./page/Attendence"));
+const ExamSchedule = lazy(() => import("./page/ExamSchedule"));
+const Placements = lazy(() => import("./page/Placements"));
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -23,52 +22,99 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <Dashboard />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Initializing Dashboard...</div>}>
+              <Dashboard />
+            </Suspense>
+          ),
         },
-      
         {
           path: "Syllbus",
-          element: <Syllabus />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Loading Syllabus...</div>}>
+              <Syllabus />
+            </Suspense>
+          ),
         },
         {
           path: "homework",
-          element: <Homework />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Fetching Tasks...</div>}>
+              <Homework />
+            </Suspense>
+          ),
         },
         {
           path: "assignment",
-          element: <Assignment />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Loading Assignments...</div>}>
+              <Assignment />
+            </Suspense>
+          ),
         },
         {
           path: "model-paper",
-          element: <ModelPaper />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Preparing Papers...</div>}>
+              <ModelPaper />
+            </Suspense>
+          ),
         },
         {
           path: "Notice",
-          element: <Notice />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Syncing Bulletin...</div>}>
+              <Notice />
+            </Suspense>
+          ),
         },
         {
           path: "online",
-          element: <OnlineClass />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Entering Classroom...</div>}>
+              <OnlineClass />
+            </Suspense>
+          ),
         },
         {
           path: "result",
-          element: <Result />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Compiling Results...</div>}>
+              <Result />
+            </Suspense>
+          ),
         },
         {
           path: "timetable",
-          element: <Timetable />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Loading Schedule...</div>}>
+              <Timetable />
+            </Suspense>
+          ),
         },
         {
           path: "attendance",
-          element: <Attendence />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Checking Registry...</div>}>
+              <Attendence />
+            </Suspense>
+          ),
         },
         {
           path: "exam-schedule",
-          element: <ExamSchedule />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Fetching Schedules...</div>}>
+              <ExamSchedule />
+            </Suspense>
+          ),
         },
         {
           path: "placements",
-          element: <Placements />,
+          element: (
+            <Suspense fallback={<div className="h-screen flex items-center justify-center animate-pulse text-xs font-black uppercase tracking-widest text-gray-400 italic">Connecting Careers...</div>}>
+              <Placements />
+            </Suspense>
+          ),
         },
       ],
     },
@@ -77,6 +123,7 @@ const App = () => {
   return <RouterProvider router={routes} />;
 };
 export default App;
+
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
-import { authAPI, ReportAPI, WorkAPI } from "../api/apis";
+import { authAPI, ReportAPI, WorkAPI, TeacherService } from "../api/apis";
 import { 
   FiUsers, FiBookOpen, FiClock, FiCheckSquare, 
   FiCalendar, FiMessageCircle, FiTrendingUp, FiArrowRight, FiShield, FiZap, FiActivity
@@ -80,26 +80,29 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const profileRes = await authAPI.get("/userProfile");
-      setProfile(profileRes.data?.userData);
+      // 🔹 Smart Loading: Only show loader if we don't have cached data
+      // We can't easily check the cache map from here, but we can assume if it's initial load 
+      // and it returns in < 100ms, it was cached.
+      if (!isInitial) setLoading(true); 
 
-      const [studentsRes, hwRes, assRes, ttRes, linkRes] = await Promise.all([
-        authAPI.get("/StudentList"),
-        WorkAPI.get("/Homework/uploader"),
-        WorkAPI.get("/Assignment/uploader"),
-        ReportAPI.get("/TimeTable/uploader"),
-        WorkAPI.get("/Link/Uploader")
+      const profileRes = await TeacherService.getProfile();
+      setProfile(profileRes.userData || profileRes.data?.userData);
+
+      const [studentsRes, hwRes, ttRes, linkRes] = await Promise.all([
+        TeacherService.getStudentList(),
+        TeacherService.getHomework(),
+        TeacherService.getTimeTable(),
+        TeacherService.getOnlineLinks()
       ]);
 
       setStats({
-        students: studentsRes.data?.studentList?.length || 0,
-        homework: hwRes.data?.HomeworkData?.length || 0,
-        assignments: assRes.data?.AssignmnetData?.length || 0,
-        onlineClasses: linkRes.data?.findUserLinks?.length || 0,
-        timeTable: ttRes.data?.data || []
+        students: studentsRes.studentList?.length || studentsRes.data?.studentList?.length || 0,
+        homework: hwRes.HomeworkData?.length || hwRes.data?.HomeworkData?.length || 0,
+        assignments: 0,
+        onlineClasses: linkRes.findUserLinks?.length || linkRes.data?.findUserLinks?.length || 0,
+        timeTable: Array.isArray(ttRes.data) ? ttRes.data : (Array.isArray(ttRes.data?.data) ? ttRes.data.data : [])
       });
     } catch (err) {
       console.error("Dashboard data fetch failed", err);
@@ -109,21 +112,25 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchData(true); // Pass true to indicate initial/cached check
   }, [fetchData]);
 
   const todayClasses = useMemo(() => {
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     let schedule = [];
     
-    stats.timeTable.forEach(table => {
-       const todaySheet = table.timeSheet.filter(s => s.day === today);
+    const timeTableArray = Array.isArray(stats.timeTable) ? stats.timeTable : [];
+    
+    timeTableArray.forEach(table => {
+       const timeSheet = Array.isArray(table.timeSheet) ? table.timeSheet : [];
+       const todaySheet = timeSheet.filter(s => s.day === today);
        todaySheet.forEach(s => {
-          s.lectures.forEach(l => {
+          const lectures = Array.isArray(s.lectures) ? s.lectures : [];
+          lectures.forEach(l => {
              schedule.push({
                 subject: l.subject,
                 time: l.time,
-                info: `${table.course.toUpperCase()} - ${table.section.toUpperCase()}`
+                info: `${table.course?.toUpperCase()} - ${table.section?.toUpperCase()}`
              });
           });
        });

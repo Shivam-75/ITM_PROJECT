@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { ReportAPI, authAPI, WorkAPI } from "../api/apis";
+import { StudentProfileService, StudentAcademicService } from "../api/apis";
 import Loader from "../components/common/Loader";
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -18,18 +18,19 @@ const Timetable = () => {
     const [studentInfo, setStudentInfo] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const fetchTimetable = useCallback(async () => {
+    const fetchTimetable = useCallback(async (isInitial = false) => {
         try {
-            setLoading(true);
-            const profileRes = await authAPI.get("/userProfile");
-            const student = profileRes.data?.StudentData;
+            if (!isInitial) setLoading(true);
+            const profileRes = await StudentProfileService.getUserData();
+            const student = profileRes.userData || profileRes.data?.StudentData || profileRes.data?.userData;
             setStudentInfo(student);
 
             if (student) {
-                const { data } = await WorkAPI.get("/TimeTable/get");
-                if (data?.data?.timeSheet) {
+                const { data: ttData } = await StudentAcademicService.getTimetable();
+                const timeSheet = ttData?.timeSheet || ttData?.data?.timeSheet;
+                if (timeSheet) {
                     const newGrid = {};
-                    data.data.timeSheet.forEach(item => {
+                    timeSheet.forEach(item => {
                         if (!newGrid[item.lecture]) newGrid[item.lecture] = {};
                         newGrid[item.lecture][item.day] = item;
                     });
@@ -44,7 +45,7 @@ const Timetable = () => {
     }, []);
 
     useEffect(() => {
-        fetchTimetable();
+        fetchTimetable(true);
     }, [fetchTimetable]);
 
     return (

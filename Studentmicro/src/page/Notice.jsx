@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { WorkAPI } from "../api/apis";
+import { StudentAcademicService } from "../api/apis";
 import Loader from "../components/common/Loader.jsx";
 import { FiBell, FiArrowRight, FiCalendar, FiUser, FiInfo } from "react-icons/fi";
 
@@ -53,11 +53,13 @@ const Notice = () => {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchNotices = useCallback(async () => {
+  const fetchNotices = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const { data } = await WorkAPI.get("/Notice/getNoticeDpt", { withCredentials: true });
-      if (Array.isArray(data?.data)) {
+      if (isInitial || notices.length === 0) setLoading(true);
+      const { data } = await StudentAcademicService.getNotice();
+      if (Array.isArray(data)) {
+        setNotices(data);
+      } else if (Array.isArray(data?.data)) {
         setNotices(data.data);
       } else {
         setNotices([]);
@@ -67,11 +69,11 @@ const Notice = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [notices.length]);
 
   useEffect(() => {
-    fetchNotices();
-  }, [fetchNotices]);
+    fetchNotices(true);
+  }, []);
 
   return (
     <div className="max-w-[1400px] mx-auto min-h-screen space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">

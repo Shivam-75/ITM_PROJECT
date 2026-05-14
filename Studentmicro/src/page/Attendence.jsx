@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useState, useEffect, useCallback } from "react";
-import { ReportAPI, authAPI } from "../api/apis";
+import { StudentAcademicService, StudentProfileService } from "../api/apis";
 import Loader from "../components/common/Loader";
 import { 
   FiCheckCircle, FiXCircle, FiActivity, FiPieChart, 
@@ -46,16 +46,19 @@ const Attendence = () => {
   const getTodayStr = () => new Date().toISOString().split("T")[0];
   const [selectedDate, setSelectedDate] = useState(getTodayStr());
 
-  const fetchAttendance = useCallback(async () => {
+  const fetchAttendance = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const profileRes = await authAPI.get("/userProfile");
-      const student = profileRes.data?.StudentData;
+      if (isInitial || attendanceData.length === 0) setLoading(true);
+      const profileRes = await StudentProfileService.getUserData();
+      const student = profileRes.userData || profileRes.data?.StudentData;
       setStudentInfo(student);
 
       if (student) {
-          const { data } = await ReportAPI.get(`/Attendance/Show?section=${student.section}&semester=${student.semester}`);
-          if (Array.isArray(data?.data)) {
+          const res = await StudentAcademicService.getAttendance(student.section, student.semester);
+          const data = res.data || res;
+          if (Array.isArray(data)) {
+            setAttendanceData(data);
+          } else if (Array.isArray(data.data)) {
             setAttendanceData(data.data);
           }
       }
@@ -65,11 +68,11 @@ const Attendence = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [attendanceData.length]);
 
   useEffect(() => {
-    fetchAttendance();
-  }, [fetchAttendance]);
+    fetchAttendance(true);
+  }, []);
 
   const filteredData = useMemo(() => {
     if (!selectedDate) return attendanceData;

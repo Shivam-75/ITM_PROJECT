@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { WorkAPI } from "../api/apis";
+import { StudentAcademicService } from "../api/apis";
 import Loader from "../components/common/Loader.jsx";
 import { FiLayers, FiCalendar, FiBookOpen, FiClock, FiArrowRight, FiActivity, FiX, FiInfo, FiCheckCircle } from "react-icons/fi";
 
@@ -153,11 +153,13 @@ const Assignment = () => {
   const [loading, setLoading] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
 
-  const fetchAssignments = useCallback(async () => {
+  const fetchAssignments = useCallback(async (isInitial = false) => {
     try {
-      setLoading(true);
-      const res = await WorkAPI.get("/Assignment/getAssDpt", { withCredentials: true });
-      if (Array.isArray(res.data?.data)) {
+      if (isInitial || data.length === 0) setLoading(true);
+      const res = await StudentAcademicService.getAssignments();
+      if (Array.isArray(res.data)) {
+        setData(res.data);
+      } else if (Array.isArray(res.data?.data)) {
         setData(res.data.data);
       } else {
         setData([]);
@@ -167,11 +169,11 @@ const Assignment = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [data.length]);
 
   useEffect(() => {
-    fetchAssignments();
-  }, [fetchAssignments]);
+    fetchAssignments(true);
+  }, []);
 
   return (
     <div className="max-w-[1400px] mx-auto min-h-screen space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">

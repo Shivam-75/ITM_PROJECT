@@ -3,7 +3,7 @@ import NoticeForm from "../../components/notice/NoticeForm";
 import NoticeList from "../../components/notice/NoticeList";
 import BigLoader from "../../common/BigLoader";
 import { toast } from "react-toastify";
-import { WorkAPI } from "../../api/apis";
+import { TeacherService } from "../../api/apis";
 import useAuth from "../../../store/FacultyStore";
 
 const NoticeDashboard = () => {
@@ -50,52 +50,35 @@ const NoticeDashboard = () => {
     setActiveTab("add");
   }, []);
 
-  const getNotice = useCallback(async () => {
+  const getNotice = useCallback(async (isInitial = false) => {
     try {
-      setdeleteloading(true);
-
-      const { data } = await WorkAPI.get(
-        "/Notice/uploader",
-        { withCredentials: true }
-      );
-
-      console.log(data);
-      setNotices(data?.findNotice);
-
-
-
-
+      if (!isInitial) setdeleteloading(true);
+      const data = await TeacherService.getNotices();
+      setNotices(data?.findNotice || data?.data?.findNotice || []);
     } catch (err) {
       console.log(err.response?.data?.message || err.message);
-
     } finally {
       setdeleteloading(false);
     }
-  }, [WorkAPI]);
-
-  useEffect(() => {
-    getNotice();
   }, []);
 
-  const handleDelete = async (id) => {
+  useEffect(() => {
+    getNotice(true); // Initial/Cached check
+  }, [getNotice]);
+
+  const handleDelete = useCallback(async (id) => {
     try {
       setdeleteloading(true);
-      const { data } = await WorkAPI.delete(
-        `/Notice/Delete/${id}`,
-        { withCredentials: true }
-      );
-
-      console.log(data);
-      toast.success("Successfully Notice Deleted !!", toststyle)
+      await TeacherService.deleteNotice(id);
+      toast.success("Successfully Notice Deleted !!", toststyle);
       setNotices((prev) => prev.filter(item => (item._id || item.id) !== id));
-
     } catch (err) {
       console.log(err.response?.data?.message || err.message);
-      toast.error(" Notice Not Deleted !!", toststyle)
+      toast.error("Notice Not Deleted !!", toststyle);
     } finally {
       setdeleteloading(false);
     }
-  }
+  }, [toststyle]);
 
   return (
     <div className="flex bg-transparent min-h-[100dvh]">

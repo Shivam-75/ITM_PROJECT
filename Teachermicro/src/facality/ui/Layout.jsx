@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import TopNavbar from "../header/TopNavbar";
 import useAuth from "../../store/FacultyStore";
 import Login from "../common/Login";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout = () => {
   const { userLogin } = useAuth();
@@ -19,11 +21,12 @@ const Layout = () => {
       </div>
       
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 lg:p-10 bg-pink-50">
+      <main className="flex-1 overflow-y-auto custom-scrollbar bg-pink-50">
         <div className="w-full">
            <Outlet />
         </div>
       </main>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
