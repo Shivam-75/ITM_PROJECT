@@ -38,9 +38,10 @@ const allowedOrigins = [
   process.env.CORSE_ORIGIN1,
   process.env.CORSE_ORIGIN2,
   process.env.CORSE_ORIGIN3,
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:5175",
+  "https://adminmicroproject.vercel.app",
+  "https://studentmicroproject.vercel.app",
+  "https://teachermicroproject.vercel.app",
+
 ];
 
 app.use(cors({
