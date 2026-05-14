@@ -187,7 +187,7 @@ const Faculitylist = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img
-                          src={faculty.image?.startsWith("http") ? faculty.image : `http://localhost:5001${faculty.image}`}
+                          src={faculty.image?.startsWith("http") ? faculty.image : `https://itm-project-6vtr.onrender.com${faculty.image}`}
                           alt={faculty.name}
                           className="w-11 h-11 rounded-lg bg-white object-cover ring-2 ring-white shadow-sm"
                         />

@@ -18,9 +18,9 @@ const Hostelfee = () => {
       try {
           setLoading(true);
           const [allocRes, structRes, docRes] = await Promise.all([
-              axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
-              axios.get("http://localhost:5002/api/v3/Admin/Fee/structure", { withCredentials: true }),
-              axios.get("http://localhost:5002/api/v3/Admin/Upload/all", { withCredentials: true })
+              axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
+              axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Fee/structure", { withCredentials: true }),
+              axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Upload/all", { withCredentials: true })
           ]);
           
           const allocations = allocRes.data.allocations || [];
@@ -49,7 +49,7 @@ const Hostelfee = () => {
   
   const fetchDocuments = async () => {
     try {
-      const response = await axios.get("http://localhost:5002/api/v3/Admin/Upload/all", { withCredentials: true });
+      const response = await axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Upload/all", { withCredentials: true });
       if (response.data.success) {
         setDocuments(response.data.data.filter(d => d.category === "hostel-fee"));
       }
@@ -216,7 +216,7 @@ const Hostelfee = () => {
                   onClick={async () => {
                     try {
                       setLoading(true);
-                      await axios.post("http://localhost:5002/api/v3/Admin/Upload/create", {
+                      await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Upload/create", {
                         ...uploadForm,
                         category: "hostel-fee",
                         uploadedBy: "Admin"
@@ -254,7 +254,7 @@ const Hostelfee = () => {
                           onClick={async () => {
                             try {
                               setLoading(true);
-                              await axios.delete(`http://localhost:5002/api/v3/Admin/Upload/${doc._id}`, { withCredentials: true });
+                              await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Upload/${doc._id}`, { withCredentials: true });
                               fetchDocuments();
                               toast.success("Document Purged");
                             } catch (err) { toast.error("Delete failed"); } finally { setLoading(false); }

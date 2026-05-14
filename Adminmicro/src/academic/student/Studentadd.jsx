@@ -120,11 +120,11 @@ const Studentadd = () => {
     const fetchRegistries = async () => {
       try {
         const [cRes, yRes, sRes, secRes, bRes] = await Promise.all([
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/sections", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Academic/batches", { withCredentials: true })
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/years", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/semesters", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/sections", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/batches", { withCredentials: true })
         ]);
         if (cRes.data.data) setCourses(cRes.data.data);
         if (yRes.data.data) setYears(yRes.data.data);

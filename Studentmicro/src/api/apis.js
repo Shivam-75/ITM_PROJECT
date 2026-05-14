@@ -69,7 +69,7 @@ const createAxiosInstance = (baseURL) => {
 export const authAPI = createAxiosInstance(import.meta.env.VITE_BASE_Auth);
 export const WorkAPI = createAxiosInstance(import.meta.env.VITE_BASE_WORK);
 export const ReportAPI = createAxiosInstance(import.meta.env.VITE_BASE_REPORT);
-export const AcademicAPI = createAxiosInstance(import.meta.env.VITE_BASE_ACADEMIC || "http://localhost:5002/api/v3/Admin/Academic");
+export const AcademicAPI = createAxiosInstance(import.meta.env.VITE_BASE_ACADEMIC || "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic");
 
 // 🔹 Caching Wrapper
 export const cachedFetch = async (apiCall, key, forceRefresh = false) => {

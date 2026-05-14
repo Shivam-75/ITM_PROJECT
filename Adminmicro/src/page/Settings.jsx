@@ -33,8 +33,8 @@ const Settings = () => {
     try {
       setLoading(true);
       const [courseRes, yearRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/years", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/years", { withCredentials: true })
       ]);
       
       if (courseRes.data.data) setFileCourses(courseRes.data.data);
@@ -60,9 +60,9 @@ const Settings = () => {
     try {
       setLoading(true);
       if (editId) {
-        await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${editId}`, { withCredentials: true });
+        await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses/${editId}`, { withCredentials: true });
       }
-      const res = await axios.post("http://localhost:5002/api/v3/Admin/Academic/courses", courseForm, { withCredentials: true });
+      const res = await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", courseForm, { withCredentials: true });
       toast.success(editId ? "Entry Updated" : res.data.message, toststyle);
       
       fetchData();
@@ -94,7 +94,7 @@ const Settings = () => {
     if (!window.confirm("Purge this course from registry?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Academic/courses/${id}`, { withCredentials: true });
+      await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses/${id}`, { withCredentials: true });
       toast.success("Course Purged", toststyle);
       setFileCourses(prev => prev.filter(c => (c._id || c.id) !== id));
     } catch (err) {

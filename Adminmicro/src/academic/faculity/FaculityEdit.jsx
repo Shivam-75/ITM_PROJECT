@@ -61,7 +61,7 @@ const FaculityEdit = () => {
             image: data.image || null,
           });
           if (data.image) {
-            setPreview(`http://localhost:5001${data.image}`);
+            setPreview(`https://itm-project-6vtr.onrender.com${data.image}`);
           }
         }
       } catch (error) {

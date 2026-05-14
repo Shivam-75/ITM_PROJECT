@@ -46,8 +46,8 @@ const PlacementDashboard = () => {
   const fetchRegistries = useCallback(async () => {
     try {
       const [cRes, sRes] = await Promise.all([
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/courses", { withCredentials: true }),
-        axios.get("http://localhost:5002/api/v3/Admin/Academic/semesters", { withCredentials: true })
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/courses", { withCredentials: true }),
+        axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Academic/semesters", { withCredentials: true })
       ]);
       if (cRes.data.data) setCourses(cRes.data.data);
       if (sRes.data.data) setSemestersList(sRes.data.data);
@@ -59,7 +59,7 @@ const PlacementDashboard = () => {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5002/api/v3/Admin/Placement/drives", { withCredentials: true });
+      const res = await axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/drives", { withCredentials: true });
       if (res.data.data) setDrives(res.data.data);
     } catch (err) {
       console.error(err);
@@ -72,8 +72,8 @@ const PlacementDashboard = () => {
     try {
       setLoading(true);
       const url = driveId 
-        ? `http://localhost:5002/api/v3/Admin/Placement/applications?placementId=${driveId}`
-        : "http://localhost:5002/api/v3/Admin/Placement/applications";
+        ? `https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/applications?placementId=${driveId}`
+        : "https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/applications";
       const res = await axios.get(url, { withCredentials: true });
       if (res.data.data) setApplications(res.data.data);
       setView("applications");
@@ -93,7 +93,7 @@ const PlacementDashboard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("http://localhost:5002/api/v3/Admin/Placement/drives", formData, { withCredentials: true });
+      await axios.post("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/drives", formData, { withCredentials: true });
       toast.success("Placement Drive Created", toststyle);
       setShowModal(false);
       setFormData({
@@ -112,7 +112,7 @@ const PlacementDashboard = () => {
   const updateStatus = async (appId, status) => {
     try {
       setLoading(true);
-      await axios.patch(`http://localhost:5002/api/v3/Admin/Placement/applications/${appId}`, { status }, { withCredentials: true });
+      await axios.patch(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Placement/applications/${appId}`, { status }, { withCredentials: true });
       toast.success(`Status updated to ${status}`, toststyle);
       fetchApplications(selectedDrive?._id);
     } catch (err) {

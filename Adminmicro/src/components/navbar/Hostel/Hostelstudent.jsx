@@ -14,9 +14,9 @@ const Hostelstudent = () => {
       try {
         setLoading(true);
         const [studentRes, allocRes, payRes] = await Promise.all([
-          axios.get("http://localhost:5001/api/v1/Admin/StudentList", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
-          axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true })
+          axios.get("https://itm-project-6vtr.onrender.com/api/v1/Admin/StudentList", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate", { withCredentials: true }),
+          axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Payment/history", { withCredentials: true })
         ]);
 
         const allStudents = studentRes.data.studentList || [];
@@ -60,7 +60,7 @@ const Hostelstudent = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Remove this student from hostel? This will free up the room capacity.")) return;
     try {
-      await axios.delete(`http://localhost:5002/api/v3/Admin/Hostel/allocate/${id}`, { withCredentials: true });
+      await axios.delete(`https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/allocate/${id}`, { withCredentials: true });
       toast.success("Student removed from hostel");
       setStudentsData(prev => prev.filter(s => s._id !== id));
     } catch (err) {

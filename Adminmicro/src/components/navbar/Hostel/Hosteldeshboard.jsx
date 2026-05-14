@@ -43,10 +43,10 @@ const Hosteldeshboard = () => {
         try {
             setLoading(true);
             const [studentRes, payRes, roomsRes, compRes] = await Promise.all([
-                axios.get("http://localhost:5001/api/v1/Admin/StudentList", { withCredentials: true }),
-                axios.get("http://localhost:5002/api/v3/Admin/Payment/history", { withCredentials: true }),
-                axios.get("http://localhost:5002/api/v3/Admin/Hostel/rooms", { withCredentials: true }),
-                axios.get("http://localhost:5002/api/v3/Admin/Hostel/complaints", { withCredentials: true })
+                axios.get("https://itm-project-6vtr.onrender.com/api/v1/Admin/StudentList", { withCredentials: true }),
+                axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Payment/history", { withCredentials: true }),
+                axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/rooms", { withCredentials: true }),
+                axios.get("https://itm-project-1-ilmh.onrender.com/api/v3/Admin/Hostel/complaints", { withCredentials: true })
             ]);
 
             const allStudents = studentRes.data.studentList || studentRes.data.data || [];

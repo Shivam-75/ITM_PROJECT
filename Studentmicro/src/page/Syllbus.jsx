@@ -139,7 +139,7 @@ const Syllabus = () => {
                                       <td className="px-10 py-8 text-right">
                                           {(item.fileUrl || item.syllabusUrl) ? (
                                               <a 
-                                                  href={item.fileUrl ? `http://localhost:5002${item.fileUrl}` : item.syllabusUrl} 
+                                                  href={item.fileUrl ? `https://itm-project-1-ilmh.onrender.com${item.fileUrl}` : item.syllabusUrl} 
                                                   target="_blank" 
                                                   rel="noreferrer" 
                                                   className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-800 transition-all shadow-xl shadow-gray-200 active:scale-95"

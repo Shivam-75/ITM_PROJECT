@@ -22,7 +22,7 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
       <td className="px-6 py-4">
         <div className="flex justify-center gap-3">
           <a
-            href={`http://localhost:5002${item.paperImage}`}
+            href={`https://itm-project-1-ilmh.onrender.com${item.paperImage}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white border border-slate-100 rounded-[10px] transition-all"
@@ -31,7 +31,7 @@ const ModelPaperRow = React.memo(({ item, onEdit, onDelete }) => {
             <FiExternalLink size={14} />
           </a>
           <a
-            href={`http://localhost:5002${item.paperImage}`}
+            href={`https://itm-project-1-ilmh.onrender.com${item.paperImage}`}
             download
             className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-[10px] transition-all"
             title="Download"
