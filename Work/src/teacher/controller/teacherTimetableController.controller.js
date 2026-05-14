@@ -84,7 +84,7 @@ class teacherTimeTableController {
             const TimeTableFind = await TimeTable.find({ userId }).sort({ createdAt: -1 });
 
             if (!TimeTableFind || TimeTableFind.length === 0) {
-                return res.status(400).json({ message: "Time Table Not Uploaded !!", status: 400 });
+                return res.status(200).json({ message: "No Time Table found", status: 200, data: [] });
             }
 
             return res.status(200).json({ message: "Successfully Timetable Fetched !!", status: 200, data: TimeTableFind });
