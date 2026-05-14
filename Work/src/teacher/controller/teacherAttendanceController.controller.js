@@ -73,7 +73,7 @@ class TeacherAttendanceController {
             const attendanceData = await Attendance.find(query).sort({ date: -1 });
 
             if (!attendanceData || attendanceData.length === 0) {
-                return res.status(404).json({ message: "No Attendance Records Found", status: 404 });
+                return res.status(200).json({ message: "No Attendance Records Found", status: 200, data: [] });
             }
 
             return res.status(200).json({
